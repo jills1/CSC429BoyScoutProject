@@ -18,7 +18,7 @@ import userinterface.MainStageContainer;
 import userinterface.View;
 import userinterface.WindowPosition;
 
-/** The class containing the Transaction for the ATM application */
+/** The class containing the Transaction for the ATM applicationj */
 //==============================================================
 abstract public class Transaction implements IView, IModel
 {
