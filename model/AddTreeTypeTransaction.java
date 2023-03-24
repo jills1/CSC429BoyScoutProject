@@ -163,14 +163,25 @@ public class AddTreeTypeTransaction extends Transaction
     //------------------------------------------------------
     protected Scene createView()
     {
+<<<<<<< HEAD
         Scene currentScene = myViews.get("RegisterScoutTransactionView");
+=======
+        Scene currentScene = myViews.get("AddTreeTypeTransactionView");
+>>>>>>> 75c77d8 (AddTreeType)
 
         if (currentScene == null)
         {
             // create our initial view
+<<<<<<< HEAD
             View newView = ViewFactory.createView("RegisterScoutTransactionView", this);
             currentScene = new Scene(newView);
             myViews.put("RegisterScoutTransactionView", currentScene);
+=======
+            View newView = ViewFactory.createView("AddTreeTypeTransactionView", this);
+            currentScene = new Scene(newView);
+            myViews.put("AddTreeTypeTransactionView", currentScene);
+
+>>>>>>> 75c77d8 (AddTreeType)
 
             return currentScene;
         }
@@ -197,4 +208,8 @@ public class AddTreeTypeTransaction extends Transaction
         swapToView(newScene);
     }
 
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 75c77d8 (AddTreeType)
