@@ -26,7 +26,7 @@ import java.util.Vector;
 
 // project imports
 import impresario.IModel;
-import model.Scout;
+import model.*;
 //==============================================================
 public class UpdateTreeView extends View {
     private TextField barcode;
@@ -34,7 +34,7 @@ public class UpdateTreeView extends View {
     private Button cancelButton;
     private MessageView statusLog;
     //-------------------------------------------------------------
-    public UpdateTreeTransactionView(IModel trans) {
+    public UpdateTreeView(IModel trans) {
         super(trans, "UpdateTreeTransactionView");
         // create a container for showing the contents
         VBox container = new VBox(10);
@@ -67,12 +67,12 @@ public class UpdateTreeView extends View {
         grid.setHgap(10);
         grid.setVgap(10);
         grid.setPadding(new Insets(25, 25, 25, 25));
-/--------------------------------------------------------------------
-        Label firstNameLabel = new Label("First Name : ");
-        grid.add(firstNameLabel, 0, 0);
+//-------------------------------------------------------------------
+        Label barcodeLabel = new Label("Barcode : ");
+        grid.add(barcodeLabel, 0, 0);
 
-        firstName = new TextField();
-        firstName.setOnAction(new EventHandler<ActionEvent>() {
+        barcode = new TextField();
+        barcode.setOnAction(new EventHandler<ActionEvent>() {
 
             @Override
             public void handle(ActionEvent e) {
@@ -83,18 +83,15 @@ public class UpdateTreeView extends View {
 //------------------------------------------------------------------
         submitButton = new Button("Submit");
         submitButton.setOnAction(new EventHandler<ActionEvent>() {
-
             @Override
             public void handle(ActionEvent e) {
                 clearErrorMessage();
-
                 processAction(e);
             }
         });
 //----------------------------------------------------------------
         cancelButton = new Button("Back");
         cancelButton.setOnAction(new EventHandler<ActionEvent>() {
-
             @Override
             public void handle(ActionEvent e) {
                 /**
@@ -109,96 +106,39 @@ public class UpdateTreeView extends View {
                 myModel.stateChangeRequest("CancelDeposit", null);
             }
         });
-
         HBox btnContainer = new HBox(100);
         btnContainer.setAlignment(Pos.CENTER);
         btnContainer.getChildren().add(submitButton);
         btnContainer.getChildren().add(cancelButton);
-
         vbox.getChildren().add(grid);
         vbox.getChildren().add(btnContainer);
-
         return vbox;
     }
-
-
-    // Create the status log field
     //-------------------------------------------------------------
-    private MessageView createStatusLog(String initialMessage)
-    {
+    private MessageView createStatusLog(String initialMessage) {
         statusLog = new MessageView(initialMessage);
-
         return statusLog;
     }
-
     //-------------------------------------------------------------
-    public void populateFields()
-    {
-
+    public void populateFields() {
     }
-
-
-    /**
-     * Process account number selected by user.
-     * Action is to pass this info on to the transaction object.
-     */
     //----------------------------------------------------------
-    private void processAction(Event evt)
-    {
+    private void processAction(Event evt) {
         //clearErrorMessage();
-
-        String lastNameEntered = lastName.getText();
-        String firstNameEntered = firstName.getText();
-        String middleNameEntered = middleName.getText();
-        String dateOfBirthEntered = dateOfBirth.getText();
-        String phoneNumberEntered = phoneNumber.getText();
-        String emailEntered = email.getText();
-        String troopIDEntered = troopID.getText();
-
-        if ((lastNameEntered == null) || (lastNameEntered.length() == 0))
+        String barcodeEntered = barcode.getText();
+        if ((barcodeEntered == null) || (barcodeEntered.length() == 0))
         {
-            displayErrorMessage("Please enter a last name");
+            displayErrorMessage("Please enter a barcode");
+        } else {
+            processScoutInfo(barcodeEntered);
         }
-        else if ((firstNameEntered == null) || (firstNameEntered.length() == 0))
-        {
-            displayErrorMessage("Please enter a first name");
-        }
-        else if ((middleNameEntered == null) || (middleNameEntered.length() == 0))
-        {
-            displayErrorMessage("Please enter a middle name");
-        }
-        else if ((dateOfBirthEntered == null) || (dateOfBirthEntered.length() == 0))
-        {
-            displayErrorMessage("Please enter a valid birth date");
-        }
-        else if ((phoneNumberEntered == null) || (phoneNumberEntered.length() == 0))
-        {
-            displayErrorMessage("Please enter a phone number");
-        }
-        else if ((emailEntered == null) || (emailEntered.length() == 0))
-        {
-            displayErrorMessage("Please enter an email");
-        }
-        else if ((troopIDEntered == null) || (troopIDEntered.length() == 0))
-        {
-            displayErrorMessage("Please enter a troopID");
-        }
-        else
-            processScoutInfo(lastNameEntered,firstNameEntered,middleNameEntered,dateOfBirthEntered,phoneNumberEntered,emailEntered,troopIDEntered);
     }
-    private void processScoutInfo(String lastName, String firstName, String middleName, String dateOfBirth, String phoneNumber,String email, String troopID)
-    {
+    private void processScoutInfo(String barcode) {
         Properties props = new Properties();
-        props.setProperty("lastName", lastName);
-        props.setProperty("firstName", firstName);
-        props.setProperty("middleName", middleName);
-        props.setProperty("dateOfBirth", dateOfBirth);
-        props.setProperty("phoneNumber", phoneNumber);
-        props.setProperty("email", email);
-        props.setProperty("troopID", troopID);
-        myModel.stateChangeRequest("RegisterWithScoutInfo", props);
-        Scout scout = new Scout(props);
-        scout.update();
+        props.setProperty("barcode", barcode);
+        myModel.stateChangeRequest("RegisterTreeInfo", props);
+        Tree tree = new Tree(props);
+        tree.update();
         displayMessage("Successfully added new Scout");
     }
     public void displayMessage(String message)
@@ -206,32 +146,17 @@ public class UpdateTreeView extends View {
         statusLog.displayMessage(message);
     }
 
-
-    /**
-     * Required by interface, but has no role here
-     */
     //---------------------------------------------------------
-    public void updateState(String key, Object value)
-    {
-
+    public void updateState(String key, Object value) {
     }
-
-    /**
-     * Display error message
-     */
     //----------------------------------------------------------
     public void displayErrorMessage(String message)
     {
         statusLog.displayErrorMessage(message);
     }
-
-    /**
-     * Clear error message
-     */
     //----------------------------------------------------------
     public void clearErrorMessage()
     {
         statusLog.clearErrorMessage();
     }
-
 }
