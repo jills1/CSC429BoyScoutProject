@@ -31,9 +31,9 @@ public class ViewFactory {
 		{
 			return new RegisterScoutTransactionView(model);
 		}
-		else if(viewName.equals("DepositAmountView") == true)
+		else if(viewName.equals("AddTreeView") == true)
 		{
-			return new DepositAmountView(model);
+			return new AddTreeView(model);
 		}
 		else if(viewName.equals("WithdrawTransactionView") == true)
 		{

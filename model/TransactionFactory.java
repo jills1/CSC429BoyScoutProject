@@ -25,12 +25,12 @@ public class TransactionFactory
 		{
 			retValue = new RegisterScoutTransaction();
 		}
-		/*else
-		if (transType.equals("Withdraw") == true)
-		{
-			retValue = new WithdrawTransaction(cust);
-		}
 		else
+		if (transType.equals("AddTree") == true)
+		{
+			retValue = new AddTreeTransaction();
+		}
+		/*else
 		if (transType.equals("Transfer") == true)
 		{
 			retValue = new TransferTransaction(cust);

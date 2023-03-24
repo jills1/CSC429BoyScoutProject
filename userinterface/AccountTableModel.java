@@ -61,4 +61,7 @@ public class AccountTableModel
     {
     	serviceCharge.set(charge);
     }
+
+    public static class AddTree {
+    }
 }
