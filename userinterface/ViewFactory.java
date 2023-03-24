@@ -5,63 +5,51 @@ import impresario.IModel;
 //==============================================================================
 public class ViewFactory {
 
-	public static View createView(String viewName, IModel model)
-	{
-		if(viewName.equals("TellerView") == true)
-		{
-			return new TellerView(model);
-		}
-		else if(viewName.equals("TLCView") == true)
-		{
-			return new TLCView(model);
-		}
-		else if(viewName.equals("AccountCollectionView") == true)
-		{
-			return new AccountCollectionView(model);
-		}
-		else if(viewName.equals("AccountView") == true)
-		{
-			return new AccountView(model);
-		}
-		else if(viewName.equals("AccountHolderIDEntryView") == true)
-		{
-			return new AccountHolderIDEntryView(model);
-		}
-		else if(viewName.equals("RegisterScoutTransactionView") == true)
+	public static View createView(String viewName, IModel model) {
+
+		if(viewName.equals("RegisterScoutTransactionView") == true)
 		{
 			return new RegisterScoutTransactionView(model);
 		}
-		else if(viewName.equals("DepositAmountView") == true)
+		else if(viewName.equals("UpdateScoutTransactionView") == true)
 		{
-			return new DepositAmountView(model);
+			return new UpdateScoutTransactionView(model);
 		}
-		else if(viewName.equals("WithdrawTransactionView") == true)
+		else if(viewName.equals("RemoveScoutTransactionView") == true)
 		{
-			return new WithdrawTransactionView(model);
+			return new RemoveScoutTransactionView(model);
 		}
-		else if(viewName.equals("TransferTransactionView") == true)
+		else if(viewName.equals("AddTreeTransactionView") == true)
 		{
-			return new TransferTransactionView(model);
+			return new AddTreeTransactionView(model);
 		}
-		else if(viewName.equals("BalanceInquiryTransactionView") == true)
+		else if(viewName.equals("UpdateTreeTransactionView") == true)
 		{
-			return new BalanceInquiryTransactionView(model);
+			return new UpdateTreeTransactionView(model);
 		}
-		else if(viewName.equals("BalanceInquiryReceipt") == true)
+		else if(viewName.equals("RemoveTreeTransactionView") == true)
 		{
-			return new BalanceInquiryReceipt(model);
+			return new RemoveTreeTransactionView(model);
 		}
-		else if(viewName.equals("WithdrawReceipt") == true)
+		else if(viewName.equals("AddTreeTypeTransactionView") == true)
 		{
-			return new WithdrawReceipt(model);
+			return new AddTreeTypeTransactionView(model);
 		}
-		else if(viewName.equals("DepositReceipt") == true)
+		else if(viewName.equals("UpdateTreeTypeTransactionView") == true)
 		{
-			return new DepositReceipt(model);
+			return new UpdateTreeTypeTransactionView(model);
 		}
-		else if(viewName.equals("TransferReceipt") == true)
+		else if(viewName.equals("StartShiftTransactionView") == true)
 		{
-			return new TransferReceipt(model);
+			return new StartShiftTransactionView(model);
+		}
+		else if(viewName.equals("EndShiftTransactionView") == true)
+		{
+			return new EndShiftTransactionView(model);
+		}
+		else if(viewName.equals("SellTreeTransactionView") == true)
+		{
+			return new SellTreeTransactionView(model);
 		}
 		else
 			return null;

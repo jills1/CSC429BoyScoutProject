@@ -130,16 +130,16 @@ public class UpdateTreeView extends View {
         {
             displayErrorMessage("Please enter a barcode");
         } else {
-            processScoutInfo(barcodeEntered);
+            processTreeInfo(barcodeEntered);
         }
     }
-    private void processScoutInfo(String barcode) {
+    private void processTreeInfo(String barcode) {
         Properties props = new Properties();
         props.setProperty("barcode", barcode);
         myModel.stateChangeRequest("RegisterTreeInfo", props);
         Tree tree = new Tree(props);
         tree.update();
-        displayMessage("Successfully added new Scout");
+        displayMessage("Successfully added new Tree");
     }
     public void displayMessage(String message)
     {
