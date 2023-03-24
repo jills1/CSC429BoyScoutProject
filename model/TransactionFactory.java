@@ -1,20 +1,9 @@
-// specify the package
 package model;
-
-// system imports
 import java.util.Vector;
 import javax.swing.JFrame;
 
-// project imports
-
-/** The class containing the TransactionFactory for the ATM application */
 //==============================================================
-public class TransactionFactory
-{
-
-	/**
-	 *
-	 */
+public class TransactionFactory {
 	//----------------------------------------------------------
 	public static Transaction createTransaction(String transType)
 		throws Exception
@@ -25,27 +14,56 @@ public class TransactionFactory
 		{
 			retValue = new RegisterScoutTransaction();
 		}
-		/*else
-		if (transType.equals("Withdraw") == true)
+		else
+		if (transType.equals("UpdateScout") == true)
 		{
-			retValue = new WithdrawTransaction(cust);
+			retValue = new UpdateScoutTransaction();
 		}
 		else
-		if (transType.equals("Transfer") == true)
+		if (transType.equals("RemoveScout") == true)
 		{
-			retValue = new TransferTransaction(cust);
+			retValue = new RemoveScoutTransaction();
 		}
 		else
-		if (transType.equals("BalanceInquiry") == true)
+		if (transType.equals("AddTree") == true)
 		{
-			retValue = new BalanceInquiryTransaction(cust);
+			retValue = new AddTreeTransaction();
 		}
 		else
-		if (transType.equals("ImposeServiceCharge") == true)
+		if (transType.equals("UpdateTree") == true)
 		{
-			retValue = new ImposeServiceChargeTransaction(cust);
+			retValue = new UpdateTreeTransaction();
 		}
-*/
+		else
+		if (transType.equals("RemoveTree") == true)
+		{
+			retValue = new RemoveTreeTransaction();
+		}
+		else
+		if (transType.equals("AddTreeType") == true)
+		{
+			retValue = new AddTreeTypeTransaction();
+		}
+		else
+		if (transType.equals("UpdateTreeType") == true)
+		{
+			retValue = new UpdateTreeTypeTransaction();
+		}
+		else
+		if (transType.equals("StartShift") == true)
+		{
+			retValue = new StartShiftTransaction();
+		}
+		else
+		if (transType.equals("EndShift") == true)
+		{
+			retValue = new EndShiftTransaction();
+		}
+		else
+		if (transType.equals("SellTree") == true)
+		{
+			retValue = new SellTreeTransaction();
+		}
 		return retValue;
 	}
 }
