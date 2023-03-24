@@ -1,5 +1,6 @@
 // specify the package
 package model;
+import model.ScoutUpdateSearchTransaction;
 
 // system imports
 import java.util.Vector;
@@ -46,6 +47,11 @@ public class TransactionFactory
 			retValue = new ImposeServiceChargeTransaction(cust);
 		}
 */
-		return retValue;
+		else
+		if (transType.equals("UpdateScout"))
+		{
+			retValue = new ScoutUpdateSearchTransaction();
+		}
+				return retValue;
 	}
 }

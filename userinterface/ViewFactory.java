@@ -35,6 +35,10 @@ public class ViewFactory {
 		{
 			return new DepositAmountView(model);
 		}
+		else if(viewName.equals("SearchUpdateScoutView") == true)
+		{
+			return new SearchUpdateScoutView(model);
+		}
 		else if(viewName.equals("WithdrawTransactionView") == true)
 		{
 			return new WithdrawTransactionView(model);
@@ -62,6 +66,10 @@ public class ViewFactory {
 		else if(viewName.equals("TransferReceipt") == true)
 		{
 			return new TransferReceipt(model);
+		}
+		else if(viewName.equals("SelectUpdateScoutView") == true)
+		{
+			return new SelectUpdateScoutView(model);
 		}
 		else
 			return null;
