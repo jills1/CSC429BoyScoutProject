@@ -134,6 +134,7 @@ public class UpdateTreeTransactionView extends View {
         }
     }
     private void processTreeInfo(String barcode) {
+        // modify to make update tree
         Properties props = new Properties();
         props.setProperty("barcode", barcode);
         myModel.stateChangeRequest("RegisterTreeInfo", props);
