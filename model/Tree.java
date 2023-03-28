@@ -112,11 +112,19 @@ public class Tree extends EntityBase implements IView {
         }
         //DEBUG System.out.println("updateStateInDatabase " + updateStatusMessage);
     }
-    //--------------------------------------------------------------------------
-    public Vector<String> getEntryListView() {
+
+    public Vector<String> getEntryListView()
+    {
         Vector<String> v = new Vector<String>();
+
         v.addElement(persistentState.getProperty("barcode"));
+        v.addElement(persistentState.getProperty("treeType"));
+        v.addElement(persistentState.getProperty("notes"));
+        v.addElement(persistentState.getProperty("status"));
+        v.addElement(persistentState.getProperty("dateStatusUpdate"));
+
         return v;
+
     }
     //-----------------------------------------------------------------------------------
     protected void initializeSchema(String tableName) {
