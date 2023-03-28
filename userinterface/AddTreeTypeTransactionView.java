@@ -57,7 +57,7 @@ public class AddTreeTypeTransactionView extends View
     //----------------------------------------------------------
     public AddTreeTypeTransactionView(IModel trans)
     {
-        super(trans, "RegisterScoutTransactionView");
+        super(trans, "AddTreeTypeTransactionView");
 
         // create a container for showing the contents
         VBox container = new VBox(10);
