@@ -46,6 +46,7 @@ public class RegisterScoutTransactionView extends View
 	private TextField phoneNumber;
 	private TextField email;
 	private TextField troopID;
+	private TextField status;
 
 	private Button submitButton;
 	private Button cancelButton;
@@ -192,6 +193,19 @@ public class RegisterScoutTransactionView extends View
 		});
 		grid.add(troopID, 1, 6);
 
+		Label statusLabel = new Label("Status : ");
+		grid.add(statusLabel, 0, 7);
+
+		status = new TextField();
+		status.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent e) {
+				processAction(e);
+			}
+		});
+		grid.add(status, 1, 7);
+
 		submitButton = new Button("Submit");
 		submitButton.setOnAction(new EventHandler<ActionEvent>() {
 
@@ -265,6 +279,7 @@ public class RegisterScoutTransactionView extends View
 		String phoneNumberEntered = phoneNumber.getText();
 		String emailEntered = email.getText();
 		String troopIDEntered = troopID.getText();
+		String statusEntered = status.getText();
 
 		if ((lastNameEntered == null) || (lastNameEntered.length() == 0))
 		{
@@ -294,10 +309,14 @@ public class RegisterScoutTransactionView extends View
 		{
 			displayErrorMessage("Please enter a troopID");
 		}
+		else if ((statusEntered == null) || (statusEntered.length() == 0))
+		{
+			displayErrorMessage("Please enter a valid status");
+		}
 		else
-			processScoutInfo(lastNameEntered,firstNameEntered,middleNameEntered,dateOfBirthEntered,phoneNumberEntered,emailEntered,troopIDEntered);
+			processScoutInfo(lastNameEntered,firstNameEntered,middleNameEntered,dateOfBirthEntered,phoneNumberEntered,emailEntered,troopIDEntered,statusEntered);
 	}
-	private void processScoutInfo(String lastName, String firstName, String middleName, String dateOfBirth, String phoneNumber,String email, String troopID)
+	private void processScoutInfo(String lastName, String firstName, String middleName, String dateOfBirth, String phoneNumber,String email, String troopID, String status)
 	{
 		Properties props = new Properties();
 		props.setProperty("lastName", lastName);
@@ -307,6 +326,7 @@ public class RegisterScoutTransactionView extends View
 		props.setProperty("phoneNumber", phoneNumber);
 		props.setProperty("email", email);
 		props.setProperty("troopID", troopID);
+		props.setProperty("status", status);
 		myModel.stateChangeRequest("RegisterWithScoutInfo", props);
 		Scout scout = new Scout(props);
 		scout.update();
