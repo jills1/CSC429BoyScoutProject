@@ -30,12 +30,13 @@ public class TransactionFactory
 		{
 			retValue = new AddTreeTypeTransaction();
 		}
-		/*
+
 		else
-		if (transType.equals("Transfer") == true)
+		if (transType.equals("RemoveScout") == true)
 		{
-			retValue = new TransferTransaction(cust);
+			retValue = new RemoveScoutTransaction();
 		}
+		/*
 		else
 		if (transType.equals("BalanceInquiry") == true)
 		{

@@ -35,13 +35,13 @@ public class ViewFactory {
 		{
 			return new AddTreeTypeTransactionView(model);
 		}
-		else if(viewName.equals("WithdrawTransactionView") == true)
+		else if(viewName.equals("RemoveScoutTransactionView") == true)
 		{
-			return new WithdrawTransactionView(model);
+			return new RemoveScoutTransactionView(model);
 		}
-		else if(viewName.equals("TransferTransactionView") == true)
+		else if(viewName.equals("ScoutCollectionView") == true)
 		{
-			return new TransferTransactionView(model);
+			return new ScoutCollectionView(model);
 		}
 		else if(viewName.equals("BalanceInquiryTransactionView") == true)
 		{

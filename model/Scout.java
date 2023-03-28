@@ -220,6 +220,8 @@ public class Scout extends EntityBase implements IView
             mySchema = getSchemaInfo(tableName);
         }
     }
+
+
     public String toString()
     {
         return "Scout: " + persistentState.getProperty("firstName") + "; Last Name: " +

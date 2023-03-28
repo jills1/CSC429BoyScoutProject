@@ -22,7 +22,7 @@ import userinterface.ViewFactory;
 //==============================================================
 public class ScoutCollection  extends EntityBase implements IView
 {
-	private static final String myTableName = "Scouts";
+	private static final String myTableName = "Scout";
 
 	private Vector<Scout> scouts;
 	// GUI Components
