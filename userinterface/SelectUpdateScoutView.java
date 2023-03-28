@@ -59,7 +59,7 @@ public class SelectUpdateScoutView extends View
 		VBox container = new VBox(10);
 		container.setPadding(new Insets(15, 5, 5, 5));
 
-		System.out.println("Created");
+		
 		// create our GUI components, add them to this panel
 		container.getChildren().add(createTitle());
 		container.getChildren().add(createFormContent());
@@ -68,8 +68,6 @@ public class SelectUpdateScoutView extends View
 		container.getChildren().add(createStatusLog("                                            "));
 
 		getChildren().add(container);
-		
-		populateFields();
 	}
 	//--------------------------------------------------------------------------
 	protected void populateFields()
@@ -121,7 +119,6 @@ public class SelectUpdateScoutView extends View
 		titleText.setTextAlignment(TextAlignment.CENTER);
 		titleText.setFill(Color.DARKGREEN);
 		container.getChildren().add(titleText);
-		
 		return container;
 	}
 
@@ -143,7 +140,7 @@ public class SelectUpdateScoutView extends View
         prompt.setFill(Color.BLACK);
         grid.add(prompt, 0, 0, 2, 1);
 
-		tableOfAccounts = new TableView<AccountTableModel>();
+		/*tableOfAccounts = new TableView<AccountTableModel>();
 		tableOfAccounts.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 	
 		TableColumn scoutIdColumn = new TableColumn("Scout ID") ;
@@ -181,20 +178,21 @@ public class SelectUpdateScoutView extends View
 		ScrollPane scrollPane = new ScrollPane();
 		scrollPane.setPrefSize(115, 150);
 		scrollPane.setContent(tableOfAccounts);
-
-		submitButton = new Button("Submit");
+		*/
+		submitButton = new Button("Select");
  		submitButton.setOnAction(new EventHandler<ActionEvent>() {
 
        		     @Override
        		     public void handle(ActionEvent e) {
        		     	clearErrorMessage(); 
 					// do the inquiry
-					processAccountSelected();
+					//processAccountSelected();
+					testProcessAction(e);
 					
             	 }
         	});
 
-		cancelButton = new Button("Back");
+		cancelButton = new Button("Cancel");
  		cancelButton.setOnAction(new EventHandler<ActionEvent>() {
 
        		     @Override
@@ -218,7 +216,7 @@ public class SelectUpdateScoutView extends View
 		btnContainer.getChildren().add(cancelButton);
 		
 		vbox.getChildren().add(grid);
-		vbox.getChildren().add(scrollPane);
+		//vbox.getChildren().add(scrollPane);
 		vbox.getChildren().add(btnContainer);
 		
 	
@@ -281,5 +279,8 @@ public class SelectUpdateScoutView extends View
 		}
 	}
    */
+  private void testProcessAction(ActionEvent e) {
+	myModel.stateChangeRequest("UpdateScoutInfo", null);
+}
 	
 }

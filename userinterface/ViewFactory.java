@@ -71,6 +71,10 @@ public class ViewFactory {
 		{
 			return new SelectUpdateScoutView(model);
 		}
+		else if(viewName.equals("UpdateScoutInfoView") == true)
+		{
+			return new UpdateScoutInfoView(model);
+		}
 		else
 			return null;
 	}
