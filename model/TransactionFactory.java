@@ -6,14 +6,14 @@ import javax.swing.JFrame;
 public class TransactionFactory {
 	//----------------------------------------------------------
 	public static Transaction createTransaction(String transType)
-		throws Exception
+
 	{
 		Transaction retValue = null;
 
 		if (transType.equals("RegisterScout") == true)
 		{
 			retValue = new RegisterScoutTransaction();
-		}
+		}/*
 		else
 		if (transType.equals("UpdateScout") == true)
 		{

@@ -126,13 +126,7 @@ public class TLC implements IView, IModel
 			(key.equals("SellTree") == true))
 		{
 			String transType = key;
-
-
-				doTransaction(transType);
-
-
-
-
+			doTransaction(transType);
 		}
 
 
@@ -147,13 +141,6 @@ public class TLC implements IView, IModel
 
 		stateChangeRequest(key, value);
 	}
-
-	/**
-	 * Login AccountHolder corresponding to user name and password.
-	 */
-	//----------------------------------------------------------
-
-
 
 	/**
 	 * Create a Transaction depending on the Transaction type (deposit,

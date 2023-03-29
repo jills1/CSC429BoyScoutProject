@@ -17,7 +17,7 @@ import impresario.IView;
 //import userinterface.View;
 //import userinterface.ViewFactory;
 
-/** The class containing the Account for the ATM application */
+/** The class containing the Scout information for the Tree Sales application */
 //==============================================================
 public class Scout extends EntityBase implements IView
 {
@@ -37,13 +37,13 @@ public class Scout extends EntityBase implements IView
 
     // constructor for this class
     //----------------------------------------------------------
-    public Scout(String scoutId)
+    public Scout(String troopId)
             throws InvalidPrimaryKeyException
     {
         super(myTableName);
 
         setDependencies();
-        String query = "SELECT * FROM " + myTableName + " WHERE (scoutId = " + scoutId + ")";
+        String query = "SELECT * FROM " + myTableName + " WHERE (troopID = " + troopId + ")";
 
         Vector<Properties> allDataRetrieved = getSelectQueryResult(query);
 
@@ -52,11 +52,11 @@ public class Scout extends EntityBase implements IView
         {
             int size = allDataRetrieved.size();
 
-            // There should be EXACTLY one account. More than that is an error
+            // There should be EXACTLY one Scout. More than that is an error
             if (size != 1)
             {
-                throw new InvalidPrimaryKeyException("Multiple scouts matching id : "
-                        + scoutId + " found.");
+                throw new InvalidPrimaryKeyException("Multiple scouts matching troop id : "
+                        + troopId + " found.");
             }
             else
             {
@@ -79,16 +79,15 @@ public class Scout extends EntityBase implements IView
 
             }
         }
-        // If no account found for this user name, throw an exception
+        // If no scout found for this troop id, throw an exception
         else
         {
-            throw new InvalidPrimaryKeyException("No scout matching id : "
-                    + scoutId+ " found.");
+            throw new InvalidPrimaryKeyException("No scout matching troop id : "
+                    + troopId + " found.");
         }
     }
 
-    // Can also be used to create a NEW Account (if the system it is part of
-    // allows for a new account to be set up)
+    /** Constructor that takes in a Properties object to populate. Can also be used to create a NEW Scout */
     //----------------------------------------------------------
     public Scout(Properties props)
     {
@@ -162,22 +161,21 @@ public class Scout extends EntityBase implements IView
         try
         {
             // update
-            if (persistentState.getProperty("scoutId") != null)
+            if (persistentState.getProperty("scoutID") != null)
             {
                 Properties whereClause = new Properties();
-                whereClause.setProperty("scoutId",
-                        persistentState.getProperty("scoutId"));
+                whereClause.setProperty("scoutID",
+                        persistentState.getProperty("scoutID"));
                 updatePersistentState(mySchema, persistentState, whereClause);
-                updateStatusMessage = "Scout data for scout ID : " + persistentState.getProperty("scoutId") + " updated successfully in database!";
+                updateStatusMessage = "Scout data updated successfully in database!";
             }
             else
             {
                 //insert
-                Integer bookId =
+                Integer scoutId =
                         insertAutoIncrementalPersistentState(mySchema, persistentState);
-                persistentState.setProperty("scoutId", "" + bookId.intValue());
-                updateStatusMessage = "Scout data for new scout : " +  persistentState.getProperty("scoutId")
-                        + "installed successfully in database!";
+                persistentState.setProperty("scoutID", "" + scoutId.intValue());
+                updateStatusMessage = "Scout data for new scout installed successfully in database!";
             }
         }
         catch (SQLException ex)
@@ -228,7 +226,7 @@ public class Scout extends EntityBase implements IView
                 persistentState.getProperty("lastName") + "; Troop ID: " +
                 persistentState.getProperty("troopID") ;
     }
-    public String toString1()
+    /*public String toString1()
     {
         String retVal = "";
 
@@ -239,7 +237,7 @@ public class Scout extends EntityBase implements IView
             retVal += nextKey + ": " + nextValue + "; ";
         }
         return retVal;
-    }
+    } */
 
 }
 

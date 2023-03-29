@@ -18,7 +18,7 @@ import userinterface.MainStageContainer;
 import userinterface.View;
 import userinterface.WindowPosition;
 
-/** The class containing the Transaction for the ATM application */
+/** The class containing the Transaction for the Tree Sales application */
 //==============================================================
 abstract public class Transaction implements IView, IModel
 {
@@ -30,20 +30,14 @@ abstract public class Transaction implements IView, IModel
 	protected Stage myStage;
 	protected Hashtable<String, Scene> myViews;
 
-	protected AccountHolder myCust;
-
-	protected Vector myAccountIDs;
-	// GUI Components
 
 	/**
 	 * Constructor for this class.
 	 *
-	 * Transaction remembers all the account IDs for this customer.
-	 * It uses AccountCatalog to create this list of account IDs.
 	 *
 	 */
 	//----------------------------------------------------------
-	protected Transaction() throws Exception
+	protected Transaction()
 	{
 
 		myStage = MainStageContainer.getInstance();
@@ -73,23 +67,9 @@ abstract public class Transaction implements IView, IModel
 	//---------------------------------------------------------
 	protected void doYourJob()
 	{
-		AccountCatalog catalog = null;
-
-		try
-		{
+		Scene newScene = createView();
 			
-
-			
-			Scene newScene = createView();
-			
-			swapToView(newScene);
-
-		}
-		catch (Exception ex)
-		{
-				new Event(Event.getLeafLevelClassName(this), "Transaction",
-					"Could not find any accounts for " + myCust.getState("ID"), Event.ERROR);
-		}
+		swapToView(newScene);
 	}
 
 	// forward declarations
@@ -126,21 +106,6 @@ abstract public class Transaction implements IView, IModel
 		myRegistry.unSubscribe(key, subscriber);
 	}
 
-	/**
-	 * Create an account (based on account number passed to you from the view)
-	 */
-	//----------------------------------------------------------
-	protected Account createAccount(String accountNumber) throws
-		InvalidPrimaryKeyException
-	{
-		return new Account(accountNumber);
-	}
-
-	//----------------------------------------------------------
-	public Vector getAccountList()
-	{
-		return myAccountIDs;
-	}
 
 	//-----------------------------------------------------------------------------
 	public void swapToView(Scene newScene)
