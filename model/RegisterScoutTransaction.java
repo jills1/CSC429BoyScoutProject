@@ -17,13 +17,12 @@ import userinterface.ViewFactory;
 public class RegisterScoutTransaction extends Transaction
 {
 
-	private Account myAccount;
-	private String depositAmount; // needed for GUI only
+	private Scout myScout;
 
 	// GUI Components
 
 	private String transactionErrorMessage = "";
-	private String accountUpdateStatusMessage = "";
+
 
 	/**
 	 * Constructor for this class.
@@ -32,7 +31,6 @@ public class RegisterScoutTransaction extends Transaction
 	 */
 	//----------------------------------------------------------
 	public RegisterScoutTransaction()
-			throws Exception
 	{
 		super();
 	}
@@ -49,63 +47,31 @@ public class RegisterScoutTransaction extends Transaction
 	protected void setDependencies()
 	{
 		dependencies = new Properties();
-		dependencies.setProperty("CancelDeposit", "CancelTransaction");
-		dependencies.setProperty("OK", "CancelTransaction");
-		dependencies.setProperty("AccountNumber", "TransactionError");
+		dependencies.setProperty("CancelRegisterScout", "CancelTransaction");
+		dependencies.setProperty("RegisterWithScoutInfo", "TransactionError");
 
 		myRegistry.setDependencies(dependencies);
 	}
 
 	/**
-	 * This method encapsulates all the logic of creating the account,
-	 * verifying ownership, crediting, etc. etc.
+	 * This method encapsulates all the logic of registering a Scout with the troop
 	 */
 	//----------------------------------------------------------
 	public void processTransaction(Properties props)
 	{
-		if (props.getProperty("AccountNumber") != null)
-		{
-			String accountNumber = props.getProperty("AccountNumber");
-			try
-			{
-
-				myAccount = createAccount(accountNumber);
-				boolean isOwner = myAccount.verifyOwnership(myCust);
-				if (isOwner == false)
-				{
-					transactionErrorMessage = "ERROR: Deposit Transaction: Not owner of selected account!!";
-					new Event(Event.getLeafLevelClassName(this), "processTransaction",
-							"Failed to verify ownership of account number : " + accountNumber + ".",
-							Event.ERROR);
-				}
-				else
-				{
-					//createAndShowDepositAmountView();
-				}
-			}
-			catch (InvalidPrimaryKeyException ex)
-			{
-				transactionErrorMessage = "ACCOUNT FAILURE: Contact bank immediately!!";
-				new Event(Event.getLeafLevelClassName(this), "processTransaction",
-						"Failed to create account for number : " + accountNumber + ". Reason: " + ex.toString(),
-						Event.ERROR);
-
-			}
+		String troopID = props.getProperty("troopID");
+		try {
+			Scout scout = new Scout(troopID);
+			transactionErrorMessage = "ERROR: Scout with troopID: " + troopID + " already exists!";
 		}
-		else
-		if (props.getProperty("Amount") != null)
-		{
-			String amount = props.getProperty("Amount");
-			depositAmount = amount;
-
-			myAccount.credit(amount);
-			myAccount.update();
-			accountUpdateStatusMessage = (String)myAccount.getState("UpdateStatusMessage");
-			transactionErrorMessage = accountUpdateStatusMessage;
-
-			createAndShowReceiptView();
+		catch (InvalidPrimaryKeyException ex) {
+			myScout = new Scout(props);
+			myScout.update();
+			transactionErrorMessage += myScout.getState("UpdateStatusMessage");
 
 		}
+
+
 	}
 
 	//-----------------------------------------------------------
@@ -115,26 +81,7 @@ public class RegisterScoutTransaction extends Transaction
 		{
 			return transactionErrorMessage;
 		}
-		else
-		if (key.equals("UpdateStatusMessage") == true)
-		{
-			return accountUpdateStatusMessage;
-		}
-		else
-		if (key.equals("AccountNumberList") == true)
-		{
-			return myAccountIDs;
-		}
-		else
-		if (key.equals("Account") == true)
-		{
-			return myAccount;
-		}
-		else
-		if (key.equals("DepositAmount") == true)
-		{
-			return depositAmount;
-		}
+
 		return null;
 	}
 
@@ -183,18 +130,6 @@ public class RegisterScoutTransaction extends Transaction
 	//------------------------------------------------------
 
 
-	//------------------------------------------------------
-	protected void createAndShowReceiptView()
-	{
 
-		// create our initial view
-		View newView = ViewFactory.createView("DepositReceipt", this);
-		Scene newScene = new Scene(newView);
-
-		myViews.put("DepositReceipt", newScene);
-
-		// make the view visible by installing it into the frame
-		swapToView(newScene);
-	}
 
 }

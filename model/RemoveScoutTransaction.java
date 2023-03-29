@@ -84,11 +84,7 @@ public class RemoveScoutTransaction extends Transaction
         {
             return accountUpdateStatusMessage;
         }
-        else
-        if (key.equals("AccountNumberList") == true)
-        {
-            return myAccountIDs;
-        }
+
         else
         if (key.equals("Account") == true)
         {

@@ -74,6 +74,8 @@ public class RegisterScoutTransactionView extends View
 		getChildren().add(container);
 
 		populateFields();
+
+		myModel.subscribe("TransactionError", this);
 	}
 
 
@@ -231,7 +233,7 @@ public class RegisterScoutTransactionView extends View
 				 */
 				//----------------------------------------------------------
 				clearErrorMessage();
-				myModel.stateChangeRequest("CancelDeposit", null);
+				myModel.stateChangeRequest("CancelRegisterScout", null);
 			}
 		});
 
@@ -316,6 +318,8 @@ public class RegisterScoutTransactionView extends View
 		else
 			processScoutInfo(lastNameEntered,firstNameEntered,middleNameEntered,dateOfBirthEntered,phoneNumberEntered,emailEntered,troopIDEntered,statusEntered);
 	}
+
+	//---------------------------------------------------------------------------------------
 	private void processScoutInfo(String lastName, String firstName, String middleName, String dateOfBirth, String phoneNumber,String email, String troopID, String status)
 	{
 		Properties props = new Properties();
@@ -328,9 +332,7 @@ public class RegisterScoutTransactionView extends View
 		props.setProperty("troopID", troopID);
 		props.setProperty("status", status);
 		myModel.stateChangeRequest("RegisterWithScoutInfo", props);
-		Scout scout = new Scout(props);
-		scout.update();
-		displayMessage("Successfully added new Scout");
+
 	}
 	public void displayMessage(String message)
 	{
@@ -344,7 +346,19 @@ public class RegisterScoutTransactionView extends View
 	//---------------------------------------------------------
 	public void updateState(String key, Object value)
 	{
+		clearErrorMessage();
+		
+		if (key.equals("TransactionError"))
+		{
+			String messageToDisplay = (String)value;
+			if (messageToDisplay.startsWith("ERR")) {
+				displayErrorMessage(messageToDisplay);
+			}
+			else {
+				displayMessage(messageToDisplay);
+			}
 
+		}
 	}
 
 	/**
