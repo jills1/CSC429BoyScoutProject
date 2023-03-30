@@ -43,7 +43,7 @@ import model.AccountCollection;
 //==============================================================================
 public class SelectUpdateScoutView extends View
 {
-	protected TableView<AccountTableModel> tableOfAccounts;
+	protected TableView<AccountTableModel> tableOfScouts;
 	protected Button cancelButton;
 	protected Button submitButton;
 
@@ -82,9 +82,9 @@ public class SelectUpdateScoutView extends View
 		ObservableList<AccountTableModel> tableData = FXCollections.observableArrayList();
 		try
 		{
-			AccountCollection accountCollection = (AccountCollection)myModel.getState("AccountList");
+			AccountCollection accountCollection = (AccountCollection)myModel.getState("ScoutList");
 
-	 		Vector entryList = (Vector)accountCollection.getState("Accounts");
+	 		Vector entryList = (Vector)accountCollection.getState("Scout");
 			Enumeration entries = entryList.elements();
 
 			while (entries.hasMoreElements() == true)
@@ -98,7 +98,7 @@ public class SelectUpdateScoutView extends View
 				
 			}
 			
-			tableOfAccounts.setItems(tableData);
+			tableOfScouts.setItems(tableData);
 		}
 		catch (Exception e) {//SQLException e) {
 			// Need to handle this exception
@@ -140,33 +140,53 @@ public class SelectUpdateScoutView extends View
         prompt.setFill(Color.BLACK);
         grid.add(prompt, 0, 0, 2, 1);
 
-		/*tableOfAccounts = new TableView<AccountTableModel>();
-		tableOfAccounts.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+		tableOfScouts = new TableView<AccountTableModel>();
+		tableOfScouts.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 	
 		TableColumn scoutIdColumn = new TableColumn("Scout ID") ;
 		scoutIdColumn.setMinWidth(100);
 		scoutIdColumn.setCellValueFactory(
 	                new PropertyValueFactory<AccountTableModel, String>("scoutID"));
 		
-		TableColumn accountTypeColumn = new TableColumn("Account Type") ;
-		accountTypeColumn.setMinWidth(100);
-		accountTypeColumn.setCellValueFactory(
-	                new PropertyValueFactory<AccountTableModel, String>("accountType"));
+		TableColumn lastNameColumn = new TableColumn("Last Name") ;
+		lastNameColumn.setMinWidth(100);
+		lastNameColumn.setCellValueFactory(
+	                new PropertyValueFactory<AccountTableModel, String>("lastName"));
 		  
-		TableColumn balanceColumn = new TableColumn("Balance") ;
-		balanceColumn.setMinWidth(100);
-		balanceColumn.setCellValueFactory(
-	                new PropertyValueFactory<AccountTableModel, String>("balance"));
+		TableColumn firstNameColumn = new TableColumn("First Name") ;
+		firstNameColumn.setMinWidth(100);
+		firstNameColumn.setCellValueFactory(
+	                new PropertyValueFactory<AccountTableModel, String>("firstName"));
 		
-		TableColumn serviceChargeColumn = new TableColumn("Service Charge") ;
-		serviceChargeColumn.setMinWidth(100);
-		serviceChargeColumn.setCellValueFactory(
-	                new PropertyValueFactory<AccountTableModel, String>("serviceCharge"));
+		TableColumn middleNameColumn = new TableColumn("Middle Name") ;
+		middleNameColumn.setMinWidth(100);
+		middleNameColumn.setCellValueFactory(
+	                new PropertyValueFactory<AccountTableModel, String>("middleName"));
 
-		tableOfAccounts.getColumns().addAll(scoutIdColumn, 
-				accountTypeColumn, balanceColumn, serviceChargeColumn);
+		TableColumn dateOfBirthColumn = new TableColumn("Date of Birth") ;
+		dateOfBirthColumn.setMinWidth(100);
+		dateOfBirthColumn.setCellValueFactory(
+	                new PropertyValueFactory<AccountTableModel, String>("dateOfBirth"));
 
-		tableOfAccounts.setOnMousePressed(new EventHandler<MouseEvent>() {
+		TableColumn phoneNumberColumn = new TableColumn("Phone Number") ;
+		phoneNumberColumn.setMinWidth(100);
+		phoneNumberColumn.setCellValueFactory(
+								new PropertyValueFactory<AccountTableModel, String>("phoneNumber"));
+
+		TableColumn emailColumn = new TableColumn("Email") ;
+		emailColumn.setMinWidth(100);
+		emailColumn.setCellValueFactory(
+								new PropertyValueFactory<AccountTableModel, String>("email"));
+		
+		TableColumn troopIDColumn = new TableColumn("Troop ID") ;
+		troopIDColumn.setMinWidth(100);
+		troopIDColumn.setCellValueFactory(
+								new PropertyValueFactory<AccountTableModel, String>("troopID"));
+
+		tableOfScouts.getColumns().addAll(scoutIdColumn, 
+				lastNameColumn, firstNameColumn, middleNameColumn, dateOfBirthColumn, phoneNumberColumn, emailColumn, troopIDColumn);
+
+		tableOfScouts.setOnMousePressed(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event)
 			{
@@ -177,8 +197,7 @@ public class SelectUpdateScoutView extends View
 		});
 		ScrollPane scrollPane = new ScrollPane();
 		scrollPane.setPrefSize(115, 150);
-		scrollPane.setContent(tableOfAccounts);
-		*/
+		scrollPane.setContent(tableOfScouts);
 		submitButton = new Button("Select");
  		submitButton.setOnAction(new EventHandler<ActionEvent>() {
 
@@ -216,7 +235,7 @@ public class SelectUpdateScoutView extends View
 		btnContainer.getChildren().add(cancelButton);
 		
 		vbox.getChildren().add(grid);
-		//vbox.getChildren().add(scrollPane);
+		vbox.getChildren().add(scrollPane);
 		vbox.getChildren().add(btnContainer);
 		
 	
@@ -233,7 +252,7 @@ public class SelectUpdateScoutView extends View
 	//--------------------------------------------------------------------------
 	protected void processAccountSelected()
 	{
-		AccountTableModel selectedItem = tableOfAccounts.getSelectionModel().getSelectedItem();
+		AccountTableModel selectedItem = tableOfScouts.getSelectionModel().getSelectedItem();
 		
 		if(selectedItem != null)
 		{
