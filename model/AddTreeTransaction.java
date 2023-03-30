@@ -12,14 +12,11 @@ import userinterface.ViewFactory;
 public class AddTreeTransaction extends Transaction
 {
 
-    private Account myAccount;
-    private String depositAmount; // needed for GUI only
+    private Tree myTree;
 
     // GUI Components
 
     private String transactionErrorMessage = "";
-    private String accountUpdateStatusMessage = "";
-
     /**
      * Constructor for this class.
      *
@@ -58,49 +55,19 @@ public class AddTreeTransaction extends Transaction
     //----------------------------------------------------------
     public void processTransaction(Properties props)
     {
-        if (props.getProperty("AccountNumber") != null)
-        {
-            String accountNumber = props.getProperty("AccountNumber");
+
+            String barcode = props.getProperty("barcode");
             try
             {
-
-                myAccount = createAccount(accountNumber);
-                boolean isOwner = myAccount.verifyOwnership(myCust);
-                if (isOwner == false)
-                {
-                    transactionErrorMessage = "ERROR: Deposit Transaction: Not owner of selected account!!";
-                    new Event(Event.getLeafLevelClassName(this), "processTransaction",
-                            "Failed to verify ownership of account number : " + accountNumber + ".",
-                            Event.ERROR);
-                }
-                else
-                {
-                    //createAndShowDepositAmountView();
-                }
+                Tree tree = new Tree(barcode);
+                transactionErrorMessage = "ERROR: Tree with barcode: " + barcode + "Already exists!";
             }
             catch (InvalidPrimaryKeyException ex)
             {
-                transactionErrorMessage = "ACCOUNT FAILURE: Contact bank immediately!!";
-                new Event(Event.getLeafLevelClassName(this), "processTransaction",
-                        "Failed to create account for number : " + accountNumber + ". Reason: " + ex.toString(),
-                        Event.ERROR);
-
+                myTree = new Tree(props);
+                myTree.update();
+                transactionErrorMessage += myTree.getState("UpdateStatusMessage");
             }
-        }
-        else
-        if (props.getProperty("Amount") != null)
-        {
-            String amount = props.getProperty("Amount");
-            depositAmount = amount;
-
-            myAccount.credit(amount);
-            myAccount.update();
-            accountUpdateStatusMessage = (String)myAccount.getState("UpdateStatusMessage");
-            transactionErrorMessage = accountUpdateStatusMessage;
-
-            createAndShowReceiptView();
-
-        }
     }
 
     //-----------------------------------------------------------
@@ -109,26 +76,6 @@ public class AddTreeTransaction extends Transaction
         if (key.equals("TransactionError") == true)
         {
             return transactionErrorMessage;
-        }
-        else
-        if (key.equals("UpdateStatusMessage") == true)
-        {
-            return accountUpdateStatusMessage;
-        }
-        else
-        if (key.equals("AccountNumberList") == true)
-        {
-            return myAccountIDs;
-        }
-        else
-        if (key.equals("Account") == true)
-        {
-            return myAccount;
-        }
-        else
-        if (key.equals("DepositAmount") == true)
-        {
-            return depositAmount;
         }
         return null;
     }
@@ -168,18 +115,5 @@ public class AddTreeTransaction extends Transaction
         {
             return currentScene;
         }
-    }
-
-    protected void createAndShowReceiptView()
-    {
-
-        // create our initial view
-        View newView = ViewFactory.createView("DepositReceipt", this);
-        Scene newScene = new Scene(newView);
-
-        myViews.put("DepositReceipt", newScene);
-
-        // make the view visible by installing it into the frame
-        swapToView(newScene);
     }
 }

@@ -53,11 +53,13 @@ public class Tree extends EntityBase implements IView {
     // Can also be used to create a NEW Account (if the system it is part of
     // allows for a new account to be set up)
     //----------------------------------------------------------
-    public Tree(Properties props) {
+    public Tree(Properties props)
+    {
         super(myTableName);
         setDependencies();
         persistentState = new Properties();
         Enumeration allKeys = props.propertyNames();
+
         while (allKeys.hasMoreElements() == true) {
             String nextKey = (String)allKeys.nextElement();
             String nextValue = props.getProperty(nextKey);
@@ -72,19 +74,22 @@ public class Tree extends EntityBase implements IView {
         myRegistry.setDependencies(dependencies);
     }
     //----------------------------------------------------------
-    public Object getState(String key) {
+    public Object getState(String key)
+    {
         if (key.equals("UpdateStatusMessage") == true) {
             return updateStatusMessage;
         }
         return persistentState.getProperty(key);
     }
     //----------------------------------------------------------------
-    public void stateChangeRequest(String key, Object value) {
+    public void stateChangeRequest(String key, Object value)
+    {
         persistentState.setProperty(key, (String) value);
         myRegistry.updateSubscribers(key, this);
     }
     //----------------------------------------------------------
-    public void updateState(String key, Object value) {
+    public void updateState(String key, Object value)
+    {
         stateChangeRequest(key, value);
     }
     //-----------------------------------------------------------------------------------
@@ -132,7 +137,8 @@ public class Tree extends EntityBase implements IView {
             mySchema = getSchemaInfo(tableName);
         }
     }
-    public String toString() {
+    public String toString()
+    {
         return "Tree: " + persistentState.getProperty("barcode") ;
     }
     public String toString1() {
