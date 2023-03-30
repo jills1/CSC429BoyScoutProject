@@ -24,6 +24,8 @@ public class RemoveScoutTransaction extends Transaction
 
     private String transactionErrorMessage = "";
     private String accountUpdateStatusMessage = "";
+    private String query = "";
+    private static final String myTableName = "Scout";
 
     /**
      * Constructor for this class.
@@ -146,6 +148,25 @@ public class RemoveScoutTransaction extends Transaction
         else
         if (key.equals("RegisterWithScoutInfo")==true)
         {
+            Properties props =(Properties)value;
+            String fn = props.getProperty("firstName");
+            String ln = props.getProperty("lastName");
+            if ((fn.length()==0||fn==null)&&(ln.length()==0||ln==null))
+            query = "SELECT * FROM "+myTableName;
+            else if (fn==null || fn.length()==0)
+            {
+                query = "SELECT * FROM "+myTableName+" WHERE (lastName LIKE '%"+ln+"%')";
+            }
+            else if (ln==null || ln.length()==0)
+            {
+                query = "SELECT * FROM "+myTableName+" WHERE (firstName LIKE '%"+fn+"%')";
+            }
+            else
+                query = "SELECT * FROM "+myTableName+" WHERE ((firstName LIKE '%"+fn+"%') AND (lastName LIKE '%"+ln+"%'))";
+
+            ScoutCollection sc = new ScoutCollection();
+            sc.helper(query);
+
             processTransaction((Properties)value);
         }
 
