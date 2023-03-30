@@ -23,9 +23,9 @@ public class ViewFactory {
 		{
 			return new AccountView(model);
 		}
-		else if(viewName.equals("AccountHolderIDEntryView") == true)
+		else if(viewName.equals("AddTreeView") == true)
 		{
-			return new AccountHolderIDEntryView(model);
+			return new AddTreeView(model);
 		}
 		else if(viewName.equals("RegisterScoutTransactionView") == true)
 		{
@@ -43,9 +43,9 @@ public class ViewFactory {
 		{
 			return new ScoutCollectionView(model);
 		}
-		else if(viewName.equals("BalanceInquiryTransactionView") == true)
+		else if(viewName.equals("ScoutSelectedView") == true)
 		{
-			return new BalanceInquiryTransactionView(model);
+			return new ScoutSelectedView(model);
 		}
 		else if(viewName.equals("BalanceInquiryReceipt") == true)
 		{

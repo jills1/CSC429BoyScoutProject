@@ -226,6 +226,11 @@ public class Scout extends EntityBase implements IView
                 persistentState.getProperty("lastName") + "; Troop ID: " +
                 persistentState.getProperty("troopID") ;
     }
+
+    public void updateScoutInDatabase(String scoutID) {
+
+        String query ="UPDATE "+myTableName+" SET `status` = 'Inactive' WHERE `Scout`.`scoutID` = "+scoutID;//
+    }
     /*public String toString1()
     {
         String retVal = "";

@@ -89,6 +89,7 @@ public class ScoutCollectionView extends View
             ScoutCollection scoutCollection = (ScoutCollection)myModel.getState("ScoutList");
 
             Vector entryList = (Vector)scoutCollection.getState("Scouts");
+            // DEBUG System.out.println("Size of scout list retrieved: " + entryList.size());
             Enumeration entries = entryList.elements();
 
             while (entries.hasMoreElements() == true)
@@ -106,6 +107,8 @@ public class ScoutCollectionView extends View
         }
         catch (Exception e) {//SQLException e) {
             // Need to handle this exception
+            System.out.println(e.toString());
+            e.printStackTrace();
         }
     }
 
@@ -195,7 +198,7 @@ public class ScoutCollectionView extends View
             public void handle(MouseEvent event)
             {
                 if (event.isPrimaryButtonDown() && event.getClickCount() >=2 ){
-                    processAccountSelected();
+                    processScoutSelected();
                 }
             }
         });
@@ -210,7 +213,7 @@ public class ScoutCollectionView extends View
             public void handle(ActionEvent e) {
                 clearErrorMessage();
                 // do the inquiry
-                processAccountSelected();
+                processScoutSelected();
 
             }
         });
@@ -229,7 +232,7 @@ public class ScoutCollectionView extends View
                  */
                 //----------------------------------------------------------
                 clearErrorMessage();
-                myModel.stateChangeRequest("CancelAccountList", null);
+                myModel.stateChangeRequest("CancelScoutList", null);
             }
         });
 
@@ -253,7 +256,7 @@ public class ScoutCollectionView extends View
     }
 
     //--------------------------------------------------------------------------
-    protected void processAccountSelected()
+    protected void processScoutSelected()
     {
         ScoutTableModel selectedItem = tableOfAccounts.getSelectionModel().getSelectedItem();
 

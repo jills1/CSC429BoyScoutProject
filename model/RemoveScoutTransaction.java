@@ -17,15 +17,14 @@ import userinterface.ViewFactory;
 public class RemoveScoutTransaction extends Transaction
 {
 
-    private Account myAccount;
-    private String depositAmount; // needed for GUI only
-
+    protected ScoutCollection myScoutCollection;
+    protected Scout myScout;
     // GUI Components
 
-    private String transactionErrorMessage = "";
-    private String accountUpdateStatusMessage = "";
-    private String query = "";
-    private static final String myTableName = "Scout";
+    protected String transactionErrorMessage = "";
+    protected String scoutUpdateStatusMessage = "";
+
+    protected static final String myTableName = "Scout";
 
     /**
      * Constructor for this class.
@@ -34,7 +33,7 @@ public class RemoveScoutTransaction extends Transaction
      */
     //----------------------------------------------------------
     public RemoveScoutTransaction()
-            throws Exception
+
     {
         super();
     }
@@ -51,9 +50,10 @@ public class RemoveScoutTransaction extends Transaction
     protected void setDependencies()
     {
         dependencies = new Properties();
-        dependencies.setProperty("CancelDeposit", "CancelTransaction");
+        dependencies.setProperty("CancelScoutSearch", "CancelTransaction");
+        dependencies.setProperty("CancelScoutList", "CancelTransaction");
         dependencies.setProperty("OK", "CancelTransaction");
-        dependencies.setProperty("AccountNumber", "TransactionError");
+        dependencies.setProperty("SearchScoutInfo", "TransactionError");
 
         myRegistry.setDependencies(dependencies);
     }
@@ -65,13 +65,17 @@ public class RemoveScoutTransaction extends Transaction
     //----------------------------------------------------------
     public void processTransaction(Properties props)
     {
+        String fn = props.getProperty("firstName");
+        String ln = props.getProperty("lastName");
+        System.out.println(props.getProperty("firstName"));
+        System.out.println(props.getProperty("lastName"));
 
-        if (props.getProperty("firstName") != null)
-        {
+        myScoutCollection = new ScoutCollection();
+        myScoutCollection.findScoutsWithNameLike(fn, ln);
 
-            createAndShowScoutCollectionView();
+        createAndShowScoutCollectionView();
 
-        }
+
     }
 
     //-----------------------------------------------------------
@@ -84,19 +88,37 @@ public class RemoveScoutTransaction extends Transaction
         else
         if (key.equals("UpdateStatusMessage") == true)
         {
-            return accountUpdateStatusMessage;
+            return scoutUpdateStatusMessage;
+        }
+        else
+            if (key.equals("ScoutList") == true)
+            {
+                return myScoutCollection;
+            }
+        if (key.equals("SelectedScout") == true)
+        {
+            return myScout;
+        }
+        else
+        if (myScout != null)
+        {
+            Object val = myScout.getState(key);
+            if (val != null)
+            {
+                return val;
+            }
+        }
+        else
+        if (myScoutCollection != null)
+        {
+            Object val = myScoutCollection.getState(key);
+            if (val != null)
+            {
+                return val;
+            }
         }
 
-        else
-        if (key.equals("Account") == true)
-        {
-            return myAccount;
-        }
-        else
-        if (key.equals("DepositAmount") == true)
-        {
-            return depositAmount;
-        }
+
         return null;
     }
 
@@ -110,31 +132,35 @@ public class RemoveScoutTransaction extends Transaction
             doYourJob();
         }
         else
-        if (key.equals("RemoveScoutWithScoutInfo")==true)
+        if (key.equals("SearchScoutInfo")==true)
         {
             Properties props =(Properties)value;
-            String fn = props.getProperty("firstName");
-            String ln = props.getProperty("lastName");
-            if ((fn.length()==0||fn==null)&&(ln.length()==0||ln==null))
-            query = "SELECT * FROM "+myTableName;
-            else if (fn==null || fn.length()==0)
+            processTransaction(props);
+        }
+        else
+            if (key.equals("ScoutSelected") == true)
             {
-                query = "SELECT * FROM "+myTableName+" WHERE (lastName LIKE '%"+ln+"%')";
-            }
-            else if (ln==null || ln.length()==0)
-            {
-                query = "SELECT * FROM "+myTableName+" WHERE (firstName LIKE '%"+fn+"%')";
+                String scoutID = (String)value;
+                //Properties props =(Properties)value;
+                //String scoutID = props.getProperty("scoutID");
+               myScout = myScoutCollection.retrieve(scoutID);
+               createAndShowScoutSelectedView();
+
+               //ADD THESE LATER
+                // myScout.stateChangeRequest("status","Inactive");
+               //myScout.update();
+
             }
             else
-                query = "SELECT * FROM "+myTableName+" WHERE ((firstName LIKE '%"+fn+"%') AND (lastName LIKE '%"+ln+"%'))";
-
-            ScoutCollection sc = new ScoutCollection();
-            sc.helper(query);
-
-            processTransaction((Properties)value);
-        }
-
+            if(key.equals("UpdateStatusInactive") == true)
+            {
+                myScout.stateChangeRequest("status","Inactive");
+                myScout.update();
+            }
         myRegistry.updateSubscribers(key, this);
+
+
+
     }
 
     /**
@@ -173,6 +199,18 @@ public class RemoveScoutTransaction extends Transaction
         Scene newScene = new Scene(newView);
 
         myViews.put("ScoutCollectionView", newScene);
+
+        // make the view visible by installing it into the frame
+        swapToView(newScene);
+    }
+    protected void createAndShowScoutSelectedView()
+    {
+
+
+        View newView = ViewFactory.createView("ScoutSelectedView", this);
+        Scene newScene = new Scene(newView);
+
+        myViews.put("ScoutSelectedView", newScene);
 
         // make the view visible by installing it into the frame
         swapToView(newScene);

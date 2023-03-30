@@ -151,7 +151,7 @@ public class RemoveScoutTransactionView extends View
                  */
                 //----------------------------------------------------------
                 clearErrorMessage();
-                myModel.stateChangeRequest("CancelDeposit", null);
+                myModel.stateChangeRequest("CancelScoutSearch", null);
             }
         });
 
@@ -205,7 +205,7 @@ public class RemoveScoutTransactionView extends View
         props.setProperty("lastName", lastName);
         props.setProperty("firstName", firstName);
 
-        myModel.stateChangeRequest("RemoveScoutWithScoutInfo", props);
+        myModel.stateChangeRequest("SearchScoutInfo", props);
 
     }
     public void displayMessage(String message)

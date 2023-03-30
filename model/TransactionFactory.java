@@ -24,11 +24,11 @@ public class TransactionFactory
 		if (transType.equals("RegisterScout") == true)
 		{
 			retValue = new RegisterScoutTransaction();
-		}/*
+		}
 		else
-		if (transType.equals("AddTreeType") == true)
+		if (transType.equals("AddTree") == true)
 		{
-			retValue = new AddTreeTypeTransaction();
+			retValue = new AddTreeTransaction();
 		}
 
 		else
