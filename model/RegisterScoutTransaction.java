@@ -196,5 +196,5 @@ public class RegisterScoutTransaction extends Transaction
 		// make the view visible by installing it into the frame
 		swapToView(newScene);
 	}
-
 }
+

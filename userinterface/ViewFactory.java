@@ -15,9 +15,9 @@ public class ViewFactory {
 		{
 			return new TLCView(model);
 		}
-		else if(viewName.equals("AccountCollectionView") == true)
+		else if(viewName.equals("RemoveTreeCollectionView") == true)
 		{
-			return new AccountCollectionView(model);
+			return new RemoveScoutTransactionView(model);
 		}
 		else if(viewName.equals("AccountView") == true)
 		{
@@ -31,21 +31,21 @@ public class ViewFactory {
 		{
 			return new RegisterScoutTransactionView(model);
 		}
-		else if(viewName.equals("DepositAmountView") == true)
+		/*else if(viewName.equals("AddTreeTypeTransactionView") == true)
 		{
-			return new DepositAmountView(model);
+			return new AddTreeTypeTransactionView(model);
+		}*/
+		else if(viewName.equals("RemoveScoutTransactionView") == true)
+		{
+			return new RemoveScoutTransactionView(model);
 		}
-		else if(viewName.equals("WithdrawTransactionView") == true)
+		else if(viewName.equals("ScoutCollectionView") == true)
 		{
-			return new WithdrawTransactionView(model);
+			return new ScoutCollectionView(model);
 		}
-		else if(viewName.equals("TransferTransactionView") == true)
+		else if(viewName.equals("TreeCollectionView") == true)
 		{
-			return new TransferTransactionView(model);
-		}
-		else if(viewName.equals("BalanceInquiryTransactionView") == true)
-		{
-			return new BalanceInquiryTransactionView(model);
+			return new TreeCollectionView(model);
 		}
 		else if(viewName.equals("BalanceInquiryReceipt") == true)
 		{

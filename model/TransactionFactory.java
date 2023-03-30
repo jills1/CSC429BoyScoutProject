@@ -17,7 +17,7 @@ public class TransactionFactory
 	 */
 	//----------------------------------------------------------
 	public static Transaction createTransaction(String transType)
-		throws Exception
+			throws Exception
 	{
 		Transaction retValue = null;
 
@@ -25,16 +25,22 @@ public class TransactionFactory
 		{
 			retValue = new RegisterScoutTransaction();
 		}
-		/*else
-		if (transType.equals("Withdraw") == true)
+		else
+		/*if (transType.equals("AddTreeType") == true)
 		{
-			retValue = new WithdrawTransaction(cust);
+			retValue = new AddTreeTypeTransaction();
+
+		else*/
+		if (transType.equals("RemoveScout") == true)
+		{
+			retValue = new RemoveScoutTransaction();
 		}
 		else
-		if (transType.equals("Transfer") == true)
+		if (transType.equals("RemoveTree") == true)
 		{
-			retValue = new TransferTransaction(cust);
+			retValue = new RemoveTreeTransaction();
 		}
+		/*
 		else
 		if (transType.equals("BalanceInquiry") == true)
 		{
