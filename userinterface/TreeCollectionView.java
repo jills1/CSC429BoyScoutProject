@@ -179,7 +179,7 @@ public class TreeCollectionView extends View
             public void handle(MouseEvent event)
             {
                 if (event.isPrimaryButtonDown() && event.getClickCount() >=2 ){
-                    processAccountSelected();
+                    processTreeSelected();
                 }
             }
         });
@@ -194,7 +194,7 @@ public class TreeCollectionView extends View
             public void handle(ActionEvent e) {
                 clearErrorMessage();
                 // do the inquiry
-                processAccountSelected();
+                processTreeSelected();
 
             }
         });
@@ -213,7 +213,7 @@ public class TreeCollectionView extends View
                  */
                 //----------------------------------------------------------
                 clearErrorMessage();
-                myModel.stateChangeRequest("CancelAccountList", null);
+                myModel.stateChangeRequest("CancelTreeList", null);
             }
         });
 
@@ -237,7 +237,7 @@ public class TreeCollectionView extends View
     }
 
     //--------------------------------------------------------------------------
-    protected void processAccountSelected()
+    protected void processTreeSelected()
     {
        TreeTableModel selectedItem = tableOfTrees.getSelectionModel().getSelectedItem();
 
@@ -281,7 +281,7 @@ public class TreeCollectionView extends View
 	{
 		if(click.getClickCount() >= 2)
 		{
-			processAccountSelected();
+			processTreeSelected();
 		}
 	}
 

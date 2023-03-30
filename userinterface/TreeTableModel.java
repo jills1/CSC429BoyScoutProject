@@ -26,11 +26,11 @@ public class TreeTableModel
     }
     //----------------------------------------------------------------------------
     public String getbarcode() {
-        return treeType.get();
+        return barcode.get();
     }
 
     //----------------------------------------------------------------------------
-    public void setbarcode(String fn) { treeType.set(fn);}
+    public void setbarcode(String fn) { barcode.set(fn);}
     //----------------------------------------------------------------------------
     public String getTreeType() {return treeType.get(); }
 

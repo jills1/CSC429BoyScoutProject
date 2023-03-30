@@ -77,6 +77,7 @@ public class RemoveTreeTransactionView extends View
     }
 
 
+
     // Create the label (Text) for the title
     //-------------------------------------------------------------
     private Node createTitle()
@@ -115,7 +116,7 @@ public class RemoveTreeTransactionView extends View
         });
         grid.add(barcode, 1, 0);
 
-        Label treeTypeLabel = new Label("Tree Type : ");
+        Label treeTypeLabel = new Label("treeType : ");
         grid.add(treeTypeLabel, 0, 1);
 
         treeType = new TextField();
@@ -217,7 +218,9 @@ public class RemoveTreeTransactionView extends View
         statusLog = new MessageView(initialMessage);
 
         return statusLog;
+
     }
+
 
     //-------------------------------------------------------------
     public void populateFields()
@@ -272,8 +275,8 @@ public class RemoveTreeTransactionView extends View
 
         myModel.stateChangeRequest("RemoveTreeWithTreeInfo", props);
         Tree tree = new Tree(props);
-        tree.update();
-        displayMessage("Successfully removed tree");
+        //tree.update();
+       // displayMessage("Successfully removed tree");
     }
     public void displayMessage(String message)
     {
