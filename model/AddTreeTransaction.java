@@ -41,9 +41,8 @@ public class AddTreeTransaction extends Transaction
     protected void setDependencies()
     {
         dependencies = new Properties();
-        dependencies.setProperty("CancelDeposit", "CancelTransaction");
-        dependencies.setProperty("OK", "CancelTransaction");
-        dependencies.setProperty("AccountNumber", "TransactionError");
+        dependencies.setProperty("CancelTree", "CancelTransaction");
+        dependencies.setProperty("AddTreeInfo", "TransactionError");
 
         myRegistry.setDependencies(dependencies);
     }

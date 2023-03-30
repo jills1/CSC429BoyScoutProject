@@ -32,7 +32,7 @@ public class AddTreeView extends View
     protected TextField barcode;
     protected TextField notes;
     protected ComboBox<String> status;
-    protected TextField dUS;
+
     protected MessageView statusLog;
     protected String treeType;
 
@@ -118,16 +118,6 @@ public class AddTreeView extends View
         status.getSelectionModel().selectFirst();
         grid.add(status, 1,3);
 
-        Text treeDUSLabel = new Text("Date Status Update: ");
-        treeDUSLabel.setFont(myFont);
-        treeDUSLabel.setWrappingWidth(150);
-        treeDUSLabel.setTextAlignment(TextAlignment.RIGHT);
-        grid.add(treeDUSLabel, 0 , 4);
-
-        dUS = new TextField();
-        dUS.setEditable(true);
-        grid.add(dUS,1,4);
-
         HBox cont = new HBox(10);
         cont.setAlignment(Pos.CENTER);
 
@@ -137,23 +127,25 @@ public class AddTreeView extends View
             @Override
             public void handle(ActionEvent event) {
                 treeType = barcode.getText().substring(0,2);
+                String date = String.valueOf(java.time.LocalDateTime.now());
+                String dUS = date.substring(0,10);
                 Properties p = new Properties();
 
                 p.setProperty("barcode", barcode.getText());
                 p.setProperty("treeType", treeType);
                 p.setProperty("notes", notes.getText());
                 p.setProperty("status", status.getValue());
-                p.setProperty("dateStatusUpdate", dUS.getText());
+                p.setProperty("dateStatusUpdate", dUS);
+                System.out.println("The time is " + dUS);
 
-                if((p.getProperty("barcode")).equals("") || (p.getProperty("treeType")).equals("") ||
-                        (p.getProperty("notes")).equals("") || (p.getProperty("status")).equals("") || (p.getProperty("dateStatusUpdate")).equals("")){
+                if((p.getProperty("barcode")).equals("") ||
+                        (p.getProperty("notes")).equals("") || (p.getProperty("status")).equals("")){
                     displayErrorMessage("All fields must be filled in.");
                     return;
+                }else {
+                    myModel.stateChangeRequest("AddTreeInfo", p);
                 }
 
-                Tree t = new Tree(p);
-                t.update();
-                displayMessage("Tree successfully added!");
             }
         });
 
@@ -178,7 +170,6 @@ public class AddTreeView extends View
 
     public void populateFields()
     {
-        barcode.setText((String)myModel.getState("Barcode"));
 
     }
 
