@@ -196,16 +196,7 @@ public class RemoveScoutTransactionView extends View
         String firstNameEntered = firstName.getText();
 
 
-        if ((lastNameEntered == null) || (lastNameEntered.length() == 0))
-        {
-            displayErrorMessage("Please enter a last name");
-        }
-        else if ((firstNameEntered == null) || (firstNameEntered.length() == 0))
-        {
-            displayErrorMessage("Please enter a first name");
-        }
 
-        else
             processScoutInfo(lastNameEntered,firstNameEntered);
     }
     private void processScoutInfo(String lastName, String firstName)
@@ -215,9 +206,7 @@ public class RemoveScoutTransactionView extends View
         props.setProperty("firstName", firstName);
 
         myModel.stateChangeRequest("RemoveScoutWithScoutInfo", props);
-        Scout scout = new Scout(props);
-        //scout.update();
-        //displayMessage("Successfully added new Scout");
+
     }
     public void displayMessage(String message)
     {

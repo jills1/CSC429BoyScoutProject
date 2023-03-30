@@ -25,60 +25,16 @@ public class ScoutCollection  extends EntityBase implements IView
 	private static final String myTableName = "Scout";
 
 	private Vector<Scout> scouts;
+	private Vector<Scout> scoutList;
 	// GUI Components
 
 	// constructor for this class
 	//----------------------------------------------------------
-	public ScoutCollection( AccountHolder cust) throws
-		Exception
+	public ScoutCollection()
 	{
 		super(myTableName);
 
-		if (cust == null)
-		{
-			new Event(Event.getLeafLevelClassName(this), "<init>",
-				"Missing scout holder information", Event.FATAL);
-			throw new Exception
-				("UNEXPECTED ERROR: scoutCollection.<init>: scout holder information is null");
-		}
-
-		String scoutHolderId = (String)cust.getState("ID");
-
-		if (scoutHolderId == null)
-		{
-			new Event(Event.getLeafLevelClassName(this), "<init>",
-				"Data corrupted: scout Holder has no id in database", Event.FATAL);
-			throw new Exception
-			 ("UNEXPECTED ERROR: scoutCollection.<init>: Data corrupted: scout holder has no id in repository");
-		}
-
-		String query = "SELECT * FROM " + myTableName + " WHERE (OwnerID = " + scoutHolderId + ")";
-
-		Vector allDataRetrieved = getSelectQueryResult(query);
-
-		if (allDataRetrieved != null)
-		{
-			scouts = new Vector<Scout>();
-
-			for (int cnt = 0; cnt < allDataRetrieved.size(); cnt++)
-			{
-				Properties nextscoutData = (Properties)allDataRetrieved.elementAt(cnt);
-
-				Scout scout = new Scout(nextscoutData);
-
-				if (scout != null)
-				{
-					addScout(scout);
-				}
-			}
-
-		}
-		else
-		{
-			throw new InvalidPrimaryKeyException("No scouts for customer : "
-				+ scoutHolderId + ". Name : " + cust.getState("Name"));
-		}
-
+		scoutList = new Vector<>(); // new Vector<Book>();
 	}
 
 	//----------------------------------------------------------------------------------
@@ -194,6 +150,23 @@ public class ScoutCollection  extends EntityBase implements IView
 		if (mySchema == null)
 		{
 			mySchema = getSchemaInfo(tableName);
+		}
+	}
+	public void helper(String query)
+	{
+
+
+		Vector allDataRetrieved = getSelectQueryResult(query);
+
+		scoutList = new Vector<Scout>();
+
+
+		for(int cnt = 0; cnt < allDataRetrieved.size(); cnt++) {
+			Properties nextScoutData = (Properties) allDataRetrieved.elementAt(cnt);
+
+			Scout scout = new Scout(nextScoutData);
+			addScout(scout);
+
 		}
 	}
 }
