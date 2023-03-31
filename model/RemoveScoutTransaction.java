@@ -12,7 +12,7 @@ import exception.InvalidPrimaryKeyException;
 import userinterface.View;
 import userinterface.ViewFactory;
 
-/** The class containing the DepositTransaction for the ATM application */
+/** The class containing the RemoveScoutTransaction for the Tree Sales application */
 //==============================================================
 public class RemoveScoutTransaction extends Transaction
 {
@@ -38,12 +38,7 @@ public class RemoveScoutTransaction extends Transaction
         super();
     }
 
-    /**
-     * Constructor for this class.
-     * <p>
-     * Transaction remembers all the account IDs for this customer.
-     * It uses AccountCatalog to create this list of account IDs.
-     */
+
 
 
     //----------------------------------------------------------
@@ -54,14 +49,12 @@ public class RemoveScoutTransaction extends Transaction
         dependencies.setProperty("CancelScoutList", "CancelTransaction");
         dependencies.setProperty("OK", "CancelTransaction");
         dependencies.setProperty("SearchScoutInfo", "TransactionError");
+        dependencies.setProperty("ScoutSelected", "TransactionError");
 
         myRegistry.setDependencies(dependencies);
     }
 
-    /**
-     * This method encapsulates all the logic of creating the account,
-     * verifying ownership, crediting, etc. etc.
-     */
+
     //----------------------------------------------------------
     public void processTransaction(Properties props)
     {
@@ -146,9 +139,7 @@ public class RemoveScoutTransaction extends Transaction
                myScout = myScoutCollection.retrieve(scoutID);
                createAndShowScoutSelectedView();
 
-               //ADD THESE LATER
-                // myScout.stateChangeRequest("status","Inactive");
-               //myScout.update();
+               
 
             }
             else

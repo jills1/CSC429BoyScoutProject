@@ -28,7 +28,7 @@ import java.util.Properties;
 // project imports
 import impresario.IModel;
 
-/** The class containing the Account View  for the ATM application */
+/** The class containing the Scout Selected View  for the Tree sales application */
 //==============================================================
 public class ScoutSelectedView extends View
 {
@@ -66,7 +66,7 @@ protected Button submitButton;
 
         populateFields();
 
-        myModel.subscribe("ServiceCharge", this);
+
         myModel.subscribe("UpdateStatusMessage", this);
     }
 
@@ -78,7 +78,7 @@ protected Button submitButton;
         HBox container = new HBox();
         container.setAlignment(Pos.CENTER);
 
-        Text titleText = new Text(" Brockport Bank ATM ");
+        Text titleText = new Text(" Troop 209 ");
         titleText.setFont(Font.font("Arial", FontWeight.BOLD, 20));
         titleText.setWrappingWidth(300);
         titleText.setTextAlignment(TextAlignment.CENTER);
@@ -170,7 +170,7 @@ protected Button submitButton;
             @Override
             public void handle(ActionEvent e) {
                 clearErrorMessage();
-                myModel.stateChangeRequest("AccountCancelled", null);
+                myModel.stateChangeRequest("CancelScoutList", null);
             }
         });
         doneCont.getChildren().add(submitButton);
@@ -199,7 +199,7 @@ protected Button submitButton;
     //-------------------------------------------------------------
     public void populateFields()
     {
-        //need to change keys in getState and in RegisterScoutTransaction
+
         firstName.setText((String)myModel.getState("firstName"));
         middleName.setText((String)myModel.getState("middleName"));
         lastName.setText((String)myModel.getState("lastName"));
@@ -246,8 +246,6 @@ protected Button submitButton;
 
 }
 
-//---------------------------------------------------------------
-//	Revision History:
-//
+
 
 

@@ -169,7 +169,7 @@ public class ScoutCollection  extends EntityBase implements IView
 		}
 		else
 			query = "SELECT * FROM "+myTableName+" WHERE ((firstName LIKE '%"+fn+"%') AND (lastName LIKE '%"+ln+"%'))";
-
+System.out.println(query);
 		helper(query);
 	}
 
