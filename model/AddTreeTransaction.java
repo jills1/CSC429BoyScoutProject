@@ -91,7 +91,18 @@ public class AddTreeTransaction extends Transaction
         else
         if (key.equals("AddTreeInfo")==true)
         {
-            processTransaction((Properties)value);
+            Properties p = (Properties)value;
+            String barcode = p.getProperty("barcode");
+            try
+            {
+                Tree t = new Tree(barcode);
+            }
+            catch (InvalidPrimaryKeyException ex)
+            {
+                myTree = new Tree(p);
+                myTree.setOldFlag(true);
+                myTree.update();
+            }
         }
 
         myRegistry.updateSubscribers(key, this);
