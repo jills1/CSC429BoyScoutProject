@@ -107,7 +107,7 @@ public class AddTreeView extends View
         treeStatusLabel.setFont(myFont);
         treeStatusLabel.setWrappingWidth(150);
         treeStatusLabel.setTextAlignment(TextAlignment.RIGHT);
-        grid.add(treeStatusLabel, 0 , 3);
+        grid.add(treeStatusLabel, 0 , 4);
 
         status = new ComboBox();
         ObservableList options = status.getItems();
@@ -116,7 +116,7 @@ public class AddTreeView extends View
         options.add("Damaged");
         status.setItems(options);
         status.getSelectionModel().selectFirst();
-        grid.add(status, 1,3);
+        grid.add(status, 1,4);
 
         HBox cont = new HBox(10);
         cont.setAlignment(Pos.CENTER);

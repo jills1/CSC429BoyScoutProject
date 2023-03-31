@@ -143,8 +143,8 @@ public class Scout extends EntityBase implements IView
     //-----------------------------------------------------------------------------------
     public static int compare(Scout a, Scout b)
     {
-        String aNum = (String)a.getState("scoutId");
-        String bNum = (String)b.getState("scoutId");
+        String aNum = (String)a.getState("scoutID");
+        String bNum = (String)b.getState("scoutID");
 
         return aNum.compareTo(bNum);
     }
