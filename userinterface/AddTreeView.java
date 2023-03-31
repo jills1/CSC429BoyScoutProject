@@ -146,6 +146,7 @@ public class AddTreeView extends View
                     myModel.stateChangeRequest("AddTreeInfo", p);
                    Tree tree = new Tree(p);
                    tree.update();
+                   //add message
                 }
 
             }

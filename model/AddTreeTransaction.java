@@ -56,17 +56,16 @@ public class AddTreeTransaction extends Transaction
     {
 
             String barcode = props.getProperty("barcode");
-            try
-            {
-                Tree tree = new Tree(barcode);
-                transactionErrorMessage = "ERROR: Tree with barcode: " + barcode + "Already exists!";
-            }
-            catch (InvalidPrimaryKeyException ex)
-            {
-                myTree = new Tree(props);
-                myTree.update();
-                transactionErrorMessage += myTree.getState("UpdateStatusMessage");
-            }
+        try
+        {
+            Tree t = new Tree(barcode);
+        }
+        catch (InvalidPrimaryKeyException ex)
+        {
+            myTree = new Tree(props);
+            myTree.setOldFlag(false);
+            myTree.update();
+        }
     }
 
     //-----------------------------------------------------------
@@ -92,17 +91,7 @@ public class AddTreeTransaction extends Transaction
         if (key.equals("AddTreeInfo")==true)
         {
             Properties p = (Properties)value;
-            String barcode = p.getProperty("barcode");
-            try
-            {
-                Tree t = new Tree(barcode);
-            }
-            catch (InvalidPrimaryKeyException ex)
-            {
-                myTree = new Tree(p);
-                myTree.setOldFlag(true);
-                myTree.update();
-            }
+            processTransaction(p);
         }
 
         myRegistry.updateSubscribers(key, this);
