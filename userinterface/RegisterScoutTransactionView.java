@@ -29,7 +29,7 @@ import java.util.Vector;
 import impresario.IModel;
 import model.Scout;
 
-/** The class containing the Deposit Transaction View  for the ATM application */
+/** The class containing the Register Scout Transaction View  for the Tree Sales application */
 //==============================================================
 public class RegisterScoutTransactionView extends View
 {
@@ -145,7 +145,7 @@ public class RegisterScoutTransactionView extends View
 		grid.add(dateOfBirthLabel, 0, 3);
 
 		dateOfBirth = new DatePicker();
-		
+
 		grid.add(dateOfBirth, 1, 3);
 
 		Label phoneNumLabel = new Label("Phone Number : ");
@@ -211,13 +211,7 @@ public class RegisterScoutTransactionView extends View
 
 			@Override
 			public void handle(ActionEvent e) {
-				/**
-				 * Process the Cancel button.
-				 * The ultimate result of this action is that the transaction will tell the teller to
-				 * to switch to the transaction choice view. BUT THAT IS NOT THIS VIEW'S CONCERN.
-				 * It simply tells its model (controller) that the deposit transaction was canceled, and leaves it
-				 * to the model to decide to tell the teller to do the switch back.
-				 */
+
 				//----------------------------------------------------------
 				clearErrorMessage();
 				myModel.stateChangeRequest("CancelRegisterScout", null);
@@ -252,10 +246,7 @@ public class RegisterScoutTransactionView extends View
 	}
 
 
-	/**
-	 * Process account number selected by user.
-	 * Action is to pass this info on to the transaction object.
-	 */
+
 	//----------------------------------------------------------
 	private void processAction(Event evt)
 	{
