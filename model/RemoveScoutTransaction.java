@@ -66,7 +66,7 @@ public class RemoveScoutTransaction extends Transaction
         System.out.println(props.getProperty("firstName"));
         System.out.println(props.getProperty("lastName"));
 
-        myScoutCollection = new ScoutCollection();
+        //myScoutCollection = new ScoutCollection();
         myScoutCollection.findScoutsWithNameLike(fn, ln);
 
         createAndShowScoutCollectionView();
@@ -131,7 +131,20 @@ public class RemoveScoutTransaction extends Transaction
         if (key.equals("SearchScoutInfo")==true)
         {
             Properties props =(Properties)value;
-            processTransaction(props);
+
+
+
+                try
+                {
+                    myScoutCollection = new ScoutCollection();
+
+                    processTransaction(props);
+                }
+                catch (Exception ex)
+                {
+                    transactionErrorMessage = "Error getting Scout list";
+                }
+
         }
         else
             if (key.equals("ScoutSelected") == true)
