@@ -63,7 +63,9 @@ public class ScoutCollectionView extends View
 
         // create our GUI components, add them to this panel
         container.getChildren().add(createTitle());
+        System.out.println("Jalen was here 1");
         container.getChildren().add(createFormContent());
+        System.out.println("Jalen was here 2");
 
         // Error message area
         container.getChildren().add(createStatusLog("                                            "));
