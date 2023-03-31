@@ -204,6 +204,7 @@ public class Scout extends EntityBase implements IView
         v.addElement(persistentState.getProperty("email"));
         v.addElement(persistentState.getProperty("troopID"));
         v.addElement(persistentState.getProperty("status"));
+        v.addElement(persistentState.getProperty("dateStatusUpdated"));
 
         return v;
     }
