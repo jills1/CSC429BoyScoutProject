@@ -357,7 +357,7 @@ System.out.println(query);
 
 		Vector allDataRetrieved = getSelectQueryResult(query);
 
-		scoutList = new Vector<Scout>();
+		//scoutList = new Vector<Scout>();
 
 
 		for(int cnt = 0; cnt < allDataRetrieved.size(); cnt++) {
