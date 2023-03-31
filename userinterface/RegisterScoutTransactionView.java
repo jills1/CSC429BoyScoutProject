@@ -9,11 +9,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -24,6 +20,8 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Properties;
 import java.util.Vector;
 
@@ -42,11 +40,11 @@ public class RegisterScoutTransactionView extends View
 	private TextField firstName;
 	private TextField middleName;
 	private TextField lastName;
-	private TextField dateOfBirth;
+	private DatePicker dateOfBirth; // Changed to DatePicker
 	private TextField phoneNumber;
 	private TextField email;
 	private TextField troopID;
-	private TextField status;
+	private ComboBox<String> status; // Changed to ComboBox
 
 	private Button submitButton;
 	private Button cancelButton;
@@ -146,14 +144,8 @@ public class RegisterScoutTransactionView extends View
 		Label dateOfBirthLabel = new Label("Date of Birth : ");
 		grid.add(dateOfBirthLabel, 0, 3);
 
-		dateOfBirth = new TextField();
-		dateOfBirth.setOnAction(new EventHandler<ActionEvent>() {
-
-			@Override
-			public void handle(ActionEvent e) {
-				processAction(e);
-			}
-		});
+		dateOfBirth = new DatePicker();
+		
 		grid.add(dateOfBirth, 1, 3);
 
 		Label phoneNumLabel = new Label("Phone Number : ");
@@ -198,14 +190,9 @@ public class RegisterScoutTransactionView extends View
 		Label statusLabel = new Label("Status : ");
 		grid.add(statusLabel, 0, 7);
 
-		status = new TextField();
-		status.setOnAction(new EventHandler<ActionEvent>() {
+		status = new ComboBox<String>(); // Changed to ComboBox
+		status.getItems().addAll("Active", "Inactive");
 
-			@Override
-			public void handle(ActionEvent e) {
-				processAction(e);
-			}
-		});
 		grid.add(status, 1, 7);
 
 		submitButton = new Button("Submit");
@@ -277,11 +264,12 @@ public class RegisterScoutTransactionView extends View
 		String lastNameEntered = lastName.getText();
 		String firstNameEntered = firstName.getText();
 		String middleNameEntered = middleName.getText();
-		String dateOfBirthEntered = dateOfBirth.getText();
+		String dateOfBirthEntered = (dateOfBirth.getValue() != null) ? dateOfBirth.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")) : null; // Changed to DatePicker
 		String phoneNumberEntered = phoneNumber.getText();
 		String emailEntered = email.getText();
 		String troopIDEntered = troopID.getText();
-		String statusEntered = status.getText();
+		String statusEntered = status.getValue(); // Changed to ComboBox
+
 
 		if ((lastNameEntered == null) || (lastNameEntered.length() == 0))
 		{
@@ -303,6 +291,10 @@ public class RegisterScoutTransactionView extends View
 		{
 			displayErrorMessage("Please enter a phone number");
 		}
+		else if(phoneNumberEntered.length()!=10)
+		{
+			displayErrorMessage("Phone number must be in format xxxxxxxxxx");
+		}
 		else if ((emailEntered == null) || (emailEntered.length() == 0))
 		{
 			displayErrorMessage("Please enter an email");
@@ -322,6 +314,9 @@ public class RegisterScoutTransactionView extends View
 	//---------------------------------------------------------------------------------------
 	private void processScoutInfo(String lastName, String firstName, String middleName, String dateOfBirth, String phoneNumber,String email, String troopID, String status)
 	{
+		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+		LocalDateTime now = LocalDateTime.now();
+
 		Properties props = new Properties();
 		props.setProperty("lastName", lastName);
 		props.setProperty("firstName", firstName);
@@ -331,6 +326,7 @@ public class RegisterScoutTransactionView extends View
 		props.setProperty("email", email);
 		props.setProperty("troopID", troopID);
 		props.setProperty("status", status);
+		props.setProperty("dateStatusUpdated",dtf.format(now));
 		myModel.stateChangeRequest("RegisterWithScoutInfo", props);
 
 	}

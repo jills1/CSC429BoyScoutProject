@@ -3,6 +3,9 @@ package model;
 
 // system imports
 import javafx.scene.Scene;
+
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Properties;
 
 // project imports
@@ -67,6 +70,7 @@ public class RegisterScoutTransaction extends Transaction
 		catch (InvalidPrimaryKeyException ex) {
 			myScout = new Scout(props);
 			myScout.update();
+
 			transactionErrorMessage += myScout.getState("UpdateStatusMessage");
 
 		}
