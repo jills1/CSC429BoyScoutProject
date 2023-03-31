@@ -4,10 +4,13 @@ package model;
 // system imports
 import javafx.scene.Scene;
 import java.util.Properties;
+import java.time.format.DateTimeFormatter;
+import java.time.LocalDateTime;
 
 // project imports
 import event.Event;
 import exception.InvalidPrimaryKeyException;
+
 
 import userinterface.View;
 import userinterface.ViewFactory;
@@ -139,14 +142,18 @@ public class RemoveScoutTransaction extends Transaction
                myScout = myScoutCollection.retrieve(scoutID);
                createAndShowScoutSelectedView();
 
-               
+
 
             }
             else
             if(key.equals("UpdateStatusInactive") == true)
             {
+                DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+                LocalDateTime now = LocalDateTime.now();
                 myScout.stateChangeRequest("status","Inactive");
+                myScout.stateChangeRequest("dateStatusUpdated",dtf.format(now));
                 myScout.update();
+
             }
         myRegistry.updateSubscribers(key, this);
 
