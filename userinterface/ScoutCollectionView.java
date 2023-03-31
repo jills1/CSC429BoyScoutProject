@@ -45,7 +45,7 @@ import model.ScoutCollection;
 //==============================================================================
 public class ScoutCollectionView extends View
 {
-    protected TableView<ScoutTableModel> tableOfAccounts;
+    protected TableView<ScoutTableModel> tableOfScouts;
     protected Button cancelButton;
     protected Button submitButton;
 
@@ -103,7 +103,7 @@ public class ScoutCollectionView extends View
 
             }
 
-            tableOfAccounts.setItems(tableData);
+            tableOfScouts.setItems(tableData);
         }
         catch (Exception e) {//SQLException e) {
             // Need to handle this exception
@@ -147,8 +147,8 @@ public class ScoutCollectionView extends View
         prompt.setFill(Color.BLACK);
         grid.add(prompt, 0, 0, 2, 1);
 
-        tableOfAccounts = new TableView<ScoutTableModel>();
-        tableOfAccounts.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+        tableOfScouts = new TableView<ScoutTableModel>();
+        tableOfScouts.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 
         TableColumn fnColumn = new TableColumn("First Name") ;
         fnColumn.setMinWidth(100);
@@ -190,10 +190,10 @@ public class ScoutCollectionView extends View
         statColumn.setCellValueFactory(
                 new PropertyValueFactory<ScoutTableModel, String>("status"));
 
-        tableOfAccounts.getColumns().addAll(fnColumn,
+        tableOfScouts.getColumns().addAll(fnColumn,
                 lnColumn, mnColumn, dobColumn,emailColumn,phoneColumn,troopColumn,statColumn);
 
-        tableOfAccounts.setOnMousePressed(new EventHandler<MouseEvent>() {
+        tableOfScouts.setOnMousePressed(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event)
             {
@@ -204,7 +204,7 @@ public class ScoutCollectionView extends View
         });
         ScrollPane scrollPane = new ScrollPane();
         scrollPane.setPrefSize(115, 150);
-        scrollPane.setContent(tableOfAccounts);
+        scrollPane.setContent(tableOfScouts);
 
         submitButton = new Button("Submit");
         submitButton.setOnAction(new EventHandler<ActionEvent>() {
@@ -223,13 +223,7 @@ public class ScoutCollectionView extends View
 
             @Override
             public void handle(ActionEvent e) {
-                /**
-                 * Process the Cancel button.
-                 * The ultimate result of this action is that the transaction will tell the teller to
-                 * to switch to the transaction choice view. BUT THAT IS NOT THIS VIEW'S CONCERN.
-                 * It simply tells its model (controller) that the transaction was canceled, and leaves it
-                 * to the model to decide to tell the teller to do the switch back.
-                 */
+
                 //----------------------------------------------------------
                 clearErrorMessage();
                 myModel.stateChangeRequest("CancelScoutList", null);
@@ -258,7 +252,7 @@ public class ScoutCollectionView extends View
     //--------------------------------------------------------------------------
     protected void processScoutSelected()
     {
-        ScoutTableModel selectedItem = tableOfAccounts.getSelectionModel().getSelectedItem();
+        ScoutTableModel selectedItem = tableOfScouts.getSelectionModel().getSelectedItem();
 
         if(selectedItem != null)
         {

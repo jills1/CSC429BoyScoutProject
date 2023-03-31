@@ -187,7 +187,7 @@ public class Scout extends EntityBase implements IView
 
 
     /**
-     * This method is needed solely to enable the Account information to be displayable in a table
+     * This method is needed solely to enable the Scout information to be displayable in a table
      *
      */
     //--------------------------------------------------------------------------
@@ -227,22 +227,7 @@ public class Scout extends EntityBase implements IView
                 persistentState.getProperty("troopID") ;
     }
 
-    public void updateScoutInDatabase(String scoutID) {
 
-        String query ="UPDATE "+myTableName+" SET `status` = 'Inactive' WHERE `Scout`.`scoutID` = "+scoutID;//
-    }
-    /*public String toString1()
-    {
-        String retVal = "";
-
-        Enumeration allKeys = persistentState.propertyNames();
-        while (allKeys.hasMoreElements() == true) {
-            String nextKey = (String) allKeys.nextElement();
-            String nextValue = persistentState.getProperty(nextKey);
-            retVal += nextKey + ": " + nextValue + "; ";
-        }
-        return retVal;
-    } */
 
 }
 
