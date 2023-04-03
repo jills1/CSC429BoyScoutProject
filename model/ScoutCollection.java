@@ -22,63 +22,19 @@ import userinterface.ViewFactory;
 //==============================================================
 public class ScoutCollection  extends EntityBase implements IView
 {
-	private static final String myTableName = "Scouts";
+	private static final String myTableName = "Scout";
 
-	private Vector<Scout> scouts;
+
+	private Vector<Scout> scoutList;
 	// GUI Components
 
 	// constructor for this class
 	//----------------------------------------------------------
-	public ScoutCollection( AccountHolder cust) throws
-		Exception
+	public ScoutCollection()
 	{
 		super(myTableName);
 
-		if (cust == null)
-		{
-			new Event(Event.getLeafLevelClassName(this), "<init>",
-				"Missing scout holder information", Event.FATAL);
-			throw new Exception
-				("UNEXPECTED ERROR: scoutCollection.<init>: scout holder information is null");
-		}
-
-		String scoutHolderId = (String)cust.getState("ID");
-
-		if (scoutHolderId == null)
-		{
-			new Event(Event.getLeafLevelClassName(this), "<init>",
-				"Data corrupted: scout Holder has no id in database", Event.FATAL);
-			throw new Exception
-			 ("UNEXPECTED ERROR: scoutCollection.<init>: Data corrupted: scout holder has no id in repository");
-		}
-
-		String query = "SELECT * FROM " + myTableName + " WHERE (OwnerID = " + scoutHolderId + ")";
-
-		Vector allDataRetrieved = getSelectQueryResult(query);
-
-		if (allDataRetrieved != null)
-		{
-			scouts = new Vector<Scout>();
-
-			for (int cnt = 0; cnt < allDataRetrieved.size(); cnt++)
-			{
-				Properties nextscoutData = (Properties)allDataRetrieved.elementAt(cnt);
-
-				Scout scout = new Scout(nextscoutData);
-
-				if (scout != null)
-				{
-					addScout(scout);
-				}
-			}
-
-		}
-		else
-		{
-			throw new InvalidPrimaryKeyException("No scouts for customer : "
-				+ scoutHolderId + ". Name : " + cust.getState("Name"));
-		}
-
+		scoutList = new Vector<>();
 	}
 
 	//----------------------------------------------------------------------------------
@@ -86,7 +42,8 @@ public class ScoutCollection  extends EntityBase implements IView
 	{
 		//scouts.add(a);
 		int index = findIndexToAdd(a);
-		scouts.insertElementAt(a,index); // To build up a collection sorted on some key
+		System.out.println("Jalen found the index to add: " + index);
+		scoutList.insertElementAt(a,index); // To build up a collection sorted on some key
 	}
 
 	//----------------------------------------------------------------------------------
@@ -94,17 +51,18 @@ public class ScoutCollection  extends EntityBase implements IView
 	{
 		//users.add(u);
 		int low=0;
-		int high = scouts.size()-1;
+		int high = scoutList.size()-1;
+		System.out.println("find index to add: " + high);
 		int middle;
 
 		while (low <=high)
 		{
 			middle = (low+high)/2;
 
-			Scout midSession = scouts.elementAt(middle);
-
+			Scout midSession = scoutList.elementAt(middle);
+			System.out.println("middle value at: " + middle);
 			int result = Scout.compare(a,midSession);
-
+			System.out.println("Result is: " + result);
 			if (result ==0)
 			{
 				return middle;
@@ -131,7 +89,7 @@ public class ScoutCollection  extends EntityBase implements IView
 	public Object getState(String key)
 	{
 		if (key.equals("Scouts"))
-			return scouts;
+			return scoutList;
 		else
 		if (key.equals("ScoutList"))
 			return this;
@@ -146,16 +104,16 @@ public class ScoutCollection  extends EntityBase implements IView
 	}
 
 	//----------------------------------------------------------
-	public Scout retrieve(String scoutNumber)
+	public Scout retrieve(String scoutId)
 	{
 		Scout retValue = null;
-		for (int cnt = 0; cnt < scouts.size(); cnt++)
+		for (int cnt = 0; cnt < scoutList.size(); cnt++)
 		{
-			Scout nextAcct = scouts.elementAt(cnt);
-			String nextAccNum = (String)nextAcct.getState("scoutNumber");
-			if (nextAccNum.equals(scoutNumber) == true)
+			Scout nextSct = scoutList.elementAt(cnt);
+			String nextSctId = (String)nextSct.getState("scoutID");
+			if (nextSctId.equals(scoutId) == true)
 			{
-				retValue = nextAcct;
+				retValue = nextSct;
 				return retValue; // we should say 'break;' here
 			}
 		}
@@ -195,5 +153,48 @@ public class ScoutCollection  extends EntityBase implements IView
 		{
 			mySchema = getSchemaInfo(tableName);
 		}
+	}
+
+	//-----------------------------------------------------------------------------------
+	public void findScoutsWithNameLike(String fn, String ln)
+	{
+		String query = "";
+		if ((fn==null||fn.length()==0)&&(ln==null||ln.length()==0))
+			query = "SELECT * FROM "+myTableName;
+		else if (fn==null || fn.length()==0)
+		{
+			query = "SELECT * FROM "+myTableName+" WHERE (lastName LIKE '%"+ln+"%')";
+		}
+		else if (ln==null || ln.length()==0)
+		{
+			query = "SELECT * FROM "+myTableName+" WHERE (firstName LIKE '%"+fn+"%')";
+		}
+		else
+			query = "SELECT * FROM "+myTableName+" WHERE ((firstName LIKE '%"+fn+"%') AND (lastName LIKE '%"+ln+"%'))";
+System.out.println(query);
+		helper(query);
+	}
+
+	//------------------------------------------------------------------------------------
+	private void helper(String query)
+	{
+
+
+		Vector allDataRetrieved = getSelectQueryResult(query);
+		System.out.println("If you see this Jalen worked the query successfully");
+		//scoutList = new Vector<Scout>();
+
+
+		for(int cnt = 0; cnt < allDataRetrieved.size(); cnt++) {
+			System.out.println("Jalen is at iteration: " + cnt + " of adding the scout");
+			Properties nextScoutData = (Properties) allDataRetrieved.elementAt(cnt);
+
+			Scout scout = new Scout(nextScoutData);
+			System.out.println("Jalen finished creating the scout for iteration: " + cnt);
+			addScout(scout);
+			System.out.println("Jalen finished adding the scout for iteration: " + cnt);
+
+		}
+		System.out.println("If you see this Jalen did not mess up adding the scout to the list");
 	}
 }
