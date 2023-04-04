@@ -31,7 +31,7 @@ import java.util.Vector;
 import impresario.IModel;
 import model.Scout;
 
-/** The class containing the Deposit Transaction View  for the ATM application */
+/** The class containing the Add Tree Type Transaction View  for the Tree Sales application */
 //==============================================================
 public class AddTreeTypeTransactionView extends View
 {
@@ -39,13 +39,10 @@ public class AddTreeTypeTransactionView extends View
     // Model
 
     // GUI components
-    private TextField firstName;
-    private TextField middleName;
-    private TextField lastName;
-    private TextField dateOfBirth;
-    private TextField phoneNumber;
-    private TextField email;
-    private TextField troopID;
+    private TextField typeDescription;
+    private TextField cost;
+    private TextField barcodePrefix;
+
 
     private Button submitButton;
     private Button cancelButton;
@@ -101,96 +98,46 @@ public class AddTreeTypeTransactionView extends View
         grid.setVgap(10);
         grid.setPadding(new Insets(25, 25, 25, 25));
 
-        Label firstNameLabel = new Label("First Name : ");
-        grid.add(firstNameLabel, 0, 0);
+        Label typeDescriptionLabel = new Label("Tree Type Description : ");
+        grid.add(typeDescriptionLabel, 0, 0);
 
-        firstName = new TextField();
-        firstName.setOnAction(new EventHandler<ActionEvent>() {
-
-            @Override
-            public void handle(ActionEvent e) {
-                processAction(e);
-            }
-        });
-        grid.add(firstName, 1, 0);
-
-        Label lastNameLabel = new Label("Last Name : ");
-        grid.add(lastNameLabel, 0, 1);
-
-        lastName = new TextField();
-        lastName.setOnAction(new EventHandler<ActionEvent>() {
+        typeDescription = new TextField();
+        typeDescription.setOnAction(new EventHandler<ActionEvent>() {
 
             @Override
             public void handle(ActionEvent e) {
                 processAction(e);
             }
         });
-        grid.add(lastName, 1, 1);
+        grid.add(typeDescription, 1, 0);
 
-        Label middleNameLabel = new Label("Middle Name : ");
-        grid.add(middleNameLabel, 0, 2);
+        Label costLabel = new Label("Cost : ");
+        grid.add(costLabel, 0, 1);
 
-        middleName = new TextField();
-        middleName.setOnAction(new EventHandler<ActionEvent>() {
-
-            @Override
-            public void handle(ActionEvent e) {
-                processAction(e);
-            }
-        });
-        grid.add(middleName, 1, 2);
-
-        Label dateOfBirthLabel = new Label("Date of Birth : ");
-        grid.add(dateOfBirthLabel, 0, 3);
-
-        dateOfBirth = new TextField();
-        dateOfBirth.setOnAction(new EventHandler<ActionEvent>() {
+        cost = new TextField();
+        cost.setOnAction(new EventHandler<ActionEvent>() {
 
             @Override
             public void handle(ActionEvent e) {
                 processAction(e);
             }
         });
-        grid.add(dateOfBirth, 1, 3);
+        grid.add(cost, 1, 1);
 
-        Label phoneNumLabel = new Label("Phone Number : ");
-        grid.add(phoneNumLabel, 0, 4);
+        Label bpLabel = new Label("Barcode Prefix : ");
+        grid.add(bpLabel, 0, 2);
 
-        phoneNumber = new TextField();
-        phoneNumber.setOnAction(new EventHandler<ActionEvent>() {
-
-            @Override
-            public void handle(ActionEvent e) {
-                processAction(e);
-            }
-        });
-        grid.add(phoneNumber, 1, 4);
-
-        Label emailLabel = new Label("Email : ");
-        grid.add(emailLabel, 0, 5);
-
-        email = new TextField();
-        email.setOnAction(new EventHandler<ActionEvent>() {
+        barcodePrefix = new TextField();
+        barcodePrefix.setOnAction(new EventHandler<ActionEvent>() {
 
             @Override
             public void handle(ActionEvent e) {
                 processAction(e);
             }
         });
-        grid.add(email, 1, 5);
+        grid.add(barcodePrefix, 1, 2);
 
-        Label troopIDLabel = new Label("Troop ID : ");
-        grid.add(troopIDLabel, 0, 6);
 
-        troopID = new TextField();
-        troopID.setOnAction(new EventHandler<ActionEvent>() {
-
-            @Override
-            public void handle(ActionEvent e) {
-                processAction(e);
-            }
-        });
-        grid.add(troopID, 1, 6);
 
         submitButton = new Button("Submit");
         submitButton.setOnAction(new EventHandler<ActionEvent>() {
@@ -208,16 +155,10 @@ public class AddTreeTypeTransactionView extends View
 
             @Override
             public void handle(ActionEvent e) {
-                /**
-                 * Process the Cancel button.
-                 * The ultimate result of this action is that the transaction will tell the teller to
-                 * to switch to the transaction choice view. BUT THAT IS NOT THIS VIEW'S CONCERN.
-                 * It simply tells its model (controller) that the deposit transaction was canceled, and leaves it
-                 * to the model to decide to tell the teller to do the switch back.
-                 */
+
                 //----------------------------------------------------------
                 clearErrorMessage();
-                myModel.stateChangeRequest("CancelDeposit", null);
+                myModel.stateChangeRequest("CancelAddTreeType", null);
             }
         });
 
@@ -249,68 +190,43 @@ public class AddTreeTypeTransactionView extends View
     }
 
 
-    /**
-     * Process account number selected by user.
-     * Action is to pass this info on to the transaction object.
-     */
+
     //----------------------------------------------------------
     private void processAction(Event evt)
     {
         //clearErrorMessage();
 
-        String lastNameEntered = lastName.getText();
-        String firstNameEntered = firstName.getText();
-        String middleNameEntered = middleName.getText();
-        String dateOfBirthEntered = dateOfBirth.getText();
-        String phoneNumberEntered = phoneNumber.getText();
-        String emailEntered = email.getText();
-        String troopIDEntered = troopID.getText();
+        String descriptionEntered = typeDescription.getText();
+        String costEntered = cost.getText();
+        String bpEntered = barcodePrefix.getText();
 
-        if ((lastNameEntered == null) || (lastNameEntered.length() == 0))
+
+        if ((descriptionEntered == null) || (descriptionEntered.length() == 0))
         {
-            displayErrorMessage("Please enter a last name");
+            displayErrorMessage("Please enter a description");
         }
-        else if ((firstNameEntered == null) || (firstNameEntered.length() == 0))
+        else if ((costEntered == null) || (costEntered.length() == 0))
         {
-            displayErrorMessage("Please enter a first name");
+            displayErrorMessage("Please enter a cost");
         }
-        else if ((middleNameEntered == null) || (middleNameEntered.length() == 0))
+        else if ((bpEntered == null) || (bpEntered.length() == 0))
         {
-            displayErrorMessage("Please enter a middle name");
+            displayErrorMessage("Please enter a barcode prefix");
         }
-        else if ((dateOfBirthEntered == null) || (dateOfBirthEntered.length() == 0))
-        {
-            displayErrorMessage("Please enter a valid birth date");
-        }
-        else if ((phoneNumberEntered == null) || (phoneNumberEntered.length() == 0))
-        {
-            displayErrorMessage("Please enter a phone number");
-        }
-        else if ((emailEntered == null) || (emailEntered.length() == 0))
-        {
-            displayErrorMessage("Please enter an email");
-        }
-        else if ((troopIDEntered == null) || (troopIDEntered.length() == 0))
-        {
-            displayErrorMessage("Please enter a troopID");
-        }
+
         else
-            processScoutInfo(lastNameEntered,firstNameEntered,middleNameEntered,dateOfBirthEntered,phoneNumberEntered,emailEntered,troopIDEntered);
+            processScoutInfo(descriptionEntered,costEntered,bpEntered);
     }
-    private void processScoutInfo(String lastName, String firstName, String middleName, String dateOfBirth, String phoneNumber,String email, String troopID)
+    private void processScoutInfo(String description, String cost, String barcodePrefix)
     {
         Properties props = new Properties();
-        props.setProperty("lastName", lastName);
-        props.setProperty("firstName", firstName);
-        props.setProperty("middleName", middleName);
-        props.setProperty("dateOfBirth", dateOfBirth);
-        props.setProperty("phoneNumber", phoneNumber);
-        props.setProperty("email", email);
-        props.setProperty("troopID", troopID);
-        myModel.stateChangeRequest("RegisterWithScoutInfo", props);
-        Scout scout = new Scout(props);
-        scout.update();
-        displayMessage("Successfully added new Scout");
+        props.setProperty("typeDescription", description);
+        props.setProperty("cost", cost);
+        props.setProperty("barcodePrefix", barcodePrefix);
+
+        myModel.stateChangeRequest("AddTreeTypeWithInfo", props);
+
+        displayMessage("Successfully added new Tree Type");
     }
     public void displayMessage(String message)
     {

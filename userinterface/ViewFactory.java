@@ -47,9 +47,9 @@ public class ViewFactory {
 		{
 			return new ScoutSelectedView(model);
 		}
-		else if(viewName.equals("BalanceInquiryReceipt") == true)
+		else if(viewName.equals("AddTreeTypeTransactionView") == true)
 		{
-			return new BalanceInquiryReceipt(model);
+			return new AddTreeTypeTransactionView(model);
 		}
 		else if(viewName.equals("WithdrawReceipt") == true)
 		{
