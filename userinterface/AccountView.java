@@ -10,7 +10,6 @@ import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
@@ -29,54 +28,64 @@ import java.util.Properties;
 // project imports
 import impresario.IModel;
 
-/** The class containing the Account Holder ID Entry View for the 'Impose Service Charge' functionality of the  ATM application */
+/** The class containing the Account View  for the ATM application */
 //==============================================================
-public class UpdateScoutTransactionView extends View
+public class AccountView extends View
 {
 
     // GUI components
-    protected TextField firstName;
-    protected TextField lastName;
+    protected TextField accountNumber;
+    protected TextField acctType;
+    protected TextField balance;
+    protected TextField serviceCharge;
 
     protected Button cancelButton;
-    private Button submitButton;
 
     // For showing error message
     protected MessageView statusLog;
 
     // constructor for this class -- takes a model object
     //----------------------------------------------------------
-    public UpdateScoutTransactionView(IModel account)
+    public AccountView(IModel account)
     {
-        super(account, "SearchUpdateScoutView");
+        super(account, "AccountView");
 
         // create a container for showing the contents
         VBox container = new VBox(10);
         container.setPadding(new Insets(15, 5, 5, 5));
 
-        // create our GUI components, add them to this panel
+        // Add a title for this panel
         container.getChildren().add(createTitle());
+
+        // create our GUI components, add them to this Container
         container.getChildren().add(createFormContent());
 
-        // Error message area
-        container.getChildren().add(createStatusLog("                                            "));
+        container.getChildren().add(createStatusLog("             "));
 
         getChildren().add(container);
 
         populateFields();
 
+        myModel.subscribe("ServiceCharge", this);
+        myModel.subscribe("UpdateStatusMessage", this);
     }
+
 
     // Create the title container
     //-------------------------------------------------------------
     private Node createTitle()
     {
-        Text titleText = new Text("       Search for Scout          ");
+        HBox container = new HBox();
+        container.setAlignment(Pos.CENTER);
+
+        Text titleText = new Text(" Brockport Bank ATM ");
         titleText.setFont(Font.font("Arial", FontWeight.BOLD, 20));
+        titleText.setWrappingWidth(300);
         titleText.setTextAlignment(TextAlignment.CENTER);
         titleText.setFill(Color.DARKGREEN);
+        container.getChildren().add(titleText);
 
-        return titleText;
+        return container;
     }
 
     // Create the main form content
@@ -91,97 +100,82 @@ public class UpdateScoutTransactionView extends View
         grid.setVgap(10);
         grid.setPadding(new Insets(25, 25, 25, 25));
 
-        Text prompt = new Text("Please enter the first name and last name of the desired Scout below");
-        prompt.setWrappingWidth(350);
+        Text prompt = new Text("ACCOUNT INFORMATION");
+        prompt.setWrappingWidth(400);
         prompt.setTextAlignment(TextAlignment.CENTER);
         prompt.setFill(Color.BLACK);
         grid.add(prompt, 0, 0, 2, 1);
 
-        Text scoutFNLabel = new Text("  First Name        : ");
+        Text accNumLabel = new Text(" Account Number : ");
         Font myFont = Font.font("Helvetica", FontWeight.BOLD, 12);
-        scoutFNLabel.setFont(myFont);
-        grid.add(scoutFNLabel, 0, 1);
+        accNumLabel.setFont(myFont);
+        accNumLabel.setWrappingWidth(150);
+        accNumLabel.setTextAlignment(TextAlignment.RIGHT);
+        grid.add(accNumLabel, 0, 1);
 
-        firstName = new TextField();
-        firstName.setEditable(true);
-        firstName.setOnAction(new EventHandler<ActionEvent>() {
+        accountNumber = new TextField();
+        accountNumber.setEditable(false);
+        grid.add(accountNumber, 1, 1);
+
+        Text acctTypeLabel = new Text(" Account Type : ");
+        acctTypeLabel.setFont(myFont);
+        acctTypeLabel.setWrappingWidth(150);
+        acctTypeLabel.setTextAlignment(TextAlignment.RIGHT);
+        grid.add(acctTypeLabel, 0, 2);
+
+        acctType = new TextField();
+        acctType.setEditable(false);
+        grid.add(acctType, 1, 2);
+
+        Text balLabel = new Text(" Account Balance : ");
+        balLabel.setFont(myFont);
+        balLabel.setWrappingWidth(150);
+        balLabel.setTextAlignment(TextAlignment.RIGHT);
+        grid.add(balLabel, 0, 3);
+
+        balance = new TextField();
+        balance.setEditable(false);
+        grid.add(balance, 1, 3);
+
+        Text scLabel = new Text(" Service Charge : ");
+        scLabel.setFont(myFont);
+        scLabel.setWrappingWidth(150);
+        scLabel.setTextAlignment(TextAlignment.RIGHT);
+        grid.add(scLabel, 0, 4);
+
+        serviceCharge = new TextField();
+        serviceCharge.setEditable(true);
+        serviceCharge.setOnAction(new EventHandler<ActionEvent>() {
 
             @Override
             public void handle(ActionEvent e) {
                 clearErrorMessage();
-                myModel.stateChangeRequest("FirstNameEntered", firstName.getText());
+                myModel.stateChangeRequest("ServiceCharge", serviceCharge.getText());
             }
         });
-
-        grid.add(firstName, 1, 1);
-
-
-        Text scoutLNLabel = new Text("  Last Name        : ");
-        scoutLNLabel.setFont(myFont);
-        grid.add(scoutLNLabel, 0, 2);
-
-        lastName = new TextField();
-        lastName.setEditable(true);
-        lastName.setOnAction(new EventHandler<ActionEvent>() {
-
-            @Override
-            public void handle(ActionEvent e) {
-                clearErrorMessage();
-                myModel.stateChangeRequest("LastNameEntered", firstName.getText());
-            }
-        });
-
-        grid.add(lastName, 1, 2);
+        grid.add(serviceCharge, 1, 4);
 
         HBox doneCont = new HBox(10);
         doneCont.setAlignment(Pos.CENTER);
-
-        submitButton = new Button("Submit");
-        submitButton.setOnAction(new EventHandler<ActionEvent>() {
-
-            @Override
-            public void handle(ActionEvent e) {
-                clearErrorMessage();
-
-                processAction(e);
-            }
-
-        });
-
         cancelButton = new Button("Back");
+        cancelButton.setFont(Font.font("Arial", FontWeight.BOLD, 14));
         cancelButton.setOnAction(new EventHandler<ActionEvent>() {
 
             @Override
             public void handle(ActionEvent e) {
-                /**
-                 * Process the Cancel button.
-                 * The ultimate result of this action is that the transaction will tell the teller to
-                 * to switch to the transaction choice view. BUT THAT IS NOT THIS VIEW'S CONCERN.
-                 * It simply tells its model (controller) that the deposit transaction was canceled, and leaves it
-                 * to the model to decide to tell the teller to do the switch back.
-                 */
-                //----------------------------------------------------------
                 clearErrorMessage();
-                myModel.stateChangeRequest("CancelDeposit", null);
+                myModel.stateChangeRequest("AccountCancelled", null);
             }
         });
-
-        HBox btnContainer = new HBox(100);
-        btnContainer.setAlignment(Pos.CENTER);
-        btnContainer.getChildren().add(submitButton);
-        btnContainer.getChildren().add(cancelButton);
-
+        doneCont.getChildren().add(cancelButton);
 
         vbox.getChildren().add(grid);
-        vbox.getChildren().add(btnContainer);
+        vbox.getChildren().add(doneCont);
 
         return vbox;
     }
 
 
-    private void processAction(ActionEvent e) {
-        myModel.stateChangeRequest("SubmitSearchUpdateScout", null);
-    }
     // Create the status log field
     //-------------------------------------------------------------
     protected MessageView createStatusLog(String initialMessage)
@@ -194,7 +188,10 @@ public class UpdateScoutTransactionView extends View
     //-------------------------------------------------------------
     public void populateFields()
     {
-
+        accountNumber.setText((String)myModel.getState("AccountNumber"));
+        acctType.setText((String)myModel.getState("Type"));
+        balance.setText((String)myModel.getState("Balance"));
+        serviceCharge.setText((String)myModel.getState("ServiceCharge"));
     }
 
     /**
@@ -203,6 +200,14 @@ public class UpdateScoutTransactionView extends View
     //---------------------------------------------------------
     public void updateState(String key, Object value)
     {
+        clearErrorMessage();
+
+        if (key.equals("ServiceCharge") == true)
+        {
+            String val = (String)value;
+            serviceCharge.setText(val);
+            displayMessage("Service Charge Imposed: $ " + val);
+        }
     }
 
     /**

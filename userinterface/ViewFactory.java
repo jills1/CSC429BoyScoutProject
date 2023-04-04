@@ -51,6 +51,10 @@ public class ViewFactory {
 		{
 			return new SellTreeTransactionView(model);
 		}
+//		else if(viewName.equals("UpdateTreeFormTransactionView") == true)
+//		{
+//			return new UpdateTreeFormTransactionView(model);
+//		}
 		else
 			return null;
 	}

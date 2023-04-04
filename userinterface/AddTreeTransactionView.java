@@ -1,18 +1,14 @@
-// specify the package
 package userinterface;
 
-// system imports
-import javafx.event.Event;
+import impresario.IModel;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -22,75 +18,54 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
-import javafx.stage.Stage;
-
+import jdk.net.SocketFlow;
+import userinterface.MessageView;
+import userinterface.View;
+import model.Tree;
 import java.util.Properties;
-import java.util.Vector;
 
-// project imports
-import impresario.IModel;
-import model.Scout;
-
-/** The class containing the Deposit Transaction View  for the ATM application */
-//==============================================================
 public class AddTreeTransactionView extends View
 {
 
-    // Model
+    protected Button submitButton;
+    protected Button backButton;
+    protected TextField barcode;
+    protected TextField notes;
+    protected ComboBox<String> status;
 
-    // GUI components
-    private TextField firstName;
-    private TextField middleName;
-    private TextField lastName;
-    private TextField dateOfBirth;
-    private TextField phoneNumber;
-    private TextField email;
-    private TextField troopID;
+    protected MessageView statusLog;
+    protected String treeType;
 
-    private Button submitButton;
-    private Button cancelButton;
-
-    // For showing error message
-    private MessageView statusLog;
-
-    // constructor for this class -- takes a model object
-    //----------------------------------------------------------
-    public AddTreeTransactionView(IModel trans)
+    public AddTreeTransactionView(IModel tree)
     {
-        super(trans, "RegisterScoutTransactionView");
-
-        // create a container for showing the contents
+        super(tree, "AddTreeView");
         VBox container = new VBox(10);
         container.setPadding(new Insets(15, 5, 5, 5));
 
-        // create our GUI components, add them to this panel
         container.getChildren().add(createTitle());
         container.getChildren().add(createFormContent());
-
-        // Error message area
-        container.getChildren().add(createStatusLog("                          "));
-
+        container.getChildren().add(createStatusLog("             "));
         getChildren().add(container);
 
         populateFields();
+
+        myModel.subscribe("UpdateStatusMessage", this);
     }
 
+    private Node createTitle(){
+        HBox container = new HBox();
+        container.setAlignment(Pos.CENTER);
 
-    // Create the label (Text) for the title
-    //-------------------------------------------------------------
-    private Node createTitle()
-    {
-
-        Text titleText = new Text("       Troop 209          ");
+        Text titleText = new Text("Insert New Tree");
         titleText.setFont(Font.font("Arial", FontWeight.BOLD, 20));
+        titleText.setWrappingWidth(300);
         titleText.setTextAlignment(TextAlignment.CENTER);
         titleText.setFill(Color.DARKGREEN);
+        container.getChildren().add(titleText);
 
-        return titleText;
+        return container;
     }
 
-    // Create the main data entry fields
-    //-------------------------------------------------------------
     private VBox createFormContent()
     {
         VBox vbox = new VBox(10);
@@ -101,248 +76,123 @@ public class AddTreeTransactionView extends View
         grid.setVgap(10);
         grid.setPadding(new Insets(25, 25, 25, 25));
 
-        Label firstNameLabel = new Label("First Name : ");
-        grid.add(firstNameLabel, 0, 0);
+        Text prompt = new Text("TREE INFROMATION");
+        prompt.setWrappingWidth(400);
+        prompt.setTextAlignment(TextAlignment.CENTER);
+        prompt.setFill(Color.BLACK);
+        grid.add(prompt, 0, 0, 2, 1);
 
-        firstName = new TextField();
-        firstName.setOnAction(new EventHandler<ActionEvent>() {
+        Text treeBarcodeLabel = new Text("Barcode: ");
+        Font myFont = Font.font("Helvetica", FontWeight.BOLD, 12);
+        treeBarcodeLabel.setFont(myFont);
+        treeBarcodeLabel.setWrappingWidth(150);
+        treeBarcodeLabel.setTextAlignment(TextAlignment.RIGHT);
+        grid.add(treeBarcodeLabel, 0 , 1);
 
-            @Override
-            public void handle(ActionEvent e) {
-                processAction(e);
-            }
-        });
-        grid.add(firstName, 1, 0);
+        barcode = new TextField();
+        barcode.setEditable(true);
+        grid.add(barcode, 1,1);
 
-        Label lastNameLabel = new Label("Last Name : ");
-        grid.add(lastNameLabel, 0, 1);
+        Text treeNotesLabel = new Text("Notes: ");
+        treeNotesLabel.setFont(myFont);
+        treeBarcodeLabel.setWrappingWidth(150);
+        treeNotesLabel.setTextAlignment(TextAlignment.RIGHT);
+        grid.add(treeNotesLabel, 0, 2);
 
-        lastName = new TextField();
-        lastName.setOnAction(new EventHandler<ActionEvent>() {
+        notes = new TextField();
+        notes.setEditable(true);
+        grid.add(notes, 1, 2);
 
-            @Override
-            public void handle(ActionEvent e) {
-                processAction(e);
-            }
-        });
-        grid.add(lastName, 1, 1);
+        Text treeStatusLabel = new Text("Status: ");
+        treeStatusLabel.setFont(myFont);
+        treeStatusLabel.setWrappingWidth(150);
+        treeStatusLabel.setTextAlignment(TextAlignment.RIGHT);
+        grid.add(treeStatusLabel, 0 , 4);
 
-        Label middleNameLabel = new Label("Middle Name : ");
-        grid.add(middleNameLabel, 0, 2);
+        status = new ComboBox();
+        ObservableList options = status.getItems();
+        options.add("Available");
+        options.add("Sold");
+        options.add("Damaged");
+        status.setItems(options);
+        status.getSelectionModel().selectFirst();
+        grid.add(status, 1,4);
 
-        middleName = new TextField();
-        middleName.setOnAction(new EventHandler<ActionEvent>() {
-
-            @Override
-            public void handle(ActionEvent e) {
-                processAction(e);
-            }
-        });
-        grid.add(middleName, 1, 2);
-
-        Label dateOfBirthLabel = new Label("Date of Birth : ");
-        grid.add(dateOfBirthLabel, 0, 3);
-
-        dateOfBirth = new TextField();
-        dateOfBirth.setOnAction(new EventHandler<ActionEvent>() {
-
-            @Override
-            public void handle(ActionEvent e) {
-                processAction(e);
-            }
-        });
-        grid.add(dateOfBirth, 1, 3);
-
-        Label phoneNumLabel = new Label("Phone Number : ");
-        grid.add(phoneNumLabel, 0, 4);
-
-        phoneNumber = new TextField();
-        phoneNumber.setOnAction(new EventHandler<ActionEvent>() {
-
-            @Override
-            public void handle(ActionEvent e) {
-                processAction(e);
-            }
-        });
-        grid.add(phoneNumber, 1, 4);
-
-        Label emailLabel = new Label("Email : ");
-        grid.add(emailLabel, 0, 5);
-
-        email = new TextField();
-        email.setOnAction(new EventHandler<ActionEvent>() {
-
-            @Override
-            public void handle(ActionEvent e) {
-                processAction(e);
-            }
-        });
-        grid.add(email, 1, 5);
-
-        Label troopIDLabel = new Label("Troop ID : ");
-        grid.add(troopIDLabel, 0, 6);
-
-        troopID = new TextField();
-        troopID.setOnAction(new EventHandler<ActionEvent>() {
-
-            @Override
-            public void handle(ActionEvent e) {
-                processAction(e);
-            }
-        });
-        grid.add(troopID, 1, 6);
+        HBox cont = new HBox(10);
+        cont.setAlignment(Pos.CENTER);
 
         submitButton = new Button("Submit");
+        submitButton.setFont(Font.font("Arial", FontWeight.BOLD, 14));
         submitButton.setOnAction(new EventHandler<ActionEvent>() {
-
             @Override
-            public void handle(ActionEvent e) {
-                clearErrorMessage();
+            public void handle(ActionEvent event) {
+                treeType = barcode.getText().substring(0,2);
+                String date = String.valueOf(java.time.LocalDateTime.now());
+                String dUS = date.substring(0,10);
+                Properties p = new Properties();
 
-                processAction(e);
+                p.setProperty("barcode", barcode.getText());
+                p.setProperty("treeType", treeType);
+                p.setProperty("notes", notes.getText());
+                p.setProperty("status", status.getValue());
+                p.setProperty("dateStatusUpdate", dUS);
+                System.out.println("The time is " + dUS);
+
+                if((p.getProperty("barcode")).equals("") ||
+                        (p.getProperty("notes")).equals("") || (p.getProperty("status")).equals("")){
+                    displayErrorMessage("All fields must be filled in.");
+                    return;
+                }else {
+                    myModel.stateChangeRequest("AddTreeInfo", p);
+                }
+
             }
         });
 
-        cancelButton = new Button("Back");
-        cancelButton.setOnAction(new EventHandler<ActionEvent>() {
-
+        backButton = new Button("Back");
+        backButton.setFont(Font.font("Arial", FontWeight.BOLD, 14));
+        backButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
-            public void handle(ActionEvent e) {
-                /**
-                 * Process the Cancel button.
-                 * The ultimate result of this action is that the transaction will tell the teller to
-                 * to switch to the transaction choice view. BUT THAT IS NOT THIS VIEW'S CONCERN.
-                 * It simply tells its model (controller) that the deposit transaction was canceled, and leaves it
-                 * to the model to decide to tell the teller to do the switch back.
-                 */
-                //----------------------------------------------------------
+            public void handle(ActionEvent event) {
+                System.out.println("The back button is being clicked");
                 clearErrorMessage();
-                myModel.stateChangeRequest("CancelDeposit", null);
+                myModel.stateChangeRequest("CancelTransaction", null);
             }
         });
 
-        HBox btnContainer = new HBox(100);
-        btnContainer.setAlignment(Pos.CENTER);
-        btnContainer.getChildren().add(submitButton);
-        btnContainer.getChildren().add(cancelButton);
-
+        cont.getChildren().add(submitButton);
+        cont.getChildren().add(backButton);
         vbox.getChildren().add(grid);
-        vbox.getChildren().add(btnContainer);
+        vbox.getChildren().add(cont);
 
         return vbox;
     }
 
-
-    // Create the status log field
-    //-------------------------------------------------------------
-    private MessageView createStatusLog(String initialMessage)
-    {
-        statusLog = new MessageView(initialMessage);
-
-        return statusLog;
-    }
-
-    //-------------------------------------------------------------
     public void populateFields()
     {
 
     }
 
-
-    /**
-     * Process account number selected by user.
-     * Action is to pass this info on to the transaction object.
-     */
-    //----------------------------------------------------------
-    private void processAction(Event evt)
-    {
-        //clearErrorMessage();
-
-        String lastNameEntered = lastName.getText();
-        String firstNameEntered = firstName.getText();
-        String middleNameEntered = middleName.getText();
-        String dateOfBirthEntered = dateOfBirth.getText();
-        String phoneNumberEntered = phoneNumber.getText();
-        String emailEntered = email.getText();
-        String troopIDEntered = troopID.getText();
-
-        if ((lastNameEntered == null) || (lastNameEntered.length() == 0))
-        {
-            displayErrorMessage("Please enter a last name");
-        }
-        else if ((firstNameEntered == null) || (firstNameEntered.length() == 0))
-        {
-            displayErrorMessage("Please enter a first name");
-        }
-        else if ((middleNameEntered == null) || (middleNameEntered.length() == 0))
-        {
-            displayErrorMessage("Please enter a middle name");
-        }
-        else if ((dateOfBirthEntered == null) || (dateOfBirthEntered.length() == 0))
-        {
-            displayErrorMessage("Please enter a valid birth date");
-        }
-        else if ((phoneNumberEntered == null) || (phoneNumberEntered.length() == 0))
-        {
-            displayErrorMessage("Please enter a phone number");
-        }
-        else if ((emailEntered == null) || (emailEntered.length() == 0))
-        {
-            displayErrorMessage("Please enter an email");
-        }
-        else if ((troopIDEntered == null) || (troopIDEntered.length() == 0))
-        {
-            displayErrorMessage("Please enter a troopID");
-        }
-        else
-            processScoutInfo(lastNameEntered,firstNameEntered,middleNameEntered,dateOfBirthEntered,phoneNumberEntered,emailEntered,troopIDEntered);
-    }
-    private void processScoutInfo(String lastName, String firstName, String middleName, String dateOfBirth, String phoneNumber,String email, String troopID)
-    {
-        Properties props = new Properties();
-        props.setProperty("lastName", lastName);
-        props.setProperty("firstName", firstName);
-        props.setProperty("middleName", middleName);
-        props.setProperty("dateOfBirth", dateOfBirth);
-        props.setProperty("phoneNumber", phoneNumber);
-        props.setProperty("email", email);
-        props.setProperty("troopID", troopID);
-        myModel.stateChangeRequest("RegisterWithScoutInfo", props);
-        Scout scout = new Scout(props);
-        scout.update();
-        displayMessage("Successfully added new Scout");
-    }
-    public void displayMessage(String message)
-    {
-        statusLog.displayMessage(message);
+    public void updateState(String key, Object value){
+        clearErrorMessage();
     }
 
-
-    /**
-     * Required by interface, but has no role here
-     */
-    //---------------------------------------------------------
-    public void updateState(String key, Object value)
-    {
-
-    }
-
-    /**
-     * Display error message
-     */
-    //----------------------------------------------------------
-    public void displayErrorMessage(String message)
-    {
+    public void displayErrorMessage(String message){
         statusLog.displayErrorMessage(message);
     }
 
-    /**
-     * Clear error message
-     */
-    //----------------------------------------------------------
-    public void clearErrorMessage()
-    {
+    public void displayMessage(String message){
+        statusLog.displayMessage(message);
+    }
+
+    public void clearErrorMessage(){
         statusLog.clearErrorMessage();
     }
 
+    protected MessageView createStatusLog(String initialMessage)
+    {
+        statusLog = new MessageView(initialMessage);
+
+        return statusLog;
+    }
 }

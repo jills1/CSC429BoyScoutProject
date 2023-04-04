@@ -58,54 +58,32 @@ public class UpdateTreeTransactionView extends View {
     }
     // Create the main data entry fields
     //-------------------------------------------------------------
-    private VBox createFormContent()
-    {
+    private VBox createFormContent() {
+        //-----------------------------------------------------------
+        // Container Padding
         VBox vbox = new VBox(10);
-
         GridPane grid = new GridPane();
         grid.setAlignment(Pos.CENTER);
         grid.setHgap(10);
         grid.setVgap(10);
         grid.setPadding(new Insets(25, 25, 25, 25));
 //-------------------------------------------------------------------
+        //Barcode Label, Box and Handler
         Label barcodeLabel = new Label("Barcode : ");
         grid.add(barcodeLabel, 0, 0);
-
         barcode = new TextField();
-        barcode.setOnAction(new EventHandler<ActionEvent>() {
-
-            @Override
-            public void handle(ActionEvent e) {
-                processAction(e);
-            }
-        });
+        barcode.setOnAction(new EventHandler<ActionEvent>() {@Override public void handle(ActionEvent e) {processAction(e);}});
         grid.add(barcode, 1, 0);
 //------------------------------------------------------------------
+        //Submit Button and Event Handler
         submitButton = new Button("Submit");
-        submitButton.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent e) {
-                clearErrorMessage();
-                processAction(e);
-            }
-        });
+        submitButton.setOnAction(new EventHandler<ActionEvent>() {@Override public void handle(ActionEvent e) {clearErrorMessage();processAction(e);}});
 //----------------------------------------------------------------
+        //Cancel Button and Event Handler
         cancelButton = new Button("Back");
-        cancelButton.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent e) {
-                /**
-                 * Process the Cancel button.
-                 * The ultimate result of this action is that the transaction will tell the teller to
-                 * to switch to the transaction choice view. BUT THAT IS NOT THIS VIEW'S CONCERN.
-                 * It simply tells its model (controller) that the deposit transaction was canceled, and leaves it
-                 * to the model to decide to tell the teller to do the switch back.
-                 */
-                //----------------------------------------------------------
-                clearErrorMessage();
-                myModel.stateChangeRequest("CancelDeposit", null);
-            }
-        });
+        cancelButton.setOnAction(new EventHandler<ActionEvent>() {@Override public void handle(ActionEvent e) { clearErrorMessage(); myModel.stateChangeRequest("CancelDeposit", null);}});
+        //--------------------------------------------------------
+        //Place Entities within Container
         HBox btnContainer = new HBox(100);
         btnContainer.setAlignment(Pos.CENTER);
         btnContainer.getChildren().add(submitButton);
@@ -140,7 +118,7 @@ public class UpdateTreeTransactionView extends View {
         myModel.stateChangeRequest("RegisterTreeInfo", props);
         Tree tree = new Tree(props);
         tree.update();
-        displayMessage("Successfully added new Tree");
+        displayMessage("Retrieving Tree Information");
     }
     public void displayMessage(String message)
     {

@@ -31,24 +31,22 @@ import impresario.IModel;
 
 /** The class containing the Account Holder ID Entry View for the 'Impose Service Charge' functionality of the  ATM application */
 //==============================================================
-public class UpdateScoutTransactionView extends View
+public class AccountHolderIDEntryView extends View
 {
 
     // GUI components
-    protected TextField firstName;
-    protected TextField lastName;
+    protected TextField accountHolderID;
 
     protected Button cancelButton;
-    private Button submitButton;
 
     // For showing error message
     protected MessageView statusLog;
 
     // constructor for this class -- takes a model object
     //----------------------------------------------------------
-    public UpdateScoutTransactionView(IModel account)
+    public AccountHolderIDEntryView(IModel account)
     {
-        super(account, "SearchUpdateScoutView");
+        super(account, "AccountHolderIDEntryView");
 
         // create a container for showing the contents
         VBox container = new VBox(10);
@@ -71,12 +69,17 @@ public class UpdateScoutTransactionView extends View
     //-------------------------------------------------------------
     private Node createTitle()
     {
-        Text titleText = new Text("       Search for Scout          ");
+        HBox container = new HBox();
+        container.setAlignment(Pos.CENTER);
+
+        Text titleText = new Text(" Brockport Bank ATM ");
         titleText.setFont(Font.font("Arial", FontWeight.BOLD, 20));
+        titleText.setWrappingWidth(300);
         titleText.setTextAlignment(TextAlignment.CENTER);
         titleText.setFill(Color.DARKGREEN);
+        container.getChildren().add(titleText);
 
-        return titleText;
+        return container;
     }
 
     // Create the main form content
@@ -91,97 +94,51 @@ public class UpdateScoutTransactionView extends View
         grid.setVgap(10);
         grid.setPadding(new Insets(25, 25, 25, 25));
 
-        Text prompt = new Text("Please enter the first name and last name of the desired Scout below");
+        Text prompt = new Text("Please enter the ID of the desired Account Holder below");
         prompt.setWrappingWidth(350);
         prompt.setTextAlignment(TextAlignment.CENTER);
         prompt.setFill(Color.BLACK);
         grid.add(prompt, 0, 0, 2, 1);
 
-        Text scoutFNLabel = new Text("  First Name        : ");
+        Text acctHolderIDLabel = new Text("  Account Holder ID         : ");
         Font myFont = Font.font("Helvetica", FontWeight.BOLD, 12);
-        scoutFNLabel.setFont(myFont);
-        grid.add(scoutFNLabel, 0, 1);
+        acctHolderIDLabel.setFont(myFont);
+        grid.add(acctHolderIDLabel, 0, 1);
 
-        firstName = new TextField();
-        firstName.setEditable(true);
-        firstName.setOnAction(new EventHandler<ActionEvent>() {
-
-            @Override
-            public void handle(ActionEvent e) {
-                clearErrorMessage();
-                myModel.stateChangeRequest("FirstNameEntered", firstName.getText());
-            }
-        });
-
-        grid.add(firstName, 1, 1);
-
-
-        Text scoutLNLabel = new Text("  Last Name        : ");
-        scoutLNLabel.setFont(myFont);
-        grid.add(scoutLNLabel, 0, 2);
-
-        lastName = new TextField();
-        lastName.setEditable(true);
-        lastName.setOnAction(new EventHandler<ActionEvent>() {
+        accountHolderID = new TextField();
+        accountHolderID.setEditable(true);
+        accountHolderID.setOnAction(new EventHandler<ActionEvent>() {
 
             @Override
             public void handle(ActionEvent e) {
                 clearErrorMessage();
-                myModel.stateChangeRequest("LastNameEntered", firstName.getText());
+                myModel.stateChangeRequest("AccountHolderIDEntered", accountHolderID.getText());
             }
         });
 
-        grid.add(lastName, 1, 2);
+        grid.add(accountHolderID, 1, 1);
 
         HBox doneCont = new HBox(10);
         doneCont.setAlignment(Pos.CENTER);
-
-        submitButton = new Button("Submit");
-        submitButton.setOnAction(new EventHandler<ActionEvent>() {
-
-            @Override
-            public void handle(ActionEvent e) {
-                clearErrorMessage();
-
-                processAction(e);
-            }
-
-        });
-
         cancelButton = new Button("Back");
+        cancelButton.setFont(Font.font("Arial", FontWeight.BOLD, 14));
         cancelButton.setOnAction(new EventHandler<ActionEvent>() {
 
             @Override
             public void handle(ActionEvent e) {
-                /**
-                 * Process the Cancel button.
-                 * The ultimate result of this action is that the transaction will tell the teller to
-                 * to switch to the transaction choice view. BUT THAT IS NOT THIS VIEW'S CONCERN.
-                 * It simply tells its model (controller) that the deposit transaction was canceled, and leaves it
-                 * to the model to decide to tell the teller to do the switch back.
-                 */
-                //----------------------------------------------------------
                 clearErrorMessage();
-                myModel.stateChangeRequest("CancelDeposit", null);
+                myModel.stateChangeRequest("CancelImposeServiceCharge", null);
             }
         });
-
-        HBox btnContainer = new HBox(100);
-        btnContainer.setAlignment(Pos.CENTER);
-        btnContainer.getChildren().add(submitButton);
-        btnContainer.getChildren().add(cancelButton);
-
+        doneCont.getChildren().add(cancelButton);
 
         vbox.getChildren().add(grid);
-        vbox.getChildren().add(btnContainer);
+        vbox.getChildren().add(doneCont);
 
         return vbox;
     }
 
 
-    private void processAction(ActionEvent e) {
-        myModel.stateChangeRequest("SubmitSearchUpdateScout", null);
-    }
     // Create the status log field
     //-------------------------------------------------------------
     protected MessageView createStatusLog(String initialMessage)
@@ -237,3 +194,4 @@ public class UpdateScoutTransactionView extends View
 //---------------------------------------------------------------
 //	Revision History:
 //
+
