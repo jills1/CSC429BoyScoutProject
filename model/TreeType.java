@@ -143,8 +143,8 @@ public class TreeType extends EntityBase implements IView
     //-----------------------------------------------------------------------------------
     public static int compare(TreeType a, TreeType b)
     {
-        String aNum = (String)a.getState("barcodePrefix");
-        String bNum = (String)b.getState("barcodePrefix");
+        String aNum = (String)a.getState("treeTypeID");
+        String bNum = (String)b.getState("treeTypeID");
 
         return aNum.compareTo(bNum);
     }
@@ -161,20 +161,20 @@ public class TreeType extends EntityBase implements IView
         try
         {
             // update
-            if (persistentState.getProperty("barcodePrefix") != null)
+            if (persistentState.getProperty("treeTypeID") != null)
             {
                 Properties whereClause = new Properties();
-                whereClause.setProperty("barcodePrefix",
-                        persistentState.getProperty("barcodePrefix"));
+                whereClause.setProperty("treeTypeID",
+                        persistentState.getProperty("treeTypeID"));
                 updatePersistentState(mySchema, persistentState, whereClause);
                 updateStatusMessage = "TreeType data updated successfully in database!";
             }
             else
             {
                 //insert
-                Integer barcodePrefix =
+                Integer treeTypeID =
                         insertAutoIncrementalPersistentState(mySchema, persistentState);
-                persistentState.setProperty("barcodePrefix", "" + barcodePrefix.intValue());
+                persistentState.setProperty("treeTypeID", "" + treeTypeID.intValue());
                 updateStatusMessage = "Tree Type data for new Tree Type installed successfully in database!";
             }
         }
