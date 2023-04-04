@@ -50,7 +50,7 @@ public class TransactionFactory
 		else
 		if (transType.equals("UpdateScout"))
 		{
-			retValue = new ScoutUpdateSearchTransaction();
+			retValue = new UpdateScoutTransaction();
 		}
 				return retValue;
 	}

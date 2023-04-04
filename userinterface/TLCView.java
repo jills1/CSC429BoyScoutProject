@@ -145,6 +145,7 @@ public class TLCView extends View
        		     @Override
        		     public void handle(ActionEvent e) {
        		     	myModel.stateChangeRequest("UpdateScout", null);
+					System.out.println("Correct transaction sent");
             	     }
         	});
 		wCont.getChildren().add(updateScoutButton);

@@ -18,7 +18,8 @@ public class ScoutUpdateSearchTransaction extends Transaction
 {
 
 	private Account myAccount;
-	private String depositAmount; // needed for GUI only
+	private String fName;
+	private String lName; // needed for GUI only
 
 	// GUI Components
 
@@ -63,98 +64,11 @@ public class ScoutUpdateSearchTransaction extends Transaction
 	//----------------------------------------------------------
 	public void processTransaction(Properties props)
 	{
-		creatAndShowSelectUpdateScoutView();
-			/*	}
-		//if (props.getProperty("AccountNumber") != null)
-		//{
-			/*String accountNumber = props.getProperty("AccountNumber");
-			try
-			{
+		fName = props.getProperty("firstName");
+		lName = props.getProperty("lastName");
 
-				myAccount = createAccount(accountNumber);
-				boolean isOwner = myAccount.verifyOwnership(myCust);
-				if (isOwner == false)
-				{
-					transactionErrorMessage = "ERROR: Deposit Transaction: Not owner of selected account!!";
-					new Event(Event.getLeafLevelClassName(this), "processTransaction",
-							"Failed to verify ownership of account number : " + accountNumber + ".",
-							Event.ERROR);
-				}
-				else
-				{*/
-					
-			//}
-			/*catch (InvalidPrimaryKeyException ex)
-			{
-				transactionErrorMessage = "ACCOUNT FAILURE: Contact bank immediately!!";
-				new Event(Event.getLeafLevelClassName(this), "processTransaction",
-						"Failed to create account for number : " + accountNumber + ". Reason: " + ex.toString(),
-						Event.ERROR);
-
-			}
-		}
-		else
-		if (props.getProperty("Amount") != null)
-		{
-			String amount = props.getProperty("Amount");
-			depositAmount = amount;
-
-			myAccount.credit(amount);
-			myAccount.update();
-			accountUpdateStatusMessage = (String)myAccount.getState("UpdateStatusMessage");
-			transactionErrorMessage = accountUpdateStatusMessage;
-
-			createAndShowReceiptView();
-
-		}*/
-	}
-
-	public void processChangeTransaction(Properties props)
-	{
-		creatAndShowUpdateScoutInfoView();
-			/*	}
-		//if (props.getProperty("AccountNumber") != null)
-		//{
-			/*String accountNumber = props.getProperty("AccountNumber");
-			try
-			{
-
-				myAccount = createAccount(accountNumber);
-				boolean isOwner = myAccount.verifyOwnership(myCust);
-				if (isOwner == false)
-				{
-					transactionErrorMessage = "ERROR: Deposit Transaction: Not owner of selected account!!";
-					new Event(Event.getLeafLevelClassName(this), "processTransaction",
-							"Failed to verify ownership of account number : " + accountNumber + ".",
-							Event.ERROR);
-				}
-				else
-				{*/
-					
-			//}
-			/*catch (InvalidPrimaryKeyException ex)
-			{
-				transactionErrorMessage = "ACCOUNT FAILURE: Contact bank immediately!!";
-				new Event(Event.getLeafLevelClassName(this), "processTransaction",
-						"Failed to create account for number : " + accountNumber + ". Reason: " + ex.toString(),
-						Event.ERROR);
-
-			}
-		}
-		else
-		if (props.getProperty("Amount") != null)
-		{
-			String amount = props.getProperty("Amount");
-			depositAmount = amount;
-
-			myAccount.credit(amount);
-			myAccount.update();
-			accountUpdateStatusMessage = (String)myAccount.getState("UpdateStatusMessage");
-			transactionErrorMessage = accountUpdateStatusMessage;
-
-			createAndShowReceiptView();
-
-		}*/
+		//creatAndShowSelectUpdateScoutView();
+		
 	}
 
 	private void creatAndShowSelectUpdateScoutView() {
@@ -176,7 +90,7 @@ public class ScoutUpdateSearchTransaction extends Transaction
 		View newView = ViewFactory.createView("UpdateScoutInfoView", this);
 		Scene currentScene = new Scene(newView);
 		myViews.put("UpdateScoutInfoView", currentScene);
-		System.out.println(" Displayed");
+		//System.out.println(" Displayed");
 
 		swapToView(currentScene);
 	
@@ -205,10 +119,6 @@ public class ScoutUpdateSearchTransaction extends Transaction
 			return myAccount;
 		}
 		else
-		if (key.equals("DepositAmount") == true)
-		{
-			return depositAmount;
-		}
 		return null;
 	}
 
@@ -225,11 +135,6 @@ public class ScoutUpdateSearchTransaction extends Transaction
 		if (key.equals("SubmitSearchUpdateScout")==true)
 		{
 			processTransaction((Properties)value);
-		}
-		else
-		if (key.equals("UpdateScoutInfo")==true)
-		{
-			processChangeTransaction((Properties)value);
 		}
 
 		myRegistry.updateSubscribers(key, this);
@@ -260,20 +165,5 @@ public class ScoutUpdateSearchTransaction extends Transaction
 	}
 
 	//------------------------------------------------------
-
-
-	//------------------------------------------------------
-	protected void createAndShowReceiptView()
-	{
-
-		// create our initial view
-		View newView = ViewFactory.createView("DepositReceipt", this);
-		Scene newScene = new Scene(newView);
-
-		myViews.put("DepositReceipt", newScene);
-
-		// make the view visible by installing it into the frame
-		swapToView(newScene);
-	}
 
 }

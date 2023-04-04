@@ -41,6 +41,8 @@ public class UpdateScoutTransaction extends Transaction
 
     {
         super();
+        System.out.println("Correct transaction taken");
+
     }
 
 
@@ -63,14 +65,13 @@ public class UpdateScoutTransaction extends Transaction
     //----------------------------------------------------------
     public void processTransaction(Properties props)
     {
+        // Getting the first name and last name from the search
         String fn = props.getProperty("firstName");
         String ln = props.getProperty("lastName");
-        System.out.println(props.getProperty("firstName"));
-        System.out.println(props.getProperty("lastName"));
 
-        //myScoutCollection = new ScoutCollection();
+
         myScoutCollection.findScoutsWithNameLike(fn, ln);
-        createAndShowScoutCollectionView();
+        creatAndShowSelectUpdateScoutView();
 
 
     }
@@ -129,7 +130,7 @@ public class UpdateScoutTransaction extends Transaction
             doYourJob();
         }
         else
-        if (key.equals("SearchScoutInfo")==true)
+        if (key.equals("SubmitSearchUpdateScout")==true)
         {
             Properties props =(Properties)value;
 
@@ -154,13 +155,14 @@ public class UpdateScoutTransaction extends Transaction
                 //Properties props =(Properties)value;
                 //String scoutID = props.getProperty("scoutID");
                myScout = myScoutCollection.retrieve(scoutID);
-               createAndShowScoutSelectedView();
+               creatAndShowUpdateScoutInfoView();
 
 
 
             }
+
             else
-            if(key.equals("UpdateStatusInactive") == true)
+            if(key.equals("UpdateScoutInfo") == true)
             {
                 DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd");
                 LocalDateTime now = LocalDateTime.now();
@@ -188,14 +190,14 @@ public class UpdateScoutTransaction extends Transaction
     //------------------------------------------------------
     protected Scene createView()
     {
-        Scene currentScene = myViews.get("RemoveScoutTransactionView");
+        Scene currentScene = myViews.get("SearchUpdateScoutView");
 
         if (currentScene == null)
         {
             // create our initial view
-            View newView = ViewFactory.createView("RemoveScoutTransactionView", this);
+            View newView = ViewFactory.createView("SearchUpdateScoutView", this);
             currentScene = new Scene(newView);
-            myViews.put("RemoveScoutTransactionView", currentScene);
+            myViews.put("SearchUpdateScoutView", currentScene);
 
             return currentScene;
         }
@@ -209,28 +211,29 @@ public class UpdateScoutTransaction extends Transaction
 
 
     //------------------------------------------------------
-    protected void createAndShowScoutCollectionView()
+    protected void creatAndShowSelectUpdateScoutView()
     {
 
         // create our initial view
-        View newView = ViewFactory.createView("ScoutCollectionView", this);
+        View newView = ViewFactory.createView("SelectUpdateScoutView", this);
         Scene newScene = new Scene(newView);
 
-        myViews.put("ScoutCollectionView", newScene);
+        myViews.put("SelectUpdateScoutView", newScene);
 
-        // make the view visible by installing it into the frame
+        // display the view
         swapToView(newScene);
     }
-    protected void createAndShowScoutSelectedView()
+
+    protected void creatAndShowUpdateScoutInfoView()
     {
 
 
-        View newView = ViewFactory.createView("ScoutSelectedView", this);
+        View newView = ViewFactory.createView("UpdateScoutInfoView", this);
         Scene newScene = new Scene(newView);
 
-        myViews.put("ScoutSelectedView", newScene);
+        myViews.put("UpdateScoutInfoView", newScene);
 
-        // make the view visible by installing it into the frame
+        // display the view
         swapToView(newScene);
     }
 

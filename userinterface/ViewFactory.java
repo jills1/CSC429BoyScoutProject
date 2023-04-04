@@ -15,14 +15,7 @@ public class ViewFactory {
 		{
 			return new TLCView(model);
 		}
-		else if(viewName.equals("AccountCollectionView") == true)
-		{
-			return new AccountCollectionView(model);
-		}
-		else if(viewName.equals("AccountView") == true)
-		{
-			return new AccountView(model);
-		}
+		
 		else if(viewName.equals("AccountHolderIDEntryView") == true)
 		{
 			return new AccountHolderIDEntryView(model);
@@ -31,10 +24,7 @@ public class ViewFactory {
 		{
 			return new RegisterScoutTransactionView(model);
 		}
-		else if(viewName.equals("DepositAmountView") == true)
-		{
-			return new DepositAmountView(model);
-		}
+		
 		else if(viewName.equals("SearchUpdateScoutView") == true)
 		{
 			return new SearchUpdateScoutView(model);

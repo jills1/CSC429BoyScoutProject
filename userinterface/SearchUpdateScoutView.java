@@ -28,11 +28,14 @@ import java.util.Properties;
 
 // project imports
 import impresario.IModel;
+import model.Scout;
 
 /** The class containing the Account Holder ID Entry View for the 'Impose Service Charge' functionality of the  ATM application */
 //==============================================================
 public class SearchUpdateScoutView extends View
 {
+	//Element to process data
+	protected Properties myProps;
 
 	// GUI components
 	protected TextField firstName;
@@ -177,11 +180,29 @@ public class SearchUpdateScoutView extends View
 
 		return vbox;
 	}
-
+	// ----------------------------------------------------------------------------------
 
 	private void processAction(ActionEvent e) {
-		myModel.stateChangeRequest("SubmitSearchUpdateScout", null);
+		
+		// Getting the results from the text fields
+		String lastNameEntry = lastName.getText();
+		String firstNameEntry = firstName.getText();
+
+		//Send the properties
+		sendScoutSearch(lastNameEntry, firstNameEntry);
+		
 	}
+	// --------------------------------------------------------------------------------------------------------
+	private void sendScoutSearch(String lastName, String firstName) { 
+
+		//Setting up the search parameter in the 
+		myProps.setProperty("lastName", lastName);
+		myProps.setProperty("firstName", firstName);
+		
+		//Sending the search
+		myModel.stateChangeRequest("SubmitSearchUpdateScout", myProps);
+	}
+	//-------------------------------------------------------------------------------------------------------
 	// Create the status log field
 	//-------------------------------------------------------------
 	protected MessageView createStatusLog(String initialMessage)
