@@ -6,7 +6,8 @@ import java.sql.SQLException;
 import java.util.Enumeration;
 import java.util.Properties;
 import java.util.Vector;
-import javax.swing.JFrame;
+import javax.swing.*;
+
 import database.*;
 //import userinterface.View;
 //import userinterface.ViewFactory;
@@ -15,6 +16,7 @@ import impresario.IView;
 public class Tree extends EntityBase implements IView {
     private static final String myTableName = "Tree";
     protected Properties dependencies;
+    private boolean oldFlag = true;
     // GUI Components
     private String updateStatusMessage = "";
     //---------------------------------------------------------
@@ -104,12 +106,19 @@ public class Tree extends EntityBase implements IView {
     }
     //-----------------------------------------------------------------------------------
     private void updateStateInDatabase() {
-        try {
-            if (persistentState.getProperty("barcode") != null) {
+        try
+        {
+            if (oldFlag)
+            {
                 Properties whereClause = new Properties();
                 whereClause.setProperty("barcode", persistentState.getProperty("barcode"));
                 updatePersistentState(mySchema, persistentState, whereClause);
                 updateStatusMessage = "Data for Tree : " + persistentState.getProperty("barcode") + " updated successfully in database!";
+            }
+            else
+            {
+                insertPersistentState(mySchema, persistentState);
+                oldFlag = true;
             }
         }
         catch (SQLException ex) {
@@ -121,7 +130,6 @@ public class Tree extends EntityBase implements IView {
     public Vector<String> getEntryListView()
     {
         Vector<String> v = new Vector<String>();
-
         v.addElement(persistentState.getProperty("barcode"));
         v.addElement(persistentState.getProperty("treeType"));
         v.addElement(persistentState.getProperty("notes"));
@@ -150,6 +158,11 @@ public class Tree extends EntityBase implements IView {
             retVal += nextKey + ": " + nextValue + "; ";
         }
         return retVal;
+    }
+
+    protected void setOldFlag(boolean val)
+    {
+        oldFlag = val;
     }
 
 }

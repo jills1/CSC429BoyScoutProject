@@ -16,6 +16,7 @@ import userinterface.View;
 import userinterface.ViewFactory;
 
 /** The class containing the RemoveScoutTransaction for the Tree Sales application */
+
 //==============================================================
 public class RemoveScoutTransaction extends Transaction
 {
