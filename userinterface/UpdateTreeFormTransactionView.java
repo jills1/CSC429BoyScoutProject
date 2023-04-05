@@ -65,6 +65,7 @@ public class UpdateTreeFormTransactionView extends View {
     //-------------------------------------------------------------
     private VBox createFormContent() {
         //-----------------------------------------------------------
+        populateFields();
         // Container Padding
         VBox vbox = new VBox(10);
         GridPane grid = new GridPane();
@@ -127,7 +128,13 @@ public class UpdateTreeFormTransactionView extends View {
         return statusLog;
     }
     //-------------------------------------------------------------
-    public void populateFields() {}
+    public void populateFields() {
+        barcode.setText((String)myModel.getState("barcode"));
+        treeType.setText((String)myModel.getState("treeType"));
+        status.setValue((String)myModel.getState("status"));
+        notes.setText((String)myModel.getState("notes"));
+        dateStatusUpdate.setText((String)myModel.getState("dateStatusUpdate"));
+    }
     //----------------------------------------------------------
     private void processAction(Event evt) {
         //clearErrorMessage();

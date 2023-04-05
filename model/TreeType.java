@@ -9,16 +9,16 @@ import java.util.Vector;
 //import userinterface.View;
 //import userinterface.ViewFactory;
 
-public class Tree extends EntityBase implements IView {
-    private static final String myTableName = "Tree";
+public class TreeType extends EntityBase implements IView {
+    private static final String myTableName = "TreeType";
     protected Properties dependencies;
     private String updateStatusMessage = "";
     //---------------------------------------------------------
-    public Tree() {
+    public TreeType() {
         super(myTableName);
     }
     //----------------------------------------------------------
-    public Tree(String barcode) throws InvalidPrimaryKeyException {
+    public TreeType(String barcode) throws InvalidPrimaryKeyException {
         super(myTableName);
         setDependencies();
         String query = "SELECT * FROM " + myTableName + " WHERE (barcode = " + barcode + ")";
@@ -49,13 +49,11 @@ public class Tree extends EntityBase implements IView {
     // Can also be used to create a NEW Account (if the system it is part of
     // allows for a new account to be set up)
     //----------------------------------------------------------
-    public Tree(Properties props)
-    {
+    public TreeType(Properties props) {
         super(myTableName);
         setDependencies();
         persistentState = new Properties();
         Enumeration allKeys = props.propertyNames();
-
         while (allKeys.hasMoreElements() == true) {
             String nextKey = (String)allKeys.nextElement();
             String nextValue = props.getProperty(nextKey);
@@ -84,7 +82,8 @@ public class Tree extends EntityBase implements IView {
         myRegistry.updateSubscribers(key, this);
     }
     //----------------------------------------------------------
-    public void updateState(String key, Object value) {
+    public void updateState(String key, Object value)
+    {
         stateChangeRequest(key, value);
     }
     //-----------------------------------------------------------------------------------

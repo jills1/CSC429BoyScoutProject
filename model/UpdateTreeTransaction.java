@@ -1,7 +1,7 @@
 package model;
 import javafx.scene.Scene;
 import java.util.Properties;
-import java.util.Vector;
+import exception.InvalidPrimaryKeyException;
 
 // project imports
 
@@ -11,8 +11,6 @@ import userinterface.ViewFactory;
 public class UpdateTreeTransaction extends Transaction {
     private Account myAccount;
     private String depositAmount;
-    protected Vector<String> myTree;
-    //protected Scout myScout;
     private String transactionErrorMessage = "";
     private String accountUpdateStatusMessage = "";
     private String barcode;
@@ -20,7 +18,7 @@ public class UpdateTreeTransaction extends Transaction {
     private String notes;
     private String status;
     private String dateStatusUpdate;
-
+    protected  Tree myTree;
     //----------------------------------------------------------
     public UpdateTreeTransaction() throws Exception {
         super();
@@ -34,33 +32,25 @@ public class UpdateTreeTransaction extends Transaction {
         myRegistry.setDependencies(dependencies);
     }
     //----------------------------------------------------------
-    //Change View process Transaction
     public void processTransaction(Properties props) {
-        createAndShowUpdateTreeFormTransactionView();
-//        if (props.getProperty("AccountNumber") != null) {
-//            String accountNumber = props.getProperty("AccountNumber");
-//            try {
-//                myAccount = createAccount(accountNumber);
-//                boolean isOwner = myAccount.verifyOwnership(myCust);
-//                if (isOwner == false) {
-//                    transactionErrorMessage = "ERROR: Deposit Transaction: Not owner of selected account!!";
-//                    new Event(Event.getLeafLevelClassName(this), "processTransaction", "Failed to verify ownership of account number : " + accountNumber + ".", Event.ERROR);
-//                } else {
-//                    //createAndShowDepositAmountView();
-//                }
-//            }
-//            catch (InvalidPrimaryKeyException ex) {
-//                transactionErrorMessage = "ACCOUNT FAILURE: Contact bank immediately!!";
-//                new Event(Event.getLeafLevelClassName(this), "processTransaction", "Failed to create account for number : " + accountNumber + ". Reason: " + ex.toString(), Event.ERROR);
-//            }
-//        } else if (props.getProperty("Amount") != null) {
-//            String amount = props.getProperty("Amount");
-//            depositAmount = amount;
-//            myAccount.credit(amount);
-//            myAccount.update();
-//            accountUpdateStatusMessage = (String)myAccount.getState("UpdateStatusMessage");
-//            transactionErrorMessage = accountUpdateStatusMessage;
-//            createAndShowReceiptView();
+      //  try {
+            //            String barcode= props.getProperty("barcode");
+            //            myTree= new Tree(barcode);
+            String treeType = (String) myTree.getState("treeType");
+            props.setProperty("treeType", treeType);
+            //-------
+            String treeStatus = (String) myTree.getState("status");
+            props.setProperty("status", treeStatus);
+            //-------
+            String treeNotes = (String) myTree.getState("notes");
+            props.setProperty("notes", treeNotes);
+            //-------
+            String treeDateStatusUpdate = (String) myTree.getState("dateStatusUpdate");
+            props.setProperty("dateStatusUpdate", treeDateStatusUpdate);
+            //-------
+            createAndShowUpdateTreeFormTransactionView();
+//        } catch(InvalidPrimaryKeyException e){
+//            transactionErrorMessage="Error cannot do this 2.";
 //        }
     }
     //-----------------------------------------------------------
@@ -69,14 +59,30 @@ public class UpdateTreeTransaction extends Transaction {
             return transactionErrorMessage;
         } else if (key.equals("UpdateStatusMessage") == true) {
             return accountUpdateStatusMessage;
-        } else if (key.equals("AccountNumberList") == true) {
-            return myAccountIDs;
-        } else if (key.equals("Account") == true) {
-            return myAccount;
-        } else if (key.equals("DepositAmount") == true) {
-            return depositAmount;
-        } else if (key.equals("myTree") == true) {
-            return myTree;
+        } else if (key.equals("treeType") == true) {
+            if (myTree != null) {
+                return myTree.getState("treeType");
+            } else {
+                return "Undefined";
+            }
+        } else if (key.equals("notes") == true) {
+            if (myTree != null) {
+                return myTree.getState("notes");
+            } else {
+                return "Undefined";
+            }
+        } else if (key.equals("status") == true) {
+            if (myTree != null) {
+                return myTree.getState("status");
+            } else {
+                return "Undefined";
+            }
+        } else if (key.equals("dateStatusUpdate") == true) {
+            if (myTree != null) {
+                return myTree.getState("dateStatusUpdate");
+            } else {
+                return "Undefined";
+            }
         }
         return null;
     }
@@ -88,11 +94,7 @@ public class UpdateTreeTransaction extends Transaction {
             doYourJob();
         } else  if (key.equals("UpdateTreeInfo")==true) {
             processTransaction((Properties)value);
-            String scoutID = (String)value;
-            //Properties props =(Properties)value;
-            //String scoutID = props.getProperty("scoutID");
-            myTree = myTree.getClass(getEntryListView());
-            createAndShowUpdateTreeFormTransactionView();
+
         }
         myRegistry.updateSubscribers(key, this);
     }
@@ -111,12 +113,6 @@ public class UpdateTreeTransaction extends Transaction {
         }
     }
     //------------------------------------------------------
-//    protected void createAndShowUpdateTreeTransactionView() {
-//        View newView = ViewFactory.createView("UpdateTreeTransactionView", this);
-//        Scene newScene = new Scene(newView);
-//        myViews.put("UpdateTreeTransactionView", newScene);
-//        swapToView(newScene);
-//    }
     protected void createAndShowUpdateTreeFormTransactionView() {
         View newView = ViewFactory.createView("UpdateTreeFormTransactionView", this);
         Scene newScene = new Scene(newView);
@@ -125,13 +121,11 @@ public class UpdateTreeTransaction extends Transaction {
         // return newScreen;
     }
     //------------------------------------------------------
-    //Receipt
     protected void createAndShowReceiptView() {
         // create our initial view
         View newView = ViewFactory.createView("DepositReceipt", this);
         Scene newScene = new Scene(newView);
         myViews.put("DepositReceipt", newScene);
-        // make the view visible by installing it into the frame
         swapToView(newScene);
     }
 }
