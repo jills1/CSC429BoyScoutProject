@@ -19,9 +19,9 @@ public class ScoutTableModel
     //----------------------------------------------------------------------------
     public ScoutTableModel(Vector<String> scoutData)
     {
-        firstName =  new SimpleStringProperty(scoutData.elementAt(0));
+        firstName =  new SimpleStringProperty(scoutData.elementAt(2));
         lastName =  new SimpleStringProperty(scoutData.elementAt(1));
-        middleName =  new SimpleStringProperty(scoutData.elementAt(2));
+        middleName =  new SimpleStringProperty(scoutData.elementAt(3));
         dateOfBirth =  new SimpleStringProperty(scoutData.elementAt(4));
         phoneNumber =  new SimpleStringProperty(scoutData.elementAt(5));
         email =  new SimpleStringProperty(scoutData.elementAt(6));

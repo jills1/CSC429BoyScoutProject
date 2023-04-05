@@ -51,7 +51,6 @@ public class ScoutCollection  extends EntityBase implements IView
 		//users.add(u);
 		int low=0;
 		int high = scoutList.size()-1;
-		System.out.println("find index to add: " + high);
 		int middle;
 
 		while (low <=high)
@@ -59,9 +58,7 @@ public class ScoutCollection  extends EntityBase implements IView
 			middle = (low+high)/2;
 
 			Scout midSession = scoutList.elementAt(middle);
-			System.out.println("middle value at: " + middle);
 			int result = Scout.compare(a,midSession);
-			System.out.println("Result is: " + result);
 			if (result ==0)
 			{
 				return middle;
@@ -111,6 +108,23 @@ public class ScoutCollection  extends EntityBase implements IView
 			Scout nextSct = scoutList.elementAt(cnt);
 			String nextSctId = (String)nextSct.getState("scoutID");
 			if (nextSctId.equals(scoutId) == true)
+			{
+				retValue = nextSct;
+				return retValue; // we should say 'break;' here
+			}
+		}
+
+		return retValue;
+	}
+	//----------------------------------------------------------
+	public Scout retrieveByTroopID(String troopId)
+	{
+		Scout retValue = null;
+		for (int cnt = 0; cnt < scoutList.size(); cnt++)
+		{
+			Scout nextSct = scoutList.elementAt(cnt);
+			String nextSctId = (String)nextSct.getState("troopID");
+			if (nextSctId.equals(troopId) == true)
 			{
 				retValue = nextSct;
 				return retValue; // we should say 'break;' here
@@ -180,15 +194,20 @@ System.out.println(query);
 
 
 		Vector allDataRetrieved = getSelectQueryResult(query);
+		System.out.println("If you see this Jalen worked the query successfully");
 		//scoutList = new Vector<Scout>();
 
 
 		for(int cnt = 0; cnt < allDataRetrieved.size(); cnt++) {
+			System.out.println("Jalen is at iteration: " + cnt + " of adding the scout");
 			Properties nextScoutData = (Properties) allDataRetrieved.elementAt(cnt);
 
 			Scout scout = new Scout(nextScoutData);
+			System.out.println("Jalen finished creating the scout for iteration: " + cnt);
 			addScout(scout);
+			System.out.println("Jalen finished adding the scout for iteration: " + cnt);
 
 		}
+		System.out.println("If you see this Jalen did not mess up adding the scout to the list");
 	}
 }

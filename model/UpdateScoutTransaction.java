@@ -56,7 +56,7 @@ public class UpdateScoutTransaction extends Transaction
         dependencies.setProperty("CancelScoutList", "UpdateTransaction");
         dependencies.setProperty("OK", "UpdateTransaction");
         dependencies.setProperty("SearchScoutInfo", "TransactionError");
-        dependencies.setProperty("ScoutSelected", "TransactionError");
+        dependencies.setProperty("ScoutChosen", "TransactionError");
 
         myRegistry.setDependencies(dependencies);
     }
@@ -93,13 +93,20 @@ public class UpdateScoutTransaction extends Transaction
             {
                 return myScoutCollection;
             }
-        if (key.equals("SelectedScout") == true)
+            else
+        if (key.equals("ScoutChosen") == true)
         {
+            System.out.println("Scout required");
+            if (myScout == null) {
+                System.out.println("Scout null");
+                return null;
+        } else
             return myScout;
         }
         else
         if (myScout != null)
         {
+            System.out.println("State required");
             Object val = myScout.getState(key);
             if (val != null)
             {
@@ -139,7 +146,9 @@ public class UpdateScoutTransaction extends Transaction
 
                 try
                 {
+                    System.out.println("try tested");
                     myScoutCollection = new ScoutCollection();
+                    System.out.println("collection created");
 
                     processTransaction(props);
                 }
@@ -152,8 +161,10 @@ public class UpdateScoutTransaction extends Transaction
         else
             if (key.equals("ScoutChosen") == true)
             {
-                String scoutID = (String)value;
-               myScout = myScoutCollection.retrieve(scoutID);
+                System.out.println("Scout chosen from table");
+                String troopID = (String)value;
+                System.out.println("Troop ID: "+ troopID);
+               myScout = myScoutCollection.retrieveByTroopID(troopID);
                creatAndShowUpdateScoutInfoView();
 
 

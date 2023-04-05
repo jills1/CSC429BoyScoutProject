@@ -37,7 +37,7 @@ public class UpdateScoutInfoView extends View
 {
 
 	// Model
-
+	public String scoutID;
 	// GUI components
 	private TextField firstName;
 	private TextField middleName;
@@ -185,6 +185,7 @@ public class UpdateScoutInfoView extends View
 		grid.add(troopIDLabel, 0, 6);
 
 		troopID = new TextField();
+		troopID.setEditable(false);
 		troopID.setOnAction(new EventHandler<ActionEvent>() {
 
 			@Override
@@ -247,7 +248,24 @@ public class UpdateScoutInfoView extends View
 	//-------------------------------------------------------------
 	public void populateFields()
 	{
+		Scout leScoutChoisi = (Scout)myModel.getState("ScoutChosen");
+		String ln = leScoutChoisi.getLastName();
+		String fn = leScoutChoisi.getFirstName();
+		String mn = leScoutChoisi.getMiddleName();
+		String dob = leScoutChoisi.getDateOfBirth();
+		String nb = leScoutChoisi.getPhoneNumber();
+		String aEmail = leScoutChoisi.getEmail();
+		String troop = leScoutChoisi.getTroopID();
+		String scID = leScoutChoisi.getScoutID();
 
+		lastName.setText(ln);
+		firstName.setText(fn);
+		middleName.setText(mn);
+		dateOfBirth.setText(dob);
+		phoneNumber.setText(nb);
+		email.setText(aEmail);
+		troopID.setText(troop);
+		scoutID = scID;
 	}
 
 
@@ -270,23 +288,23 @@ public class UpdateScoutInfoView extends View
 
 		if ((lastNameEntered == null) || (lastNameEntered.length() == 0))
 		{
-			displayErrorMessage("Please change a last name");
+			displayErrorMessage("Please change the last name");
 		}
 		else if ((firstNameEntered == null) || (firstNameEntered.length() == 0))
 		{
-			displayErrorMessage("Please change a first name");
+			displayErrorMessage("Please change the first name");
 		}
 		else if ((middleNameEntered == null) || (middleNameEntered.length() == 0))
 		{
-			displayErrorMessage("Please change a middle name");
+			displayErrorMessage("Please change the middle name");
 		}
 		else if ((dateOfBirthEntered == null) || (dateOfBirthEntered.length() == 0))
 		{
-			displayErrorMessage("Please change a valid birth date");
+			displayErrorMessage("Please change for a valid birth date");
 		}
-		else if ((phoneNumberEntered == null) || (phoneNumberEntered.length() == 0))
+		else if ((phoneNumberEntered == null) || (phoneNumberEntered.length() < 10) || (phoneNumberEntered.length() > 10) )
 		{
-			displayErrorMessage("Please change a phone number");
+			displayErrorMessage("Please change for a valid phone number");
 		}
 		else if ((emailEntered == null) || (emailEntered.length() == 0))
 		{
@@ -302,6 +320,7 @@ public class UpdateScoutInfoView extends View
 	private void processScoutInfo(String lastName, String firstName, String middleName, String dateOfBirth, String phoneNumber,String email, String troopID)
 	{
 		Properties props = new Properties();
+		props.setProperty("scoutID", scoutID);
 		props.setProperty("lastName", lastName);
 		props.setProperty("firstName", firstName);
 		props.setProperty("middleName", middleName);
@@ -309,10 +328,10 @@ public class UpdateScoutInfoView extends View
 		props.setProperty("phoneNumber", phoneNumber);
 		props.setProperty("email", email);
 		props.setProperty("troopID", troopID);
-		myModel.stateChangeRequest("RegisterWithScoutInfo", props);
+		myModel.stateChangeRequest("UpdateScoutInfo", props);
 		Scout scout = new Scout(props);
 		scout.update();
-		displayMessage("Successfully added new Scout");
+		displayMessage("Successfully modified Scout");
 	}
 	public void displayMessage(String message)
 	{

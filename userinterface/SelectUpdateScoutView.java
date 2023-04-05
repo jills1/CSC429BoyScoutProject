@@ -257,7 +257,7 @@ public class SelectUpdateScoutView extends View
 		
 		if(selectedItem != null)
 		{
-			String selectedScout = selectedItem.getFirstName();
+			String selectedScout = selectedItem.getTroopID();
 
 			myModel.stateChangeRequest("ScoutChosen", selectedScout);
 		}
