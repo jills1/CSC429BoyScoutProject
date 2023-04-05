@@ -71,16 +71,7 @@ abstract public class Persistable
 		// DEBUG System.out.println("Leaving Persistable constructor.");
     }
 
-   /**
-     * Create a Properties object representing aspects of the
-     * 'schema' of a table - namely, the column names and the types
-     * of the columns
-     *
-     * @param  String Table name to get schema information for
-     *
-     * @return Properties object indicating column names as keys and column
-     *         types as values
-     */
+
     //------------------------------------------------------------
     protected Properties getSchemaInfo(String tableName)
     {	

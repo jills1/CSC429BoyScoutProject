@@ -138,11 +138,14 @@ public class AddTreeView extends View
                 p.setProperty("dateStatusUpdate", dUS);
                 System.out.println("The time is " + dUS);
 
-                if((p.getProperty("barcode")).equals("") ||
-                        (p.getProperty("notes")).equals("") || (p.getProperty("status")).equals("")){
-                    displayErrorMessage("All fields must be filled in.");
+                if((p.getProperty("barcode")).equals("") || (p.getProperty("barcode")).length() > 5) {
+                    displayErrorMessage("Barcode is empty or bigger than 5 numbers.");
                     return;
-                }else {
+                } else if ((p.getProperty("notes")).length() > 200) {
+                    displayErrorMessage("Notes is bigger than 200 charcters.");
+                    return;
+                }
+                else {
                     myModel.stateChangeRequest("AddTreeInfo", p);
                    Tree tree = new Tree(p);
                    tree.update();
