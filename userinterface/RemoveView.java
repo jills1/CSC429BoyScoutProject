@@ -243,7 +243,7 @@ public class RemoveView extends View
     private void processAction(Event evt)
     {
         clearErrorMessage();
-
+        System.out.println("i'm in process Action");
         String barcodeEntered = barcode.getText();
         //String treeTypeEntered = treeType.getText();
         String statusEntered = status.getText();
@@ -267,7 +267,7 @@ public class RemoveView extends View
         myModel.stateChangeRequest("RemoveTreeWithTreeInfo", props);
         Tree tree = new Tree(props);
         //tree.update();
-        //displayMessage("Successfully removed tree");
+        displayMessage("Successfully removed tree");
     }
     public void displayMessage(String message)
     {

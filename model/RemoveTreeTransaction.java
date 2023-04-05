@@ -64,19 +64,18 @@ public class RemoveTreeTransaction extends Transaction
      */
     //----------------------------------------------------------
     public void processTransaction(Properties props){
-
-       try{
-           String barcode= props.getProperty("barcode");
-           myTree= new Tree(barcode);
-           if(myTree.getState("status").equals("Sold")){
-               transactionErrorMessage="Error: its has been sold";
-               return;
-           }
-           myTree.deleteStateInDatabase();
-           transactionErrorMessage=(String)myTree.getState("UpdateStatusMessage");
-       } catch(InvalidPrimaryKeyException e){
-            transactionErrorMessage="Error cannot do this.";
-       }
+        System.out.println("I'm getting to processTransaction");
+        System.out.println("I'm getting into try");
+        String barcode= props.getProperty("barcode");
+        System.out.println("I'm in the between");
+        System.out.println("getting to if");
+        if(myTree.getState("status").equals("Sold")){
+            transactionErrorMessage="Error: its has been sold";
+            return;
+        }
+        System.out.println("i'm getting to myTree.deleteStateInDatabase");
+        myTree.deleteStateInDatabase();
+        transactionErrorMessage=(String)myTree.getState("UpdateStatusMessage");
     }
     //-----------------------------------------------------------
     public void searchTree(Properties props){
