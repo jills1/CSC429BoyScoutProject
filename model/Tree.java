@@ -52,6 +52,7 @@ public class Tree extends EntityBase implements IView {
             throw new InvalidPrimaryKeyException("No tree matching inputted barcode : " + barcode+ " found.");
         }
     }
+
     // Can also be used to create a NEW Account (if the system it is part of
     // allows for a new account to be set up)
     //----------------------------------------------------------
@@ -69,6 +70,20 @@ public class Tree extends EntityBase implements IView {
                 persistentState.setProperty(nextKey, nextValue);
             }
         }
+    }
+
+    public String getTreeTypeID(Properties props)
+    {
+        String barcode = props.getProperty("barcode");
+        String sub = barcode.substring(0,2);
+        String query = "Select treeTypeID FROM treetype WHERE (barcodePrefix = " + sub + ")";
+        Vector<Properties> allDataRetrieved = getSelectQueryResult(query);
+        String ID ="";
+        for (int i =0; i < allDataRetrieved.size(); i++ )
+        {
+            ID += allDataRetrieved.get(i).getProperty("treeType");
+        }
+        return ID;
     }
     //-----------------------------------------------------------------------------------
     private void setDependencies() {

@@ -1,7 +1,11 @@
 package model;
 
 import javafx.scene.Scene;
+import impresario.IView;
+import java.sql.SQLException;
+import java.util.Enumeration;
 import java.util.Properties;
+import java.util.Vector;
 
 // project imports
 import event.Event;
@@ -13,6 +17,7 @@ public class AddTreeTransaction extends Transaction
 {
 
     private Tree myTree;
+    protected Properties dependencies;
 
     // GUI Components
 
@@ -56,6 +61,7 @@ public class AddTreeTransaction extends Transaction
     {
 
             String barcode = props.getProperty("barcode");
+             props.setProperty("treeType", myTree.getTreeTypeID(props));
         try
         {
             Tree t = new Tree(barcode);
