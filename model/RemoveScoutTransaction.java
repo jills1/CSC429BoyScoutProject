@@ -97,6 +97,7 @@ public class RemoveScoutTransaction extends Transaction
             }
         if (key.equals("SelectedScout") == true)
         {
+            System.out.println("test1234");
             return myScout;
         }
         else
