@@ -226,7 +226,7 @@ public class SelectUpdateScoutView extends View
 			 		*/
 					//----------------------------------------------------------
        		     	clearErrorMessage();
-       		     	myModel.stateChangeRequest("CancelScoutList", null); 
+       		     	myModel.stateChangeRequest("CancelUpdate", null);
             	  }
         	});
 

@@ -53,7 +53,7 @@ public class UpdateScoutTransaction extends Transaction
     {
         dependencies = new Properties();
         dependencies.setProperty("SearchUpdateScout", "UpdateTransaction");
-        dependencies.setProperty("CancelScoutList", "UpdateTransaction");
+        dependencies.setProperty("CancelUpdate", "CancelTransaction");
         dependencies.setProperty("OK", "UpdateTransaction");
         dependencies.setProperty("SearchScoutInfo", "TransactionError");
         dependencies.setProperty("ScoutChosen", "TransactionError");
@@ -174,16 +174,18 @@ public class UpdateScoutTransaction extends Transaction
             else
             if(key.equals("UpdateScoutInfo") == true)
             {
-                DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd");
-                LocalDateTime now = LocalDateTime.now();
-                //myScout.stateChangeRequest("firstName",);
-                //myScout.stateChangeRequest("lastName",);
-                //myScout.stateChangeRequest("middleName",);
-                //myScout.stateChangeRequest("dateOfBirth",);
-                //myScout.stateChangeRequest("phoneNumber",);
-                //myScout.stateChangeRequest("email",);
-                //myScout.stateChangeRequest("troopID",);
-                myScout.stateChangeRequest("dateStatusUpdated",dtf.format(now));
+                //DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+                //LocalDateTime now = LocalDateTime.now();
+                Scout tempScout = new Scout((Properties)value);
+                myScout.stateChangeRequest("scoutID", tempScout.getScoutID());
+                myScout.stateChangeRequest("firstName", tempScout.getFirstName());
+                myScout.stateChangeRequest("lastName", tempScout.getLastName());
+                myScout.stateChangeRequest("middleName", tempScout.getMiddleName());
+                myScout.stateChangeRequest("dateOfBirth", tempScout.getDateOfBirth());
+                myScout.stateChangeRequest("phoneNumber",tempScout.getPhoneNumber());
+                myScout.stateChangeRequest("email", tempScout.getEmail());
+                myScout.stateChangeRequest("troopID", tempScout.getTroopID());
+                //myScout.stateChangeRequest("dateStatusUpdated",dtf.format(now));
                 myScout.update();
 
             }
@@ -244,6 +246,16 @@ public class UpdateScoutTransaction extends Transaction
         myViews.put("UpdateScoutInfoView", newScene);
 
         // display the view
+        swapToView(newScene);
+    }
+
+    protected void createAndShowTLC()
+    {
+        View newView = ViewFactory.createView("TLCView", this);
+        Scene newScene = new Scene(newView);
+
+        myViews.put("TLCView", newScene);
+
         swapToView(newScene);
     }
 

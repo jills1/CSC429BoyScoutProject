@@ -220,7 +220,7 @@ public class UpdateScoutInfoView extends View
 				 */
 				//----------------------------------------------------------
 				clearErrorMessage();
-				myModel.stateChangeRequest("CancelDeposit", null);
+				myModel.stateChangeRequest("CancelUpdate", null);
 			}
 		});
 
@@ -286,17 +286,26 @@ public class UpdateScoutInfoView extends View
 		String emailEntered = email.getText();
 		String troopIDEntered = troopID.getText();
 
-		if ((lastNameEntered == null) || (lastNameEntered.length() == 0))
+		if ((lastNameEntered == null) || (lastNameEntered.length() == 0) )
 		{
 			displayErrorMessage("Please change the last name");
+		}
+		else if ((lastNameEntered.length() > 25)) {
+			displayErrorMessage("Last name too long for the database");
 		}
 		else if ((firstNameEntered == null) || (firstNameEntered.length() == 0))
 		{
 			displayErrorMessage("Please change the first name");
 		}
+		else if ((firstNameEntered.length() > 25)) {
+			displayErrorMessage("First name too long for the database");
+		}
 		else if ((middleNameEntered == null) || (middleNameEntered.length() == 0))
 		{
 			displayErrorMessage("Please change the middle name");
+		}
+		else if ((middleNameEntered.length() > 25)) {
+			displayErrorMessage("Middle name too long for the database");
 		}
 		else if ((dateOfBirthEntered == null) || (dateOfBirthEntered.length() == 0))
 		{
@@ -329,9 +338,9 @@ public class UpdateScoutInfoView extends View
 		props.setProperty("email", email);
 		props.setProperty("troopID", troopID);
 		myModel.stateChangeRequest("UpdateScoutInfo", props);
-		Scout scout = new Scout(props);
-		scout.update();
-		displayMessage("Successfully modified Scout");
+		//Scout scout = new Scout(props);
+		//scout.update();
+		displayMessage("Successfully updated Scout");
 	}
 	public void displayMessage(String message)
 	{

@@ -165,7 +165,7 @@ public class SearchUpdateScoutView extends View
 				 */
 				//----------------------------------------------------------
 				clearErrorMessage();
-				myModel.stateChangeRequest("CancelDeposit", null);
+				myModel.stateChangeRequest("CancelUpdate", null);
 			}
 		});
 
