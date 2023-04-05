@@ -74,6 +74,8 @@ public class RemoveView extends View
         getChildren().add(container);
 
         populateFields();
+
+        myModel.subscribe("TransactionError", this);
     }
 
 
@@ -267,7 +269,7 @@ public class RemoveView extends View
         myModel.stateChangeRequest("RemoveTreeWithTreeInfo", props);
         Tree tree = new Tree(props);
         //tree.update();
-        displayMessage("Successfully removed tree");
+
     }
     public void displayMessage(String message)
     {
@@ -281,7 +283,14 @@ public class RemoveView extends View
     //---------------------------------------------------------
     public void updateState(String key, Object value)
     {
-
+        if (key.equals("TransactionError"))
+        {
+            String msg = (String)value;
+            if (msg.startsWith("ERR") == true)
+                displayErrorMessage(msg);
+            else
+                displayMessage(msg);
+        }
     }
 
     /**

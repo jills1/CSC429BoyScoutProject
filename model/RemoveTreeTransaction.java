@@ -53,7 +53,7 @@ public class RemoveTreeTransaction extends Transaction
         dependencies = new Properties();
         dependencies.setProperty("CancelDeposit", "CancelTransaction");
         dependencies.setProperty("OK", "CancelTransaction");
-        dependencies.setProperty("AccountNumber", "TransactionError");
+        dependencies.setProperty("RemoveTreeWithTreeInfo", "TransactionError");
 
         myRegistry.setDependencies(dependencies);
     }
@@ -64,16 +64,12 @@ public class RemoveTreeTransaction extends Transaction
      */
     //----------------------------------------------------------
     public void processTransaction(Properties props){
-        System.out.println("I'm getting to processTransaction");
-        System.out.println("I'm getting into try");
+
         String barcode= props.getProperty("barcode");
-        System.out.println("I'm in the between");
-        System.out.println("getting to if");
-        if(myTree.getState("status").equals("Sold")){
+         if(myTree.getState("status").equals("Sold")){
             transactionErrorMessage="Error: its has been sold";
             return;
         }
-        System.out.println("i'm getting to myTree.deleteStateInDatabase");
         myTree.deleteStateInDatabase();
         transactionErrorMessage=(String)myTree.getState("UpdateStatusMessage");
     }
@@ -81,9 +77,9 @@ public class RemoveTreeTransaction extends Transaction
     public void searchTree(Properties props){
 
         try{
+
             String barcode= props.getProperty("barcode");
             myTree= new Tree(barcode);
-
             String treeBarcode=(String)myTree.getState("barcode");
             System.out.println("tree barcode"+ treeBarcode);
             props.setProperty("barcode", treeBarcode);

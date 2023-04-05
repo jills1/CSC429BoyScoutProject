@@ -241,20 +241,21 @@ public class RemoveTreeTransactionView extends View
         clearErrorMessage();
 
         String barcodeEntered = barcode.getText();
+        if(barcodeEntered.length()!= 5){
+            displayErrorMessage("Enter a valid barcode");
+        }
         //String treeTypeEntered = treeType.getText();
         //String statusEntered = status.getText();
         //String dateStatusUpdatedEntered = dateStatusUpdated.getText();
 
 
-                    processTreeInfo(barcodeEntered/*,treeTypeEntered, statusEntered, dateStatusUpdatedEntered*/);
+                    processTreeInfo(barcodeEntered);
     }
-    private void processTreeInfo(String barcode/*,String treeType, String status, String dataStatusUpdated*/)
+    private void processTreeInfo(String barcode)
     {
         Properties props = new Properties();
         props.setProperty("barcode", barcode);
-        //props.setProperty("treeType", treeType);
-        //props.setProperty("status", status);
-        //props.setProperty("dateStatusUpdated",dataStatusUpdated);
+
 
 
         // call RemoveView here
