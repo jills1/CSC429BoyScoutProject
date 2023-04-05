@@ -1,7 +1,11 @@
 package model;
 
 import javafx.scene.Scene;
+import impresario.IView;
+import java.sql.SQLException;
+import java.util.Enumeration;
 import java.util.Properties;
+import java.util.Vector;
 
 // project imports
 import event.Event;
@@ -13,6 +17,7 @@ public class AddTreeTransaction extends Transaction
 {
 
     private Tree myTree;
+    protected Properties dependencies;
 
     // GUI Components
 
@@ -56,16 +61,28 @@ public class AddTreeTransaction extends Transaction
     {
 
         String barcode = props.getProperty("barcode");
+        String barcodePrefix = barcode.substring(0,2);
+        System.out.println("Extracted barcode prefix: " + barcodePrefix);
         try
         {
-            Tree tree = new Tree(barcode);
-            transactionErrorMessage = "ERROR: Tree with barcode: " + barcode + "Already exists!";
+            Tree t = new Tree(barcode);
         }
         catch (InvalidPrimaryKeyException ex)
         {
-            myTree = new Tree(props);
-            myTree.update();
-            transactionErrorMessage += myTree.getState("UpdateStatusMessage");
+            try {
+                TreeType treeType = new TreeType(barcodePrefix);
+                String treeTypeID = (String)treeType.getState("treeTypeID");
+                props.setProperty("treeType", treeTypeID);
+                myTree = new Tree(props);
+                myTree.setOldFlag(false);
+                myTree.update();
+
+            }
+            catch (InvalidPrimaryKeyException excep)
+            {
+                transactionErrorMessage = "ERROR: Invalid barcode, no associated tree type found!";
+            }
+
         }
     }
 
@@ -91,7 +108,8 @@ public class AddTreeTransaction extends Transaction
         else
         if (key.equals("AddTreeInfo")==true)
         {
-            processTransaction((Properties)value);
+            Properties p = (Properties)value;
+            processTransaction(p);
         }
 
         myRegistry.updateSubscribers(key, this);
