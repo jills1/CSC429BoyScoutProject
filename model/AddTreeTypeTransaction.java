@@ -3,6 +3,9 @@ package model;
 
 // system imports
 import javafx.scene.Scene;
+
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Properties;
 
 // project imports
@@ -17,13 +20,12 @@ import userinterface.ViewFactory;
 public class AddTreeTypeTransaction extends Transaction
 {
 
-    private Account myAccount;
-    private String depositAmount; // needed for GUI only
+    private TreeType myTreeType;
 
     // GUI Components
 
     private String transactionErrorMessage = "";
-    private String accountUpdateStatusMessage = "";
+
 
     /**
      * Constructor for this class.
@@ -32,80 +34,43 @@ public class AddTreeTypeTransaction extends Transaction
      */
     //----------------------------------------------------------
     public AddTreeTypeTransaction()
-            throws Exception
     {
         super();
     }
 
-    /**
-     * Constructor for this class.
-     * <p>
-     * Transaction remembers all the account IDs for this customer.
-     * It uses AccountCatalog to create this list of account IDs.
-     */
+
 
 
     //----------------------------------------------------------
     protected void setDependencies()
     {
         dependencies = new Properties();
-        dependencies.setProperty("CancelDeposit", "CancelTransaction");
-        dependencies.setProperty("OK", "CancelTransaction");
-        dependencies.setProperty("AccountNumber", "TransactionError");
+        dependencies.setProperty("CancelAddTreeType", "CancelTransaction");
+        dependencies.setProperty("AddTreeTypeWithInfo", "TransactionError");
 
         myRegistry.setDependencies(dependencies);
     }
 
     /**
-     * This method encapsulates all the logic of creating the account,
-     * verifying ownership, crediting, etc. etc.
+     * This method encapsulates all the logic of adding a Tree Type with the barcode prefix
      */
     //----------------------------------------------------------
     public void processTransaction(Properties props)
     {
-        if (props.getProperty("AccountNumber") != null)
-        {
-            String accountNumber = props.getProperty("AccountNumber");
-            try
-            {
-
-                myAccount = createAccount(accountNumber);
-                boolean isOwner = myAccount.verifyOwnership(myCust);
-                if (isOwner == false)
-                {
-                    transactionErrorMessage = "ERROR: Deposit Transaction: Not owner of selected account!!";
-                    new Event(Event.getLeafLevelClassName(this), "processTransaction",
-                            "Failed to verify ownership of account number : " + accountNumber + ".",
-                            Event.ERROR);
-                }
-                else
-                {
-                    //createAndShowDepositAmountView();
-                }
-            }
-            catch (InvalidPrimaryKeyException ex)
-            {
-                transactionErrorMessage = "ACCOUNT FAILURE: Contact bank immediately!!";
-                new Event(Event.getLeafLevelClassName(this), "processTransaction",
-                        "Failed to create account for number : " + accountNumber + ". Reason: " + ex.toString(),
-                        Event.ERROR);
-
-            }
+        String barcodePrefix = props.getProperty("barcodePrefix");
+        try {
+            TreeType tt = new TreeType(barcodePrefix);
+            transactionErrorMessage = "ERROR: Tree Type with prefix: " + barcodePrefix + " already exists!";
         }
-        else
-        if (props.getProperty("Amount") != null)
-        {
-            String amount = props.getProperty("Amount");
-            depositAmount = amount;
+        catch (InvalidPrimaryKeyException ex) {
+            myTreeType = new TreeType(props);
+            myTreeType.update();
 
-            myAccount.credit(amount);
-            myAccount.update();
-            accountUpdateStatusMessage = (String)myAccount.getState("UpdateStatusMessage");
-            transactionErrorMessage = accountUpdateStatusMessage;
-
-            createAndShowReceiptView();
+            transactionErrorMessage += myTreeType.getState("UpdateStatusMessage");
 
         }
+
+
     }
 
     //-----------------------------------------------------------
@@ -115,26 +80,7 @@ public class AddTreeTypeTransaction extends Transaction
         {
             return transactionErrorMessage;
         }
-        else
-        if (key.equals("UpdateStatusMessage") == true)
-        {
-            return accountUpdateStatusMessage;
-        }
-        else
-        if (key.equals("AccountNumberList") == true)
-        {
-            return myAccountIDs;
-        }
-        else
-        if (key.equals("Account") == true)
-        {
-            return myAccount;
-        }
-        else
-        if (key.equals("DepositAmount") == true)
-        {
-            return depositAmount;
-        }
+
         return null;
     }
 
@@ -148,7 +94,7 @@ public class AddTreeTypeTransaction extends Transaction
             doYourJob();
         }
         else
-        if (key.equals("RegisterWithScoutInfo")==true)
+        if (key.equals("AddTreeTypeWithInfo")==true)
         {
             processTransaction((Properties)value);
         }
@@ -163,25 +109,14 @@ public class AddTreeTypeTransaction extends Transaction
     //------------------------------------------------------
     protected Scene createView()
     {
-<<<<<<< HEAD
-        Scene currentScene = myViews.get("RegisterScoutTransactionView");
-=======
         Scene currentScene = myViews.get("AddTreeTypeTransactionView");
->>>>>>> 75c77d8 (AddTreeType)
 
         if (currentScene == null)
         {
             // create our initial view
-<<<<<<< HEAD
-            View newView = ViewFactory.createView("RegisterScoutTransactionView", this);
-            currentScene = new Scene(newView);
-            myViews.put("RegisterScoutTransactionView", currentScene);
-=======
             View newView = ViewFactory.createView("AddTreeTypeTransactionView", this);
             currentScene = new Scene(newView);
             myViews.put("AddTreeTypeTransactionView", currentScene);
-
->>>>>>> 75c77d8 (AddTreeType)
 
             return currentScene;
         }
@@ -194,22 +129,6 @@ public class AddTreeTypeTransaction extends Transaction
     //------------------------------------------------------
 
 
-    //------------------------------------------------------
-    protected void createAndShowReceiptView()
-    {
 
-        // create our initial view
-        View newView = ViewFactory.createView("DepositReceipt", this);
-        Scene newScene = new Scene(newView);
 
-        myViews.put("DepositReceipt", newScene);
-
-        // make the view visible by installing it into the frame
-        swapToView(newScene);
-    }
-
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> 75c77d8 (AddTreeType)

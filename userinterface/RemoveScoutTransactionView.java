@@ -1,5 +1,7 @@
+// specify the package
 package userinterface;
 
+// system imports
 import javafx.event.Event;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -21,65 +23,127 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
+
 import java.util.Properties;
 import java.util.Vector;
+
+// project imports
 import impresario.IModel;
 import model.Scout;
 
+/** The class containing the Remove Scout Transaction View  for the Tree sales application */
 //==============================================================
-public class RemoveScoutTransactionView extends View {
+public class RemoveScoutTransactionView extends View
+{
+
+    // Model
+
+    // GUI components
     private TextField firstName;
+
     private TextField lastName;
+
+
     private Button submitButton;
     private Button cancelButton;
+
+    // For showing error message
     private MessageView statusLog;
+
+    // constructor for this class -- takes a model object
     //----------------------------------------------------------
-    public RemoveScoutTransactionView(IModel trans){
+    public RemoveScoutTransactionView(IModel trans)
+    {
         super(trans, "RemoveScoutTransactionView");
+
         // create a container for showing the contents
         VBox container = new VBox(10);
         container.setPadding(new Insets(15, 5, 5, 5));
+
         // create our GUI components, add them to this panel
         container.getChildren().add(createTitle());
         container.getChildren().add(createFormContent());
+
         // Error message area
         container.getChildren().add(createStatusLog("                          "));
+
         getChildren().add(container);
+
         populateFields();
     }
+
+
     // Create the label (Text) for the title
     //-------------------------------------------------------------
-    private Node createTitle() {
+    private Node createTitle()
+    {
+
         Text titleText = new Text("       Troop 209          ");
         titleText.setFont(Font.font("Arial", FontWeight.BOLD, 20));
         titleText.setTextAlignment(TextAlignment.CENTER);
         titleText.setFill(Color.DARKGREEN);
+
         return titleText;
     }
+
     // Create the main data entry fields
     //-------------------------------------------------------------
-    private VBox createFormContent() {
+    private VBox createFormContent()
+    {
         VBox vbox = new VBox(10);
+
         GridPane grid = new GridPane();
         grid.setAlignment(Pos.CENTER);
         grid.setHgap(10);
         grid.setVgap(10);
         grid.setPadding(new Insets(25, 25, 25, 25));
+
         Label firstNameLabel = new Label("First Name : ");
         grid.add(firstNameLabel, 0, 0);
+
         firstName = new TextField();
-        firstName.setOnAction(new EventHandler<ActionEvent>() { @Override public void handle(ActionEvent e) {processAction(e);}});
+        firstName.setOnAction(new EventHandler<ActionEvent>() {
+
+            @Override
+            public void handle(ActionEvent e) {
+                processAction(e);
+            }
+        });
         grid.add(firstName, 1, 0);
+
         Label lastNameLabel = new Label("Last Name : ");
         grid.add(lastNameLabel, 0, 1);
-        lastName = new TextField();
-        lastName.setOnAction(new EventHandler<ActionEvent>() { @Override public void handle(ActionEvent e) {processAction(e);}});
-        grid.add(lastName, 1, 1);
-        submitButton = new Button("Submit");
-        submitButton.setOnAction(new EventHandler<ActionEvent>() { @Override public void handle(ActionEvent e) {clearErrorMessage();processAction(e);}});
-        cancelButton = new Button("Back");
-        cancelButton.setOnAction(new EventHandler<ActionEvent>() { @Override public void handle(ActionEvent e) {
 
+        lastName = new TextField();
+        lastName.setOnAction(new EventHandler<ActionEvent>() {
+
+            @Override
+            public void handle(ActionEvent e) {
+                processAction(e);
+            }
+        });
+        grid.add(lastName, 1, 1);
+
+
+
+        submitButton = new Button("Submit");
+        submitButton.setOnAction(new EventHandler<ActionEvent>() {
+
+            @Override
+            public void handle(ActionEvent e) {
+                clearErrorMessage();
+
+                processAction(e);
+            }
+        });
+
+        cancelButton = new Button("Back");
+        cancelButton.setOnAction(new EventHandler<ActionEvent>() {
+
+            @Override
+            public void handle(ActionEvent e) {
+
+                //----------------------------------------------------------
                 clearErrorMessage();
                 myModel.stateChangeRequest("CancelScoutSearch", null);
             }
@@ -118,9 +182,13 @@ public class RemoveScoutTransactionView extends View {
     private void processAction(Event evt)
     {
         //clearErrorMessage();
+
         String lastNameEntered = lastName.getText();
         String firstNameEntered = firstName.getText();
-        processScoutInfo(lastNameEntered,firstNameEntered);
+
+
+
+            processScoutInfo(lastNameEntered,firstNameEntered);
     }
     private void processScoutInfo(String lastName, String firstName)
     {

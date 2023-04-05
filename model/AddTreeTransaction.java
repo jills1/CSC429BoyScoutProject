@@ -1,7 +1,11 @@
 package model;
 
 import javafx.scene.Scene;
+import impresario.IView;
+import java.sql.SQLException;
+import java.util.Enumeration;
 import java.util.Properties;
+import java.util.Vector;
 
 // project imports
 import event.Event;
@@ -12,14 +16,12 @@ import userinterface.ViewFactory;
 public class AddTreeTransaction extends Transaction
 {
 
-    private Account myAccount;
-    private String depositAmount; // needed for GUI only
+    private Tree myTree;
+    protected Properties dependencies;
 
     // GUI Components
 
     private String transactionErrorMessage = "";
-    private String accountUpdateStatusMessage = "";
-
     /**
      * Constructor for this class.
      *
@@ -27,7 +29,7 @@ public class AddTreeTransaction extends Transaction
      */
     //----------------------------------------------------------
     public AddTreeTransaction()
-            throws Exception
+
     {
         super();
     }
@@ -44,9 +46,8 @@ public class AddTreeTransaction extends Transaction
     protected void setDependencies()
     {
         dependencies = new Properties();
-        dependencies.setProperty("CancelDeposit", "CancelTransaction");
-        dependencies.setProperty("OK", "CancelTransaction");
-        dependencies.setProperty("AccountNumber", "TransactionError");
+        dependencies.setProperty("CancelTree", "CancelTransaction");
+        dependencies.setProperty("AddTreeInfo", "TransactionError");
 
         myRegistry.setDependencies(dependencies);
     }
@@ -58,47 +59,29 @@ public class AddTreeTransaction extends Transaction
     //----------------------------------------------------------
     public void processTransaction(Properties props)
     {
-        if (props.getProperty("AccountNumber") != null)
+
+        String barcode = props.getProperty("barcode");
+        String barcodePrefix = barcode.substring(0,2);
+        System.out.println("Extracted barcode prefix: " + barcodePrefix);
+        try
         {
-            String accountNumber = props.getProperty("AccountNumber");
-            try
-            {
-
-                myAccount = createAccount(accountNumber);
-                boolean isOwner = myAccount.verifyOwnership(myCust);
-                if (isOwner == false)
-                {
-                    transactionErrorMessage = "ERROR: Deposit Transaction: Not owner of selected account!!";
-                    new Event(Event.getLeafLevelClassName(this), "processTransaction",
-                            "Failed to verify ownership of account number : " + accountNumber + ".",
-                            Event.ERROR);
-                }
-                else
-                {
-                    //createAndShowDepositAmountView();
-                }
-            }
-            catch (InvalidPrimaryKeyException ex)
-            {
-                transactionErrorMessage = "ACCOUNT FAILURE: Contact bank immediately!!";
-                new Event(Event.getLeafLevelClassName(this), "processTransaction",
-                        "Failed to create account for number : " + accountNumber + ". Reason: " + ex.toString(),
-                        Event.ERROR);
-
-            }
+            Tree t = new Tree(barcode);
         }
-        else
-        if (props.getProperty("Amount") != null)
+        catch (InvalidPrimaryKeyException ex)
         {
-            String amount = props.getProperty("Amount");
-            depositAmount = amount;
+            try {
+                TreeType treeType = new TreeType(barcodePrefix);
+                String treeTypeID = (String)treeType.getState("treeTypeID");
+                props.setProperty("treeType", treeTypeID);
+                myTree = new Tree(props);
+                myTree.setOldFlag(false);
+                myTree.update();
 
-            myAccount.credit(amount);
-            myAccount.update();
-            accountUpdateStatusMessage = (String)myAccount.getState("UpdateStatusMessage");
-            transactionErrorMessage = accountUpdateStatusMessage;
-
-            createAndShowReceiptView();
+            }
+            catch (InvalidPrimaryKeyException excep)
+            {
+                transactionErrorMessage = "ERROR: Invalid barcode, no associated tree type found!";
+            }
 
         }
     }
@@ -109,26 +92,6 @@ public class AddTreeTransaction extends Transaction
         if (key.equals("TransactionError") == true)
         {
             return transactionErrorMessage;
-        }
-        else
-        if (key.equals("UpdateStatusMessage") == true)
-        {
-            return accountUpdateStatusMessage;
-        }
-        else
-        if (key.equals("AccountNumberList") == true)
-        {
-            return myAccountIDs;
-        }
-        else
-        if (key.equals("Account") == true)
-        {
-            return myAccount;
-        }
-        else
-        if (key.equals("DepositAmount") == true)
-        {
-            return depositAmount;
         }
         return null;
     }
@@ -145,7 +108,8 @@ public class AddTreeTransaction extends Transaction
         else
         if (key.equals("AddTreeInfo")==true)
         {
-            processTransaction((Properties)value);
+            Properties p = (Properties)value;
+            processTransaction(p);
         }
 
         myRegistry.updateSubscribers(key, this);
@@ -168,18 +132,5 @@ public class AddTreeTransaction extends Transaction
         {
             return currentScene;
         }
-    }
-
-    protected void createAndShowReceiptView()
-    {
-
-        // create our initial view
-        View newView = ViewFactory.createView("DepositReceipt", this);
-        Scene newScene = new Scene(newView);
-
-        myViews.put("DepositReceipt", newScene);
-
-        // make the view visible by installing it into the frame
-        swapToView(newScene);
     }
 }

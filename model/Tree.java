@@ -6,15 +6,8 @@ import java.sql.SQLException;
 import java.util.Enumeration;
 import java.util.Properties;
 import java.util.Vector;
-<<<<<<< HEAD
-//import userinterface.View;
-//import userinterface.ViewFactory;
+import javax.swing.*;
 
-public class Tree extends EntityBase implements IView {
-    private static final String myTableName = "Tree";
-    protected Properties dependencies;
-=======
-import javax.swing.JFrame;
 import database.*;
 //import userinterface.View;
 //import userinterface.ViewFactory;
@@ -23,8 +16,8 @@ import impresario.IView;
 public class Tree extends EntityBase implements IView {
     private static final String myTableName = "Tree";
     protected Properties dependencies;
+    private boolean oldFlag = true;
     // GUI Components
->>>>>>> main
     private String updateStatusMessage = "";
     //---------------------------------------------------------
     public Tree() {
@@ -62,20 +55,13 @@ public class Tree extends EntityBase implements IView {
     // Can also be used to create a NEW Account (if the system it is part of
     // allows for a new account to be set up)
     //----------------------------------------------------------
-<<<<<<< HEAD
     public Tree(Properties props)
     {
-=======
-    public Tree(Properties props) {
->>>>>>> main
         super(myTableName);
         setDependencies();
         persistentState = new Properties();
         Enumeration allKeys = props.propertyNames();
-<<<<<<< HEAD
 
-=======
->>>>>>> main
         while (allKeys.hasMoreElements() == true) {
             String nextKey = (String)allKeys.nextElement();
             String nextValue = props.getProperty(nextKey);
@@ -90,29 +76,22 @@ public class Tree extends EntityBase implements IView {
         myRegistry.setDependencies(dependencies);
     }
     //----------------------------------------------------------
-<<<<<<< HEAD
     public Object getState(String key)
     {
-=======
-    public Object getState(String key) {
->>>>>>> main
         if (key.equals("UpdateStatusMessage") == true) {
             return updateStatusMessage;
         }
         return persistentState.getProperty(key);
     }
     //----------------------------------------------------------------
-<<<<<<< HEAD
     public void stateChangeRequest(String key, Object value)
     {
-=======
-    public void stateChangeRequest(String key, Object value) {
->>>>>>> main
         persistentState.setProperty(key, (String) value);
         myRegistry.updateSubscribers(key, this);
     }
     //----------------------------------------------------------
-    public void updateState(String key, Object value) {
+    public void updateState(String key, Object value)
+    {
         stateChangeRequest(key, value);
     }
     //-----------------------------------------------------------------------------------
@@ -127,19 +106,19 @@ public class Tree extends EntityBase implements IView {
     }
     //-----------------------------------------------------------------------------------
     private void updateStateInDatabase() {
-        try {
-            if (persistentState.getProperty("barcode") != null) {
+        try
+        {
+            if (oldFlag)
+            {
                 Properties whereClause = new Properties();
                 whereClause.setProperty("barcode", persistentState.getProperty("barcode"));
                 updatePersistentState(mySchema, persistentState, whereClause);
                 updateStatusMessage = "Data for Tree : " + persistentState.getProperty("barcode") + " updated successfully in database!";
-<<<<<<< HEAD
-=======
-            } else {
-                Integer bookId = insertAutoIncrementalPersistentState(mySchema, persistentState);
-                persistentState.setProperty("barcode", "" + bookId.intValue());
-                updateStatusMessage = "Data for new Tree : " +  persistentState.getProperty("barcode") + "installed successfully in database!";
->>>>>>> main
+            }
+            else
+            {
+                insertPersistentState(mySchema, persistentState);
+                oldFlag = true;
             }
         }
         catch (SQLException ex) {
@@ -147,9 +126,9 @@ public class Tree extends EntityBase implements IView {
         }
         //DEBUG System.out.println("updateStateInDatabase " + updateStatusMessage);
     }
-<<<<<<< HEAD
 
-    public Vector<String> getEntryListView() {
+    public Vector<String> getEntryListView()
+    {
         Vector<String> v = new Vector<String>();
         v.addElement(persistentState.getProperty("barcode"));
         v.addElement(persistentState.getProperty("treeType"));
@@ -159,13 +138,6 @@ public class Tree extends EntityBase implements IView {
 
         return v;
 
-=======
-    //--------------------------------------------------------------------------
-    public Vector<String> getEntryListView() {
-        Vector<String> v = new Vector<String>();
-        v.addElement(persistentState.getProperty("barcode"));
-        return v;
->>>>>>> main
     }
     //-----------------------------------------------------------------------------------
     protected void initializeSchema(String tableName) {
@@ -173,12 +145,8 @@ public class Tree extends EntityBase implements IView {
             mySchema = getSchemaInfo(tableName);
         }
     }
-<<<<<<< HEAD
     public String toString()
     {
-=======
-    public String toString() {
->>>>>>> main
         return "Tree: " + persistentState.getProperty("barcode") ;
     }
     public String toString1() {
@@ -190,6 +158,11 @@ public class Tree extends EntityBase implements IView {
             retVal += nextKey + ": " + nextValue + "; ";
         }
         return retVal;
+    }
+
+    protected void setOldFlag(boolean val)
+    {
+        oldFlag = val;
     }
 
 }

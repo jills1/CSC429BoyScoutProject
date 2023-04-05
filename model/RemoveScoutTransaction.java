@@ -4,28 +4,31 @@ package model;
 // system imports
 import javafx.scene.Scene;
 import java.util.Properties;
+import java.time.format.DateTimeFormatter;
+import java.time.LocalDateTime;
 
 // project imports
 import event.Event;
 import exception.InvalidPrimaryKeyException;
 
+
 import userinterface.View;
 import userinterface.ViewFactory;
 
-/** The class containing the DepositTransaction for the ATM application */
+/** The class containing the RemoveScoutTransaction for the Tree Sales application */
+
 //==============================================================
 public class RemoveScoutTransaction extends Transaction
 {
 
-    private Account myAccount;
-    private String depositAmount; // needed for GUI only
-
+    protected ScoutCollection myScoutCollection;
+    protected Scout myScout;
     // GUI Components
 
-    private String transactionErrorMessage = "";
-    private String accountUpdateStatusMessage = "";
-    private String query = "";
-    private static final String myTableName = "Scout";
+    protected String transactionErrorMessage = "";
+    protected String scoutUpdateStatusMessage = "";
+
+    protected static final String myTableName = "Scout";
 
     /**
      * Constructor for this class.
@@ -34,80 +37,45 @@ public class RemoveScoutTransaction extends Transaction
      */
     //----------------------------------------------------------
     public RemoveScoutTransaction()
-            throws Exception
+
     {
         super();
     }
 
-    /**
-     * Constructor for this class.
-     * <p>
-     * Transaction remembers all the account IDs for this customer.
-     * It uses AccountCatalog to create this list of account IDs.
-     */
+
 
 
     //----------------------------------------------------------
     protected void setDependencies()
     {
         dependencies = new Properties();
-        dependencies.setProperty("CancelDeposit", "CancelTransaction");
+        dependencies.setProperty("CancelScoutSearch", "CancelTransaction");
+        dependencies.setProperty("CancelScoutList", "CancelTransaction");
         dependencies.setProperty("OK", "CancelTransaction");
-        dependencies.setProperty("AccountNumber", "TransactionError");
+        dependencies.setProperty("SearchScoutInfo", "TransactionError");
+        dependencies.setProperty("ScoutSelected", "TransactionError");
 
         myRegistry.setDependencies(dependencies);
     }
 
-    /**
-     * This method encapsulates all the logic of creating the account,
-     * verifying ownership, crediting, etc. etc.
-     */
+
     //----------------------------------------------------------
     public void processTransaction(Properties props)
     {
-        if (props.getProperty("AccountNumber") != null)
-        {
-            String accountNumber = props.getProperty("AccountNumber");
-            try
-            {
+        String fn = props.getProperty("firstName");
+        String ln = props.getProperty("lastName");
+        System.out.println(props.getProperty("firstName"));
+        System.out.println(props.getProperty("lastName"));
 
-                myAccount = createAccount(accountNumber);
-                boolean isOwner = myAccount.verifyOwnership(myCust);
-                if (isOwner == false)
-                {
-                    transactionErrorMessage = "ERROR: Deposit Transaction: Not owner of selected account!!";
-                    new Event(Event.getLeafLevelClassName(this), "processTransaction",
-                            "Failed to verify ownership of account number : " + accountNumber + ".",
-                            Event.ERROR);
-                }
-                else
-                {
-                    //createAndShowDepositAmountView();
-                }
-            }
-            catch (InvalidPrimaryKeyException ex)
-            {
-                transactionErrorMessage = "ACCOUNT FAILURE: Contact bank immediately!!";
-                new Event(Event.getLeafLevelClassName(this), "processTransaction",
-                        "Failed to create account for number : " + accountNumber + ". Reason: " + ex.toString(),
-                        Event.ERROR);
+        //myScoutCollection = new ScoutCollection();
+        System.out.println("Jalen has not messed this up 1");
+        myScoutCollection.findScoutsWithNameLike(fn, ln);
+        System.out.println("If you see this Jalen has not messed this up");
+        System.out.println("Let us see if we get to see the view");
+        createAndShowScoutCollectionView();
+        System.out.println("The view is showing");
 
-            }
-        }
-        else
-        if (props.getProperty("Amount") != null)
-        {
-            String amount = props.getProperty("Amount");
-            depositAmount = amount;
 
-            myAccount.credit(amount);
-            myAccount.update();
-            accountUpdateStatusMessage = (String)myAccount.getState("UpdateStatusMessage");
-            transactionErrorMessage = accountUpdateStatusMessage;
-
-            createAndShowReceiptView();
-
-        }
     }
 
     //-----------------------------------------------------------
@@ -120,19 +88,37 @@ public class RemoveScoutTransaction extends Transaction
         else
         if (key.equals("UpdateStatusMessage") == true)
         {
-            return accountUpdateStatusMessage;
+            return scoutUpdateStatusMessage;
+        }
+        else
+            if (key.equals("ScoutList") == true)
+            {
+                return myScoutCollection;
+            }
+        if (key.equals("SelectedScout") == true)
+        {
+            return myScout;
+        }
+        else
+        if (myScout != null)
+        {
+            Object val = myScout.getState(key);
+            if (val != null)
+            {
+                return val;
+            }
+        }
+        else
+        if (myScoutCollection != null)
+        {
+            Object val = myScoutCollection.getState(key);
+            if (val != null)
+            {
+                return val;
+            }
         }
 
-        else
-        if (key.equals("Account") == true)
-        {
-            return myAccount;
-        }
-        else
-        if (key.equals("DepositAmount") == true)
-        {
-            return depositAmount;
-        }
+
         return null;
     }
 
@@ -146,31 +132,50 @@ public class RemoveScoutTransaction extends Transaction
             doYourJob();
         }
         else
-        if (key.equals("RegisterWithScoutInfo")==true)
+        if (key.equals("SearchScoutInfo")==true)
         {
             Properties props =(Properties)value;
-            String fn = props.getProperty("firstName");
-            String ln = props.getProperty("lastName");
-            if ((fn.length()==0||fn==null)&&(ln.length()==0||ln==null))
-            query = "SELECT * FROM "+myTableName;
-            else if (fn==null || fn.length()==0)
+
+
+
+                try
+                {
+                    myScoutCollection = new ScoutCollection();
+
+                    processTransaction(props);
+                }
+                catch (Exception ex)
+                {
+                    transactionErrorMessage = "Error getting Scout list";
+                }
+
+        }
+        else
+            if (key.equals("ScoutSelected") == true)
             {
-                query = "SELECT * FROM "+myTableName+" WHERE (lastName LIKE '%"+ln+"%')";
-            }
-            else if (ln==null || ln.length()==0)
-            {
-                query = "SELECT * FROM "+myTableName+" WHERE (firstName LIKE '%"+fn+"%')";
+                String scoutID = (String)value;
+                //Properties props =(Properties)value;
+                //String scoutID = props.getProperty("scoutID");
+               myScout = myScoutCollection.retrieve(scoutID);
+               createAndShowScoutSelectedView();
+
+
+
             }
             else
-                query = "SELECT * FROM "+myTableName+" WHERE ((firstName LIKE '%"+fn+"%') AND (lastName LIKE '%"+ln+"%'))";
+            if(key.equals("UpdateStatusInactive") == true)
+            {
+                DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+                LocalDateTime now = LocalDateTime.now();
+                myScout.stateChangeRequest("status","Inactive");
+                myScout.stateChangeRequest("dateStatusUpdated",dtf.format(now));
+                myScout.update();
 
-            ScoutCollection sc = new ScoutCollection();
-            sc.helper(query);
-
-            processTransaction((Properties)value);
-        }
-
+            }
         myRegistry.updateSubscribers(key, this);
+
+
+
     }
 
     /**
@@ -180,14 +185,14 @@ public class RemoveScoutTransaction extends Transaction
     //------------------------------------------------------
     protected Scene createView()
     {
-        Scene currentScene = myViews.get("RegisterScoutTransactionView");
+        Scene currentScene = myViews.get("RemoveScoutTransactionView");
 
         if (currentScene == null)
         {
             // create our initial view
-            View newView = ViewFactory.createView("RegisterScoutTransactionView", this);
+            View newView = ViewFactory.createView("RemoveScoutTransactionView", this);
             currentScene = new Scene(newView);
-            myViews.put("RegisterScoutTransactionView", currentScene);
+            myViews.put("RemoveScoutTransactionView", currentScene);
 
             return currentScene;
         }
@@ -201,14 +206,26 @@ public class RemoveScoutTransaction extends Transaction
 
 
     //------------------------------------------------------
-    protected void createAndShowReceiptView()
+    protected void createAndShowScoutCollectionView()
     {
 
         // create our initial view
-        View newView = ViewFactory.createView("DepositReceipt", this);
+        View newView = ViewFactory.createView("ScoutCollectionView", this);
         Scene newScene = new Scene(newView);
 
-        myViews.put("DepositReceipt", newScene);
+        myViews.put("ScoutCollectionView", newScene);
+
+        // make the view visible by installing it into the frame
+        swapToView(newScene);
+    }
+    protected void createAndShowScoutSelectedView()
+    {
+
+
+        View newView = ViewFactory.createView("ScoutSelectedView", this);
+        Scene newScene = new Scene(newView);
+
+        myViews.put("ScoutSelectedView", newScene);
 
         // make the view visible by installing it into the frame
         swapToView(newScene);
