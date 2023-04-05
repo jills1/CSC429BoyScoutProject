@@ -114,6 +114,18 @@ public class UpdateScoutInfoView extends View
 		});
 		grid.add(firstName, 1, 0);
 
+		Label middleNameLabel = new Label("Middle Name : ");
+		grid.add(middleNameLabel, 0, 2);
+
+		middleName = new TextField();
+		middleName.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent e) {
+				processAction(e);
+			}
+		});
+
 		Label lastNameLabel = new Label("Last Name : ");
 		grid.add(lastNameLabel, 0, 1);
 
@@ -127,17 +139,7 @@ public class UpdateScoutInfoView extends View
 		});
 		grid.add(lastName, 1, 1);
 
-		Label middleNameLabel = new Label("Middle Name : ");
-		grid.add(middleNameLabel, 0, 2);
 
-		middleName = new TextField();
-		middleName.setOnAction(new EventHandler<ActionEvent>() {
-
-			@Override
-			public void handle(ActionEvent e) {
-				processAction(e);
-			}
-		});
 		grid.add(middleName, 1, 2);
 
 		Label dateOfBirthLabel = new Label("Date of Birth : ");

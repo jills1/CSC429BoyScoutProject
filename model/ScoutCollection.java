@@ -42,7 +42,6 @@ public class ScoutCollection  extends EntityBase implements IView
 	{
 		//scouts.add(a);
 		int index = findIndexToAdd(a);
-		System.out.println("Jalen found the index to add: " + index);
 		scoutList.insertElementAt(a,index); // To build up a collection sorted on some key
 	}
 
@@ -181,20 +180,15 @@ System.out.println(query);
 
 
 		Vector allDataRetrieved = getSelectQueryResult(query);
-		System.out.println("If you see this Jalen worked the query successfully");
 		//scoutList = new Vector<Scout>();
 
 
 		for(int cnt = 0; cnt < allDataRetrieved.size(); cnt++) {
-			System.out.println("Jalen is at iteration: " + cnt + " of adding the scout");
 			Properties nextScoutData = (Properties) allDataRetrieved.elementAt(cnt);
 
 			Scout scout = new Scout(nextScoutData);
-			System.out.println("Jalen finished creating the scout for iteration: " + cnt);
 			addScout(scout);
-			System.out.println("Jalen finished adding the scout for iteration: " + cnt);
 
 		}
-		System.out.println("If you see this Jalen did not mess up adding the scout to the list");
 	}
 }

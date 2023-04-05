@@ -195,10 +195,13 @@ public class SearchUpdateScoutView extends View
 	// --------------------------------------------------------------------------------------------------------
 	private void sendScoutSearch(String lastName, String firstName) { 
 
+		myProps = new Properties();
 		//Setting up the search parameter in the 
 		myProps.setProperty("lastName", lastName);
 		myProps.setProperty("firstName", firstName);
+		System.out.println("Props collected");
 		
+		System.out.println("Props sent");
 		//Sending the search
 		myModel.stateChangeRequest("SubmitSearchUpdateScout", myProps);
 	}

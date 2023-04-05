@@ -37,13 +37,16 @@ import java.util.Enumeration;
 
 // project imports
 import impresario.IModel;
-import model.Account;
-import model.AccountCollection;
+import model.Scout;
+import model.ScoutCollection;
+import model.Scout;
+import model.ScoutCollection;
+import model.ScoutTableModel;
 
 //==============================================================================
 public class SelectUpdateScoutView extends View
 {
-	protected TableView<AccountTableModel> tableOfScouts;
+	protected TableView<ScoutTableModel> tableOfScouts;
 	protected Button cancelButton;
 	protected Button submitButton;
 
@@ -68,6 +71,8 @@ public class SelectUpdateScoutView extends View
 		container.getChildren().add(createStatusLog("                                            "));
 
 		getChildren().add(container);
+
+		populateFields();
 	}
 	//--------------------------------------------------------------------------
 	protected void populateFields()
@@ -79,21 +84,21 @@ public class SelectUpdateScoutView extends View
 	protected void getEntryTableModelValues()
 	{
 		
-		ObservableList<AccountTableModel> tableData = FXCollections.observableArrayList();
+		ObservableList<ScoutTableModel> tableData = FXCollections.observableArrayList();
 		try
 		{
-			AccountCollection accountCollection = (AccountCollection)myModel.getState("ScoutList");
+			ScoutCollection scoutCollection = (ScoutCollection)myModel.getState("ScoutList");
 
-	 		Vector entryList = (Vector)accountCollection.getState("Scout");
+	 		Vector entryList = (Vector)scoutCollection.getState("Scouts");
 			Enumeration entries = entryList.elements();
 
 			while (entries.hasMoreElements() == true)
 			{
-				Account nextAccount = (Account)entries.nextElement();
-				Vector<String> view = nextAccount.getEntryListView();
+				Scout nextScout = (Scout)entries.nextElement();
+				Vector<String> view = nextScout.getEntryListView();
 
 				// add this list entry to the list
-				AccountTableModel nextTableRowData = new AccountTableModel(view);
+				ScoutTableModel nextTableRowData = new ScoutTableModel(view);
 				tableData.add(nextTableRowData);
 				
 			}
@@ -134,79 +139,75 @@ public class SelectUpdateScoutView extends View
         grid.setVgap(10);
         grid.setPadding(new Insets(25, 25, 25, 25));
         
-        Text prompt = new Text("LIST OF SCOUTS");
+        Text prompt = new Text("Select from the scout list");
         prompt.setWrappingWidth(350);
         prompt.setTextAlignment(TextAlignment.CENTER);
         prompt.setFill(Color.BLACK);
         grid.add(prompt, 0, 0, 2, 1);
 
-		tableOfScouts = new TableView<AccountTableModel>();
+		tableOfScouts = new TableView<ScoutTableModel>();
 		tableOfScouts.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
-	
-		TableColumn scoutIdColumn = new TableColumn("Scout ID") ;
-		scoutIdColumn.setMinWidth(100);
-		scoutIdColumn.setCellValueFactory(
-	                new PropertyValueFactory<AccountTableModel, String>("scoutID"));
+
+		TableColumn firstNameColumn = new TableColumn("First Name") ;
+		firstNameColumn.setMinWidth(100);
+		firstNameColumn.setCellValueFactory(
+	                new PropertyValueFactory<ScoutTableModel, String>("firstName"));
 		
 		TableColumn lastNameColumn = new TableColumn("Last Name") ;
 		lastNameColumn.setMinWidth(100);
 		lastNameColumn.setCellValueFactory(
-	                new PropertyValueFactory<AccountTableModel, String>("lastName"));
-		  
-		TableColumn firstNameColumn = new TableColumn("First Name") ;
-		firstNameColumn.setMinWidth(100);
-		firstNameColumn.setCellValueFactory(
-	                new PropertyValueFactory<AccountTableModel, String>("firstName"));
+	                new PropertyValueFactory<ScoutTableModel, String>("lastName"));
 		
 		TableColumn middleNameColumn = new TableColumn("Middle Name") ;
 		middleNameColumn.setMinWidth(100);
 		middleNameColumn.setCellValueFactory(
-	                new PropertyValueFactory<AccountTableModel, String>("middleName"));
+	                new PropertyValueFactory<ScoutTableModel, String>("middleName"));
 
 		TableColumn dateOfBirthColumn = new TableColumn("Date of Birth") ;
 		dateOfBirthColumn.setMinWidth(100);
 		dateOfBirthColumn.setCellValueFactory(
-	                new PropertyValueFactory<AccountTableModel, String>("dateOfBirth"));
+	                new PropertyValueFactory<ScoutTableModel, String>("dateOfBirth"));
 
 		TableColumn phoneNumberColumn = new TableColumn("Phone Number") ;
 		phoneNumberColumn.setMinWidth(100);
 		phoneNumberColumn.setCellValueFactory(
-								new PropertyValueFactory<AccountTableModel, String>("phoneNumber"));
+								new PropertyValueFactory<ScoutTableModel, String>("phoneNumber"));
 
 		TableColumn emailColumn = new TableColumn("Email") ;
 		emailColumn.setMinWidth(100);
 		emailColumn.setCellValueFactory(
-								new PropertyValueFactory<AccountTableModel, String>("email"));
+								new PropertyValueFactory<ScoutTableModel, String>("email"));
 		
 		TableColumn troopIDColumn = new TableColumn("Troop ID") ;
 		troopIDColumn.setMinWidth(100);
 		troopIDColumn.setCellValueFactory(
-								new PropertyValueFactory<AccountTableModel, String>("troopID"));
+								new PropertyValueFactory<ScoutTableModel, String>("troopID"));
 
-		tableOfScouts.getColumns().addAll(scoutIdColumn, 
-				lastNameColumn, firstNameColumn, middleNameColumn, dateOfBirthColumn, phoneNumberColumn, emailColumn, troopIDColumn);
+		tableOfScouts.getColumns().addAll(
+			lastNameColumn, firstNameColumn, middleNameColumn, dateOfBirthColumn, phoneNumberColumn, emailColumn, troopIDColumn);
 
 		tableOfScouts.setOnMousePressed(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event)
 			{
 				if (event.isPrimaryButtonDown() && event.getClickCount() >=2 ){
-					processAccountSelected();
+					processScoutSelected();
 				}
 			}
 		});
 		ScrollPane scrollPane = new ScrollPane();
 		scrollPane.setPrefSize(115, 150);
 		scrollPane.setContent(tableOfScouts);
-		submitButton = new Button("Select");
+
+		submitButton = new Button("Submit");
  		submitButton.setOnAction(new EventHandler<ActionEvent>() {
 
        		     @Override
        		     public void handle(ActionEvent e) {
        		     	clearErrorMessage(); 
 					// do the inquiry
-					//processAccountSelected();
-					testProcessAction(e);
+					processScoutSelected();
+					//testProcessAction(e);
 					
             	 }
         	});
@@ -225,7 +226,7 @@ public class SelectUpdateScoutView extends View
 			 		*/
 					//----------------------------------------------------------
        		     	clearErrorMessage();
-       		     	myModel.stateChangeRequest("CancelAccountList", null); 
+       		     	myModel.stateChangeRequest("CancelScoutList", null); 
             	  }
         	});
 
@@ -250,15 +251,15 @@ public class SelectUpdateScoutView extends View
 	}
 
 	//--------------------------------------------------------------------------
-	protected void processAccountSelected()
+	protected void processScoutSelected()
 	{
-		AccountTableModel selectedItem = tableOfScouts.getSelectionModel().getSelectedItem();
+		ScoutTableModel selectedItem = tableOfScouts.getSelectionModel().getSelectedItem();
 		
 		if(selectedItem != null)
 		{
-			String selectedAcctNumber = selectedItem.getAccountNumber();
+			String selectedScout = selectedItem.getFirstName();
 
-			myModel.stateChangeRequest("AccountSelected", selectedAcctNumber);
+			myModel.stateChangeRequest("ScoutChosen", selectedScout);
 		}
 	}
 
@@ -294,7 +295,7 @@ public class SelectUpdateScoutView extends View
 	{
 		if(click.getClickCount() >= 2)
 		{
-			processAccountSelected();
+			processScoutSelected();
 		}
 	}
    */
