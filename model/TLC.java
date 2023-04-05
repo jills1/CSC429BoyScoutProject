@@ -165,8 +165,10 @@ public class TLC implements IView, IModel
 	{
 		try
 		{
+			System.out.println(transactionType);
 			Transaction trans = TransactionFactory.createTransaction(transactionType);
-
+			if (trans == null) System.out.println("Created transaction for transtype: " + transactionType + " is null");
+			else System.out.println("Created transaction for transtype: " + transactionType + " is NOT null");
 			trans.subscribe("CancelTransaction", this);
 			trans.stateChangeRequest("DoYourJob", "");
 		}

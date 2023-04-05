@@ -43,7 +43,7 @@ abstract public class Transaction implements IView, IModel
 	 *
 	 */
 	//----------------------------------------------------------
-	protected Transaction() throws Exception
+	protected Transaction()
 	{
 
 		myStage = MainStageContainer.getInstance();
@@ -73,23 +73,13 @@ abstract public class Transaction implements IView, IModel
 	//---------------------------------------------------------
 	protected void doYourJob()
 	{
-		AccountCatalog catalog = null;
-
-		try
-		{
-			
 
 			
 			Scene newScene = createView();
 			
 			swapToView(newScene);
 
-		}
-		catch (Exception ex)
-		{
-				new Event(Event.getLeafLevelClassName(this), "Transaction",
-					"Could not find any accounts for " + myCust.getState("ID"), Event.ERROR);
-		}
+
 	}
 
 	// forward declarations

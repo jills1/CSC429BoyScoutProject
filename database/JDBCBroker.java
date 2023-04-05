@@ -85,12 +85,12 @@ public class JDBCBroker
 		props = new PropertyFile("dbConfig.ini");
 		if (props != null)
 		{
-			dbName = "spr23_csc429_jills1";
-			username = "jills1";
-			password = "database1";
-			server = "127.0.0.1";
+			dbName = "spr23_csc429_mholm2";
+			username = "mholm2";
+			password = "Righthand23";
+			server = "csdb.brockport.edu";
 			if (server == null)
-				server = "127.0.0.1";
+				server = "csdb.brockport.edu";
 			dbClassNameVal = props.getProperty("dbClassName");
 			if (dbClassNameVal == null)
 				dbClassNameVal = "org.mariadb.jdbc.Driver";

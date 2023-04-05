@@ -19,16 +19,13 @@ import impresario.IView;
 
 /** The class containing the Account for the ATM application */
 //==============================================================
-public class Tree extends EntityBase implements IView
-{
+public class Tree extends EntityBase implements IView {
     private static final String myTableName = "Tree";
-
     protected Properties dependencies;
-
+    private boolean oldFlag = true;
     // GUI Components
-
     private String updateStatusMessage = "";
-
+    private String deleteStatusMessage = "";
     //---------------------------------------------------------
     public Tree()
     {
@@ -61,14 +58,14 @@ public class Tree extends EntityBase implements IView
             else
             {
                 // copy all the retrieved data into persistent state
-                Properties retrievedScoutData = allDataRetrieved.elementAt(0);
+                Properties retrievedTreeData = allDataRetrieved.elementAt(0);
                 persistentState = new Properties();
 
-                Enumeration allKeys = retrievedScoutData.propertyNames();
+                Enumeration allKeys = retrievedTreeData.propertyNames();
                 while (allKeys.hasMoreElements() == true)
                 {
                     String nextKey = (String)allKeys.nextElement();
-                    String nextValue = retrievedScoutData.getProperty(nextKey);
+                    String nextValue = retrievedTreeData.getProperty(nextKey);
 
 
                     if (nextValue != null)
@@ -156,9 +153,10 @@ public class Tree extends EntityBase implements IView
         updateStateInDatabase();
     }
     //-----------------------------------------------------------------------------------
-    public void remove()
+    public  void remove()
     {
-
+        System.out.println("test4");
+        deleteStateInDatabase();
 
     }
     //-----------------------------------------------------------------------------------
@@ -166,32 +164,24 @@ public class Tree extends EntityBase implements IView
     {
         try
         {
-            // update
-            if (persistentState.getProperty("barcode") != null)
+            if (oldFlag)
             {
                 Properties whereClause = new Properties();
-                whereClause.setProperty("barcode",
-                        persistentState.getProperty("barcode"));
+                whereClause.setProperty("barcode", persistentState.getProperty("barcode"));
                 updatePersistentState(mySchema, persistentState, whereClause);
-                updateStatusMessage = "Tree data for barcode : " + persistentState.getProperty("barcode") + " updated successfully in database!";
+                updateStatusMessage = "Data for Tree : " + persistentState.getProperty("barcode") + " updated successfully in database!";
             }
             else
             {
-                //insert
-                Integer barcode =
-                        insertAutoIncrementalPersistentState(mySchema, persistentState);
-                persistentState.setProperty("barcode", "" + barcode.intValue());
-                updateStatusMessage = "Tree data for new Tree : " +  persistentState.getProperty("barcode")
-                        + "installed successfully in database!";
+                insertPersistentState(mySchema, persistentState);
+                oldFlag = true;
             }
         }
-        catch (SQLException ex)
-        {
-            updateStatusMessage = "Error in installing Tree data in database!";
+        catch (SQLException ex) {
+            updateStatusMessage = "Error in installing tree data in database!";
         }
         //DEBUG System.out.println("updateStateInDatabase " + updateStatusMessage);
     }
-
 
     /**
      * This method is needed solely to enable the Account information to be displayable in a table
@@ -205,7 +195,7 @@ public class Tree extends EntityBase implements IView
         v.addElement(persistentState.getProperty("barcode"));
         v.addElement(persistentState.getProperty("treeType"));
         v.addElement(persistentState.getProperty("notes"));
-        v.addElement(persistentState.getProperty("ststus"));
+        v.addElement(persistentState.getProperty("status"));
         v.addElement(persistentState.getProperty("dateStatusUpdated"));
 
 
@@ -224,7 +214,7 @@ public class Tree extends EntityBase implements IView
     }
     public String toString()
     {
-        return "Tree: " + persistentState.getProperty("barcode") + "; Tree Tyoe: " +
+        return "Tree: " + persistentState.getProperty("barcode") + "; treeType: " +
                 persistentState.getProperty("treeType") + "; notes: " +
                 persistentState.getProperty("notes") + "; status: " +
                 persistentState.getProperty("status")+ "; dateStatusUpdated: " +
@@ -241,6 +231,18 @@ public class Tree extends EntityBase implements IView
             retVal += nextKey + ": " + nextValue + "; ";
         }
         return retVal;
+    }
+    public void deleteStateInDatabase(){
+        try {
+            Properties whereClause = new Properties();
+            whereClause.setProperty("barcode",persistentState.getProperty("barcode"));
+            deletePersistentState( mySchema, whereClause );
+            updateStatusMessage = "The tree with barcode" + persistentState.getProperty("barcode")+"DELETED successfully!";
+
+        }
+        catch(SQLException ex){
+            updateStatusMessage ="Error in deleting tree data in database!";
+        }
     }
 
 }

@@ -40,11 +40,11 @@ public class RemoveTreeTransactionView extends View
 
     // GUI components
     private TextField barcode;
-    private TextField treeType;
+    //private TextField treeType;
 
-    private TextField status;
-    private TextField notes;
-    private TextField dateStatusUpdated;
+    //private TextField status;
+    //private TextField notes;
+    //private TextField dateStatusUpdated;
 
 
 
@@ -78,6 +78,7 @@ public class RemoveTreeTransactionView extends View
 
 
 
+
     // Create the label (Text) for the title
     //-------------------------------------------------------------
     private Node createTitle()
@@ -103,8 +104,9 @@ public class RemoveTreeTransactionView extends View
         grid.setVgap(10);
         grid.setPadding(new Insets(25, 25, 25, 25));
 
-        Label barcodeLabel = new Label("Barcode : ");
+        Label barcodeLabel = new Label("barcode : ");
         grid.add(barcodeLabel, 0, 0);
+        System.out.println("view found in Remove tree transaction view");
 
         barcode = new TextField();
         barcode.setOnAction(new EventHandler<ActionEvent>() {
@@ -115,7 +117,7 @@ public class RemoveTreeTransactionView extends View
             }
         });
         grid.add(barcode, 1, 0);
-
+/*
         Label treeTypeLabel = new Label("treeType : ");
         grid.add(treeTypeLabel, 0, 1);
 
@@ -167,7 +169,7 @@ public class RemoveTreeTransactionView extends View
             }
         });
         grid.add(dateStatusUpdated, 1, 4);
-
+*/
 
 
         submitButton = new Button("Submit");
@@ -182,7 +184,7 @@ public class RemoveTreeTransactionView extends View
         });
 
         cancelButton = new Button("Back");
-        cancelButton.setOnAction(new EventHandler<ActionEvent>() {
+        cancelButton.setOnAction(new EventHandler <ActionEvent> () {
 
             @Override
             public void handle(ActionEvent e) {
@@ -236,47 +238,30 @@ public class RemoveTreeTransactionView extends View
     //----------------------------------------------------------
     private void processAction(Event evt)
     {
-        //clearErrorMessage();
+        clearErrorMessage();
 
         String barcodeEntered = barcode.getText();
-        String treeTypeEntered = treeType.getText();
-        String statusEntered = status.getText();
-        String dateStatusUpdatedEntered = dateStatusUpdated.getText();
+        //String treeTypeEntered = treeType.getText();
+        //String statusEntered = status.getText();
+        //String dateStatusUpdatedEntered = dateStatusUpdated.getText();
 
 
-        if ((barcodeEntered == null) || (barcodeEntered.length() == 0))
-        {
-            displayErrorMessage("Please enter a barcode");
-        }
-        else if ((treeTypeEntered == null) || (treeTypeEntered.length() == 0))
-        {
-            displayErrorMessage("Please enter a tree type");
-        }
-        else if ((statusEntered == null) || (statusEntered.length() == 0))
-        {
-            displayErrorMessage("Please enter a status");
-        }
-        else if ((dateStatusUpdatedEntered == null) || (dateStatusUpdatedEntered.length() == 0))
-        {
-            displayErrorMessage("Please enter a date status Updated");
-        }
-
-        else
-
-            processTreeInfo(barcodeEntered,treeTypeEntered, statusEntered, dateStatusUpdatedEntered);
+                    processTreeInfo(barcodeEntered/*,treeTypeEntered, statusEntered, dateStatusUpdatedEntered*/);
     }
-    private void processTreeInfo(String barcode,String treeType, String status, String dataStatusUpdated)
+    private void processTreeInfo(String barcode/*,String treeType, String status, String dataStatusUpdated*/)
     {
         Properties props = new Properties();
         props.setProperty("barcode", barcode);
-        props.setProperty("treeType", treeType);
-        props.setProperty("status", status);
-        props.setProperty("dateStatusUpdated",dataStatusUpdated);
+        //props.setProperty("treeType", treeType);
+        //props.setProperty("status", status);
+        //props.setProperty("dateStatusUpdated",dataStatusUpdated);
 
-        myModel.stateChangeRequest("RemoveTreeWithTreeInfo", props);
+
+        // call RemoveView here
+        myModel.stateChangeRequest("searchTree", props);
         Tree tree = new Tree(props);
         //tree.update();
-       // displayMessage("Successfully removed tree");
+        //displayMessage("Successfully removed tree");
     }
     public void displayMessage(String message)
     {

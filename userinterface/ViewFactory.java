@@ -47,9 +47,9 @@ public class ViewFactory {
 		{
 			return new RemoveTreeTransactionView(model);
 		}
-		else if(viewName.equals("WithdrawReceipt") == true)
+		else if(viewName.equals("RemoveView") == true)
 		{
-			return new WithdrawReceipt(model);
+			return new RemoveView(model);
 		}
 		else if(viewName.equals("DepositReceipt") == true)
 		{

@@ -38,6 +38,7 @@ public class TransactionFactory
 		else
 		if (transType.equals("RemoveTree") == true)
 		{
+			System.out.println("getting to remove tree transaction in trans factory");
 			retValue = new RemoveTreeTransaction();
 		}
 		/*
