@@ -59,7 +59,6 @@ public class UpdateTreeTransactionView extends View {
     // Create the main data entry fields
     //-------------------------------------------------------------
     private VBox createFormContent() {
-        //-----------------------------------------------------------
         // Container Padding
         VBox vbox = new VBox(10);
         GridPane grid = new GridPane();
@@ -72,7 +71,6 @@ public class UpdateTreeTransactionView extends View {
         Label barcodeLabel = new Label("Barcode : ");
         grid.add(barcodeLabel, 0, 0);
         barcode = new TextField();
-        barcode.setOnAction(new EventHandler<ActionEvent>() {@Override public void handle(ActionEvent e) {processAction(e);}});
         grid.add(barcode, 1, 0);
 //------------------------------------------------------------------
         //Submit Button and Event Handler
@@ -99,13 +97,12 @@ public class UpdateTreeTransactionView extends View {
     }
     //-------------------------------------------------------------
     public void populateFields() {
+
     }
     //----------------------------------------------------------
     private void processAction(Event evt) {
-        //clearErrorMessage();
         String barcodeEntered = barcode.getText();
-        if ((barcodeEntered == null) || (barcodeEntered.length() == 0))
-        {
+        if ((barcodeEntered == null) || (barcodeEntered.length() == 0)) {
             displayErrorMessage("Please enter a barcode");
         } else {
             processTreeInfo(barcodeEntered);
@@ -115,7 +112,7 @@ public class UpdateTreeTransactionView extends View {
         // modify to make update tree
         Properties props = new Properties();
         props.setProperty("barcode", barcode);
-        myModel.stateChangeRequest("RegisterTreeInfo", props);
+        myModel.stateChangeRequest("UpdateTreeInfo", props);
         Tree tree = new Tree(props);
         tree.update();
         displayMessage("Retrieving Tree Information");

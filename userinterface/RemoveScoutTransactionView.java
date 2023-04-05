@@ -118,12 +118,8 @@ public class RemoveScoutTransactionView extends View {
     private void processAction(Event evt)
     {
         //clearErrorMessage();
-
         String lastNameEntered = lastName.getText();
         String firstNameEntered = firstName.getText();
-
-
-
         processScoutInfo(lastNameEntered,firstNameEntered);
     }
     private void processScoutInfo(String lastName, String firstName)

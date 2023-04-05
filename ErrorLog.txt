@@ -18,3 +18,4 @@
 [3/20/23, 3:00 PM]|TLC|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException>
 [3/20/23, 10:18 PM]|TLC|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException>
 [3/28/23 1:47 PM]|TLCTest|ATM.<init>|Error|NOTAG|null<Unable to create Teller object>
+[4/4/23 12:59 PM]|TLCTest|ATM.<init>|Error|NOTAG|null<Unable to create Teller object>

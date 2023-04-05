@@ -31,6 +31,10 @@ import model.*;
 public class UpdateTreeFormTransactionView extends View {
     //protected TableView<AccountTableModel> tableOfAccounts;
     private TextField barcode;
+    private TextField treeType;
+    private TextField notes;
+    private ComboBox<String> status; // Changed to ComboBox
+    private TextField dateStatusUpdate;
     private Button submitButton;
     private Button cancelButton;
     private MessageView statusLog;
@@ -73,8 +77,32 @@ public class UpdateTreeFormTransactionView extends View {
         Label barcodeLabel = new Label("Barcode : ");
         grid.add(barcodeLabel, 0, 0);
         barcode = new TextField();
-        barcode.setOnAction(new EventHandler<ActionEvent>() {@Override public void handle(ActionEvent e) {processAction(e);}});
         grid.add(barcode, 1, 0);
+        //-------------------------------------------------------------------
+        //Tree Type Label, Box and Handler
+        Label treeTypeLabel = new Label("Tree Type : ");
+        grid.add(treeTypeLabel, 0, 2);
+        treeType = new TextField();
+        grid.add(treeType, 1, 2);
+        //-------------------------------------------------------------------
+        //Notes Label, Box and Handler
+        Label notesLabel = new Label("notes : ");
+        grid.add(notesLabel, 0, 3);
+        notes = new TextField();
+        grid.add(notes, 1, 3);
+        //-------------------------------------------------------------------
+        //Status Label, Box and Handler
+        Label statusLabel = new Label("Status : ");
+        grid.add(statusLabel, 0, 4);
+        status = new ComboBox<String>(); // Changed to ComboBox
+        status.getItems().addAll("Active", "Inactive");
+        grid.add(status, 1, 4);
+        //-------------------------------------------------------------------
+        //dateStatusUpdate Label, Box and Handler
+        Label dateStatusUpdateLabel = new Label("Date of last status update : ");
+        grid.add(dateStatusUpdateLabel, 0, 5);
+        dateStatusUpdate = new TextField();
+        grid.add(dateStatusUpdate, 1, 5);
 //------------------------------------------------------------------
         //Submit Button and Event Handler
         submitButton = new Button("Submit");

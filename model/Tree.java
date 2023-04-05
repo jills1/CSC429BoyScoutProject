@@ -6,16 +6,12 @@ import java.sql.SQLException;
 import java.util.Enumeration;
 import java.util.Properties;
 import java.util.Vector;
-import javax.swing.JFrame;
-import database.*;
 //import userinterface.View;
 //import userinterface.ViewFactory;
 
-import impresario.IView;
 public class Tree extends EntityBase implements IView {
     private static final String myTableName = "Tree";
     protected Properties dependencies;
-    // GUI Components
     private String updateStatusMessage = "";
     //---------------------------------------------------------
     public Tree() {
@@ -53,11 +49,13 @@ public class Tree extends EntityBase implements IView {
     // Can also be used to create a NEW Account (if the system it is part of
     // allows for a new account to be set up)
     //----------------------------------------------------------
-    public Tree(Properties props) {
+    public Tree(Properties props)
+    {
         super(myTableName);
         setDependencies();
         persistentState = new Properties();
         Enumeration allKeys = props.propertyNames();
+
         while (allKeys.hasMoreElements() == true) {
             String nextKey = (String)allKeys.nextElement();
             String nextValue = props.getProperty(nextKey);
@@ -72,19 +70,22 @@ public class Tree extends EntityBase implements IView {
         myRegistry.setDependencies(dependencies);
     }
     //----------------------------------------------------------
-    public Object getState(String key) {
+    public Object getState(String key)
+    {
         if (key.equals("UpdateStatusMessage") == true) {
             return updateStatusMessage;
         }
         return persistentState.getProperty(key);
     }
     //----------------------------------------------------------------
-    public void stateChangeRequest(String key, Object value) {
+    public void stateChangeRequest(String key, Object value)
+    {
         persistentState.setProperty(key, (String) value);
         myRegistry.updateSubscribers(key, this);
     }
     //----------------------------------------------------------
-    public void updateState(String key, Object value) {
+    public void updateState(String key, Object value)
+    {
         stateChangeRequest(key, value);
     }
     //-----------------------------------------------------------------------------------
@@ -105,10 +106,6 @@ public class Tree extends EntityBase implements IView {
                 whereClause.setProperty("barcode", persistentState.getProperty("barcode"));
                 updatePersistentState(mySchema, persistentState, whereClause);
                 updateStatusMessage = "Data for Tree : " + persistentState.getProperty("barcode") + " updated successfully in database!";
-            } else {
-                Integer bookId = insertAutoIncrementalPersistentState(mySchema, persistentState);
-                persistentState.setProperty("barcode", "" + bookId.intValue());
-                updateStatusMessage = "Data for new Tree : " +  persistentState.getProperty("barcode") + "installed successfully in database!";
             }
         }
         catch (SQLException ex) {
@@ -116,11 +113,17 @@ public class Tree extends EntityBase implements IView {
         }
         //DEBUG System.out.println("updateStateInDatabase " + updateStatusMessage);
     }
-    //--------------------------------------------------------------------------
+
     public Vector<String> getEntryListView() {
         Vector<String> v = new Vector<String>();
         v.addElement(persistentState.getProperty("barcode"));
+        v.addElement(persistentState.getProperty("treeType"));
+        v.addElement(persistentState.getProperty("notes"));
+        v.addElement(persistentState.getProperty("status"));
+        v.addElement(persistentState.getProperty("dateStatusUpdate"));
+
         return v;
+
     }
     //-----------------------------------------------------------------------------------
     protected void initializeSchema(String tableName) {
@@ -128,7 +131,8 @@ public class Tree extends EntityBase implements IView {
             mySchema = getSchemaInfo(tableName);
         }
     }
-    public String toString() {
+    public String toString()
+    {
         return "Tree: " + persistentState.getProperty("barcode") ;
     }
     public String toString1() {
