@@ -51,13 +51,13 @@ public class ViewFactory {
 		{
 			return new AddTreeTypeTransactionView(model);
 		}
-		else if(viewName.equals("WithdrawReceipt") == true)
+		else if(viewName.equals("UpdateTreeTransactionView") == true)
 		{
-			return new WithdrawReceipt(model);
+			return new UpdateTreeTransactionView(model);
 		}
-		else if(viewName.equals("DepositReceipt") == true)
+		else if(viewName.equals("UpdateTreeFormTransactionView") == true)
 		{
-			return new DepositReceipt(model);
+			return new UpdateTreeFormTransactionView(model);
 		}
 		else if(viewName.equals("TransferReceipt") == true)
 		{

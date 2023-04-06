@@ -26,6 +26,7 @@ import javafx.stage.Stage;
 
 import java.util.Properties;
 import java.util.Vector;
+import java.util.regex.Pattern;
 
 // project imports
 import impresario.IModel;
@@ -209,9 +210,13 @@ public class AddTreeTypeTransactionView extends View
         {
             displayErrorMessage("Please enter a cost");
         }
-        else if ((bpEntered == null) || (bpEntered.length() == 0))
+        else if (!isDoubleValue(costEntered))
         {
-            displayErrorMessage("Please enter a barcode prefix");
+            displayErrorMessage("Please enter a valid cost(double)");
+        }
+        else if ((bpEntered == null) || (bpEntered.length()!=2))
+        {
+            displayErrorMessage("Please enter a valid barcode prefix");
         }
 
         else
@@ -228,6 +233,15 @@ public class AddTreeTypeTransactionView extends View
 
         displayMessage("Successfully added new Tree Type");
     }
+
+    public static boolean isDoubleValue(String input) {
+        // Regular expression for a double value
+        String doubleRegex = "^[-+]?[0-9]*\\.[0-9]+([eE][-+]?[0-9]+)?$";
+        Pattern pattern = Pattern.compile(doubleRegex);
+        return pattern.matcher(input).matches();
+    }
+
+
     public void displayMessage(String message)
     {
         statusLog.displayMessage(message);

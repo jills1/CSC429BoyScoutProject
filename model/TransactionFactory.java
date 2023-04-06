@@ -42,13 +42,13 @@ public class TransactionFactory
 		{
 			retValue = new AddTreeTypeTransaction();
 		}
-		/*
+
 		else
-		if (transType.equals("ImposeServiceCharge") == true)
+		if (transType.equals("UpdateTree") == true)
 		{
-			retValue = new ImposeServiceChargeTransaction(cust);
+			retValue = new UpdateTreeTransaction();
 		}
-*/
+
 		return retValue;
 	}
 }

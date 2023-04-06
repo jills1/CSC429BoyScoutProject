@@ -290,9 +290,13 @@ public class RegisterScoutTransactionView extends View
 		{
 			displayErrorMessage("Please enter an email");
 		}
-		else if ((troopIDEntered == null) || (troopIDEntered.length() == 0))
+		else if (emailEntered.contains("@")==false)
 		{
-			displayErrorMessage("Please enter a troopID");
+			displayErrorMessage("Please enter a vaild email");
+		}
+		else if ((troopIDEntered == null) || (troopIDEntered.length()!=5))
+		{
+			displayErrorMessage("Please enter a valid troopID");
 		}
 		else if ((statusEntered == null) || (statusEntered.length() == 0))
 		{
