@@ -35,6 +35,7 @@ public class AddTreeView extends View
 
     protected MessageView statusLog;
     protected String treeType;
+    protected String treeTypeLastDigit;
 
     public AddTreeView(IModel tree)
     {
@@ -50,6 +51,7 @@ public class AddTreeView extends View
         populateFields();
 
         myModel.subscribe("UpdateStatusMessage", this);
+        myModel.subscribe("TransactionError", this);
     }
 
     private Node createTitle(){
@@ -103,20 +105,20 @@ public class AddTreeView extends View
         notes.setEditable(true);
         grid.add(notes, 1, 2);
 
-        Text treeStatusLabel = new Text("Status: ");
-        treeStatusLabel.setFont(myFont);
-        treeStatusLabel.setWrappingWidth(150);
-        treeStatusLabel.setTextAlignment(TextAlignment.RIGHT);
-        grid.add(treeStatusLabel, 0 , 4);
+        //Text treeStatusLabel = new Text("Status: ");
+        //treeStatusLabel.setFont(myFont);
+        //treeStatusLabel.setWrappingWidth(150);
+        //treeStatusLabel.setTextAlignment(TextAlignment.RIGHT);
+        //grid.add(treeStatusLabel, 0 , 3);
 
-        status = new ComboBox();
-        ObservableList options = status.getItems();
-        options.add("Available");
-        options.add("Sold");
-        options.add("Damaged");
-        status.setItems(options);
-        status.getSelectionModel().selectFirst();
-        grid.add(status, 1,4);
+        //status = new ComboBox();
+        //ObservableList options = status.getItems();
+        //options.add("Available");
+        //options.add("Sold");
+        //options.add("Damaged");
+        //status.setItems(options);
+        //status.getSelectionModel().selectFirst();
+        //grid.add(status, 1,3);
 
         HBox cont = new HBox(10);
         cont.setAlignment(Pos.CENTER);
@@ -127,23 +129,35 @@ public class AddTreeView extends View
             @Override
             public void handle(ActionEvent event) {
                 treeType = barcode.getText().substring(0,2);
+                treeTypeLastDigit = barcode.getText().substring(1,2);
                 String date = String.valueOf(java.time.LocalDateTime.now());
                 String dUS = date.substring(0,10);
+                String status = "Available";
                 Properties p = new Properties();
 
                 p.setProperty("barcode", barcode.getText());
                 p.setProperty("treeType", treeType);
                 p.setProperty("notes", notes.getText());
-                p.setProperty("status", status.getValue());
+                p.setProperty("status", status);
                 p.setProperty("dateStatusUpdate", dUS);
                 System.out.println("The time is " + dUS);
+                System.out.println(treeType);
+                clearErrorMessage();
 
-                if((p.getProperty("barcode")).equals("") ||
-                        (p.getProperty("notes")).equals("") || (p.getProperty("status")).equals("")){
-                    displayErrorMessage("All fields must be filled in.");
+
+                if((p.getProperty("barcode")).equals("") || (p.getProperty("barcode")).length() != 5) {
+                    displayErrorMessage("Barcode is empty or bigger than 5 numbers.");
                     return;
-                }else {
-                    myModel.stateChangeRequest("AddTreeInfo", p);
+                } else if ((p.getProperty("notes")).length() > 200) {
+                    displayErrorMessage("Notes is bigger than 200 charcters.");
+                    return;
+                } else if (!(treeTypeLastDigit.equals("0") || treeTypeLastDigit.equals("1"))) {
+                    displayErrorMessage("Barcode entered is not one of the available barcode within the system!");
+                    return;
+                } else {myModel.stateChangeRequest("AddTreeInfo", p);
+                    Tree tree = new Tree(p);
+                    tree.update();
+                    //displayMessage("Tree Successfully Added.");
                 }
 
             }
@@ -173,8 +187,21 @@ public class AddTreeView extends View
 
     }
 
+
     public void updateState(String key, Object value){
         clearErrorMessage();
+
+        if (key.equals("TransactionError"))
+        {
+            String messageToDisplay = (String)value;
+            if (messageToDisplay.startsWith("ERR")) {
+                displayErrorMessage(messageToDisplay);
+            }
+            else {
+                displayMessage(messageToDisplay);
+            }
+
+        }
     }
 
     public void displayErrorMessage(String message){

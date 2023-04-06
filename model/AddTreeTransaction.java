@@ -21,7 +21,7 @@ public class AddTreeTransaction extends Transaction
 
     // GUI Components
 
-    private String transactionErrorMessage = "";
+    private String transactionMessage = "";
     /**
      * Constructor for this class.
      *
@@ -76,11 +76,13 @@ public class AddTreeTransaction extends Transaction
                 myTree = new Tree(props);
                 myTree.setOldFlag(false);
                 myTree.update();
+                transactionMessage ="Tree Successfully added";
 
             }
             catch (InvalidPrimaryKeyException excep)
             {
-                transactionErrorMessage = "ERROR: Invalid barcode, no associated tree type found!";
+
+                transactionMessage = "ERROR: Invalid barcode, no associated tree type found!";
             }
 
         }
@@ -91,7 +93,7 @@ public class AddTreeTransaction extends Transaction
     {
         if (key.equals("TransactionError") == true)
         {
-            return transactionErrorMessage;
+            return transactionMessage;
         }
         return null;
     }

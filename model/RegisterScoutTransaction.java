@@ -15,7 +15,7 @@ import exception.InvalidPrimaryKeyException;
 import userinterface.View;
 import userinterface.ViewFactory;
 
-/** The class containing the DepositTransaction for the ATM application */
+/** The class containing the Register Scout for the Tree Sales application */
 //==============================================================
 public class RegisterScoutTransaction extends Transaction
 {
@@ -38,12 +38,7 @@ public class RegisterScoutTransaction extends Transaction
 		super();
 	}
 
-	/**
-	 * Constructor for this class.
-	 * <p>
-	 * Transaction remembers all the account IDs for this customer.
-	 * It uses AccountCatalog to create this list of account IDs.
-	 */
+
 
 
 	//----------------------------------------------------------
