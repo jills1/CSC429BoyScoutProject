@@ -33,7 +33,7 @@ import model.Scout;
 
 /** The class containing the Remove Scout Transaction View  for the Tree sales application */
 //==============================================================
-public class RemoveScoutTransactionView extends View
+public class RemoveScoutView extends View
 {
 
     // Model
@@ -52,7 +52,7 @@ public class RemoveScoutTransactionView extends View
 
     // constructor for this class -- takes a model object
     //----------------------------------------------------------
-    public RemoveScoutTransactionView(IModel trans)
+    public RemoveScoutView(IModel trans)
     {
         super(trans, "RemoveScoutTransactionView");
 
@@ -188,7 +188,7 @@ public class RemoveScoutTransactionView extends View
 
 
 
-            processScoutInfo(lastNameEntered,firstNameEntered);
+        processScoutInfo(lastNameEntered,firstNameEntered);
     }
     private void processScoutInfo(String lastName, String firstName)
     {

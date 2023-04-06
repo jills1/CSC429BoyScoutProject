@@ -20,13 +20,13 @@ import java.util.Properties;
 // project imports
 import impresario.IModel;
 import model.*;
-public class UpdateTreeTransactionView extends View {
+public class UpdateTreeView extends View {
     private TextField barcode;
     private Button submitButton;
     private Button cancelButton;
     private MessageView statusLog;
     //-------------------------------------------------------------
-    public UpdateTreeTransactionView(IModel trans) {
+    public UpdateTreeView(IModel trans) {
         super(trans, "UpdateTree");
         // create a container for showing the contents
         VBox container = new VBox(10);

@@ -32,7 +32,6 @@ public class UpdateTreeTypeTransaction extends Transaction
      */
     //----------------------------------------------------------
     public UpdateTreeTypeTransaction()
-            throws Exception
     {
         super();
     }
@@ -63,49 +62,49 @@ public class UpdateTreeTypeTransaction extends Transaction
     //----------------------------------------------------------
     public void processTransaction(Properties props)
     {
-        if (props.getProperty("AccountNumber") != null)
-        {
-            String accountNumber = props.getProperty("AccountNumber");
-            try
-            {
-
-                myAccount = createAccount(accountNumber);
-                boolean isOwner = myAccount.verifyOwnership(myCust);
-                if (isOwner == false)
-                {
-                    transactionErrorMessage = "ERROR: Deposit Transaction: Not owner of selected account!!";
-                    new Event(Event.getLeafLevelClassName(this), "processTransaction",
-                            "Failed to verify ownership of account number : " + accountNumber + ".",
-                            Event.ERROR);
-                }
-                else
-                {
-                    //createAndShowDepositAmountView();
-                }
-            }
-            catch (InvalidPrimaryKeyException ex)
-            {
-                transactionErrorMessage = "ACCOUNT FAILURE: Contact bank immediately!!";
-                new Event(Event.getLeafLevelClassName(this), "processTransaction",
-                        "Failed to create account for number : " + accountNumber + ". Reason: " + ex.toString(),
-                        Event.ERROR);
-
-            }
-        }
-        else
-        if (props.getProperty("Amount") != null)
-        {
-            String amount = props.getProperty("Amount");
-            depositAmount = amount;
-
-            myAccount.credit(amount);
-            myAccount.update();
-            accountUpdateStatusMessage = (String)myAccount.getState("UpdateStatusMessage");
-            transactionErrorMessage = accountUpdateStatusMessage;
-
-            createAndShowReceiptView();
-
-        }
+//        if (props.getProperty("AccountNumber") != null)
+//        {
+//            String accountNumber = props.getProperty("AccountNumber");
+//            try
+//            {
+//
+//                myAccount = createAccount(accountNumber);
+//                boolean isOwner = myAccount.verifyOwnership(myCust);
+//                if (isOwner == false)
+//                {
+//                    transactionErrorMessage = "ERROR: Deposit Transaction: Not owner of selected account!!";
+//                    new Event(Event.getLeafLevelClassName(this), "processTransaction",
+//                            "Failed to verify ownership of account number : " + accountNumber + ".",
+//                            Event.ERROR);
+//                }
+//                else
+//                {
+//                    //createAndShowDepositAmountView();
+//                }
+//            }
+//            catch (InvalidPrimaryKeyException ex)
+//            {
+//                transactionErrorMessage = "ACCOUNT FAILURE: Contact bank immediately!!";
+//                new Event(Event.getLeafLevelClassName(this), "processTransaction",
+//                        "Failed to create account for number : " + accountNumber + ". Reason: " + ex.toString(),
+//                        Event.ERROR);
+//
+//            }
+//        }
+//        else
+//        if (props.getProperty("Amount") != null)
+//        {
+//            String amount = props.getProperty("Amount");
+//            depositAmount = amount;
+//
+//            myAccount.credit(amount);
+//            myAccount.update();
+//            accountUpdateStatusMessage = (String)myAccount.getState("UpdateStatusMessage");
+//            transactionErrorMessage = accountUpdateStatusMessage;
+//
+//            createAndShowReceiptView();
+//
+//        }
     }
 
     //-----------------------------------------------------------
@@ -120,11 +119,11 @@ public class UpdateTreeTypeTransaction extends Transaction
         {
             return accountUpdateStatusMessage;
         }
-        else
-        if (key.equals("AccountNumberList") == true)
-        {
-            return myAccountIDs;
-        }
+//        else
+//        if (key.equals("AccountNumberList") == true)
+//        {
+//            return myAccountIDs;
+//        }
         else
         if (key.equals("Account") == true)
         {

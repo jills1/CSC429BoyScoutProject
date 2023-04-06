@@ -29,23 +29,24 @@ import java.util.Vector;
 
 // project imports
 import impresario.IModel;
-import model.Scout;
+import model.Tree;
 
 /** The class containing the Deposit Transaction View  for the ATM application */
 //==============================================================
-public class EndShiftTransactionView extends View
+public class RemoveTreeView2 extends View
 {
 
     // Model
 
     // GUI components
-    private TextField firstName;
-    private TextField middleName;
-    private TextField lastName;
-    private TextField dateOfBirth;
-    private TextField phoneNumber;
-    private TextField email;
-    private TextField troopID;
+    private TextField barcode;
+    //private TextField treeType;
+
+    private TextField status;
+    private TextField notes;
+    //private TextField dateStatusUpdated;
+
+
 
     private Button submitButton;
     private Button cancelButton;
@@ -55,10 +56,10 @@ public class EndShiftTransactionView extends View
 
     // constructor for this class -- takes a model object
     //----------------------------------------------------------
-    public EndShiftTransactionView(IModel trans)
+    public RemoveTreeView2(IModel trans)
     {
-        super(trans, "RegisterScoutTransactionView");
-
+        super(trans, "RemoveTreeView2");
+        System.out.println("making it to remove view");
         // create a container for showing the contents
         VBox container = new VBox(10);
         container.setPadding(new Insets(15, 5, 5, 5));
@@ -73,7 +74,11 @@ public class EndShiftTransactionView extends View
         getChildren().add(container);
 
         populateFields();
+
+        myModel.subscribe("TransactionError", this);
     }
+
+
 
 
     // Create the label (Text) for the title
@@ -101,96 +106,69 @@ public class EndShiftTransactionView extends View
         grid.setVgap(10);
         grid.setPadding(new Insets(25, 25, 25, 25));
 
-        Label firstNameLabel = new Label("First Name : ");
-        grid.add(firstNameLabel, 0, 0);
+        Label barcodeLabel = new Label("barcode : ");
+        grid.add(barcodeLabel, 0, 0);
+        System.out.println("view found in removeView");
 
-        firstName = new TextField();
-        firstName.setOnAction(new EventHandler<ActionEvent>() {
-
-            @Override
-            public void handle(ActionEvent e) {
-                processAction(e);
-            }
-        });
-        grid.add(firstName, 1, 0);
-
-        Label lastNameLabel = new Label("Last Name : ");
-        grid.add(lastNameLabel, 0, 1);
-
-        lastName = new TextField();
-        lastName.setOnAction(new EventHandler<ActionEvent>() {
+        barcode = new TextField();
+        barcode.setOnAction(new EventHandler<ActionEvent>() {
 
             @Override
             public void handle(ActionEvent e) {
                 processAction(e);
             }
         });
-        grid.add(lastName, 1, 1);
+        grid.add(barcode, 1, 0);
+/*
+        Label treeTypeLabel = new Label("treeType : ");
+        grid.add(treeTypeLabel, 0, 1);
+        treeType = new TextField();
+        treeType.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent e) {
+                processAction(e);
+            }
+        });
+        grid.add(treeType, 1, 1);*/
 
-        Label middleNameLabel = new Label("Middle Name : ");
-        grid.add(middleNameLabel, 0, 2);
+        Label statusLabel = new Label("status : ");
+        grid.add(statusLabel, 0, 1);
 
-        middleName = new TextField();
-        middleName.setOnAction(new EventHandler<ActionEvent>() {
+        status = new TextField();
+        status.setOnAction(new EventHandler<ActionEvent>() {
 
             @Override
             public void handle(ActionEvent e) {
                 processAction(e);
             }
         });
-        grid.add(middleName, 1, 2);
+        grid.add(status, 1, 1);
 
-        Label dateOfBirthLabel = new Label("Date of Birth : ");
-        grid.add(dateOfBirthLabel, 0, 3);
+        Label notesLabel = new Label("notes : ");
+        grid.add(notesLabel, 0, 2);
 
-        dateOfBirth = new TextField();
-        dateOfBirth.setOnAction(new EventHandler<ActionEvent>() {
-
-            @Override
-            public void handle(ActionEvent e) {
-                processAction(e);
-            }
-        });
-        grid.add(dateOfBirth, 1, 3);
-
-        Label phoneNumLabel = new Label("Phone Number : ");
-        grid.add(phoneNumLabel, 0, 4);
-
-        phoneNumber = new TextField();
-        phoneNumber.setOnAction(new EventHandler<ActionEvent>() {
+        notes = new TextField();
+        notes.setOnAction(new EventHandler<ActionEvent>() {
 
             @Override
             public void handle(ActionEvent e) {
                 processAction(e);
             }
         });
-        grid.add(phoneNumber, 1, 4);
+        grid.add(notes, 1, 2);
 
-        Label emailLabel = new Label("Email : ");
-        grid.add(emailLabel, 0, 5);
-
-        email = new TextField();
-        email.setOnAction(new EventHandler<ActionEvent>() {
-
+        /*Label dateStatusUpdatedLabel = new Label("Date Status Updated : ");
+        grid.add(dateStatusUpdatedLabel, 0, 4);
+        dateStatusUpdated = new TextField();
+        dateStatusUpdated.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
                 processAction(e);
             }
         });
-        grid.add(email, 1, 5);
+        grid.add(dateStatusUpdated, 1, 4);
+*/
 
-        Label troopIDLabel = new Label("Troop ID : ");
-        grid.add(troopIDLabel, 0, 6);
-
-        troopID = new TextField();
-        troopID.setOnAction(new EventHandler<ActionEvent>() {
-
-            @Override
-            public void handle(ActionEvent e) {
-                processAction(e);
-            }
-        });
-        grid.add(troopID, 1, 6);
 
         submitButton = new Button("Submit");
         submitButton.setOnAction(new EventHandler<ActionEvent>() {
@@ -204,7 +182,7 @@ public class EndShiftTransactionView extends View
         });
 
         cancelButton = new Button("Back");
-        cancelButton.setOnAction(new EventHandler<ActionEvent>() {
+        cancelButton.setOnAction(new EventHandler <ActionEvent> () {
 
             @Override
             public void handle(ActionEvent e) {
@@ -240,11 +218,17 @@ public class EndShiftTransactionView extends View
         statusLog = new MessageView(initialMessage);
 
         return statusLog;
+
     }
+
 
     //-------------------------------------------------------------
     public void populateFields()
     {
+
+        barcode.setText((String)myModel.getState("barcode"));
+        status.setText((String)myModel.getState("status"));
+        notes.setText((String)myModel.getState("notes"));
 
     }
 
@@ -256,61 +240,32 @@ public class EndShiftTransactionView extends View
     //----------------------------------------------------------
     private void processAction(Event evt)
     {
-        //clearErrorMessage();
+        clearErrorMessage();
+        System.out.println("i'm in process Action");
+        String barcodeEntered = barcode.getText();
+        //String treeTypeEntered = treeType.getText();
+        String statusEntered = status.getText();
+        String notesEntered = notes.getText();
+        //String dateStatusUpdatedEntered = dateStatusUpdated.getText();
 
-        String lastNameEntered = lastName.getText();
-        String firstNameEntered = firstName.getText();
-        String middleNameEntered = middleName.getText();
-        String dateOfBirthEntered = dateOfBirth.getText();
-        String phoneNumberEntered = phoneNumber.getText();
-        String emailEntered = email.getText();
-        String troopIDEntered = troopID.getText();
 
-        if ((lastNameEntered == null) || (lastNameEntered.length() == 0))
-        {
-            displayErrorMessage("Please enter a last name");
-        }
-        else if ((firstNameEntered == null) || (firstNameEntered.length() == 0))
-        {
-            displayErrorMessage("Please enter a first name");
-        }
-        else if ((middleNameEntered == null) || (middleNameEntered.length() == 0))
-        {
-            displayErrorMessage("Please enter a middle name");
-        }
-        else if ((dateOfBirthEntered == null) || (dateOfBirthEntered.length() == 0))
-        {
-            displayErrorMessage("Please enter a valid birth date");
-        }
-        else if ((phoneNumberEntered == null) || (phoneNumberEntered.length() == 0))
-        {
-            displayErrorMessage("Please enter a phone number");
-        }
-        else if ((emailEntered == null) || (emailEntered.length() == 0))
-        {
-            displayErrorMessage("Please enter an email");
-        }
-        else if ((troopIDEntered == null) || (troopIDEntered.length() == 0))
-        {
-            displayErrorMessage("Please enter a troopID");
-        }
-        else
-            processScoutInfo(lastNameEntered,firstNameEntered,middleNameEntered,dateOfBirthEntered,phoneNumberEntered,emailEntered,troopIDEntered);
+        processTreeInfo(barcodeEntered,statusEntered,notesEntered);
     }
-    private void processScoutInfo(String lastName, String firstName, String middleName, String dateOfBirth, String phoneNumber,String email, String troopID)
+    private void processTreeInfo(String barcode, String status,String notes)
     {
         Properties props = new Properties();
-        props.setProperty("lastName", lastName);
-        props.setProperty("firstName", firstName);
-        props.setProperty("middleName", middleName);
-        props.setProperty("dateOfBirth", dateOfBirth);
-        props.setProperty("phoneNumber", phoneNumber);
-        props.setProperty("email", email);
-        props.setProperty("troopID", troopID);
-        myModel.stateChangeRequest("RegisterWithScoutInfo", props);
-        Scout scout = new Scout(props);
-        scout.update();
-        displayMessage("Successfully added new Scout");
+        props.getProperty("barcode", barcode);
+        //props.setProperty("treeType", treeType);
+        props.getProperty("status", status);
+        props.getProperty("notes", notes);
+        //props.setProperty("dateStatusUpdated",dataStatusUpdated);
+
+
+        System.out.println("making it to processTreeInfo in RemoveView");
+        myModel.stateChangeRequest("RemoveTreeWithTreeInfo", props);
+        Tree tree = new Tree(props);
+        //tree.update();
+
     }
     public void displayMessage(String message)
     {
@@ -324,7 +279,14 @@ public class EndShiftTransactionView extends View
     //---------------------------------------------------------
     public void updateState(String key, Object value)
     {
-
+        if (key.equals("TransactionError"))
+        {
+            String msg = (String)value;
+            if (msg.startsWith("ERR") == true)
+                displayErrorMessage(msg);
+            else
+                displayMessage(msg);
+        }
     }
 
     /**

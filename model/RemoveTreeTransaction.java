@@ -2,12 +2,14 @@
 package model;
 
 // system imports
+import exception.InvalidPrimaryKeyException;
 import javafx.scene.Scene;
+
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Properties;
 
 // project imports
-import event.Event;
-import exception.InvalidPrimaryKeyException;
 
 import userinterface.View;
 import userinterface.ViewFactory;
@@ -23,8 +25,8 @@ public class RemoveTreeTransaction extends Transaction
     // GUI Components
 
     private String transactionErrorMessage = "";
-    private String accountUpdateStatusMessage = "";
 
+    protected  Tree myTree;
     /**
      * Constructor for this class.
      *
@@ -32,7 +34,7 @@ public class RemoveTreeTransaction extends Transaction
      */
     //----------------------------------------------------------
     public RemoveTreeTransaction()
-            throws Exception
+
     {
         super();
     }
@@ -51,7 +53,7 @@ public class RemoveTreeTransaction extends Transaction
         dependencies = new Properties();
         dependencies.setProperty("CancelDeposit", "CancelTransaction");
         dependencies.setProperty("OK", "CancelTransaction");
-        dependencies.setProperty("AccountNumber", "TransactionError");
+        dependencies.setProperty("RemoveTreeWithTreeInfo", "TransactionError");
 
         myRegistry.setDependencies(dependencies);
     }
@@ -61,53 +63,37 @@ public class RemoveTreeTransaction extends Transaction
      * verifying ownership, crediting, etc. etc.
      */
     //----------------------------------------------------------
-    public void processTransaction(Properties props)
-    {
-        if (props.getProperty("AccountNumber") != null)
-        {
-            String accountNumber = props.getProperty("AccountNumber");
-            try
-            {
+    public void processTransaction(Properties props){
 
-                myAccount = createAccount(accountNumber);
-                boolean isOwner = myAccount.verifyOwnership(myCust);
-                if (isOwner == false)
-                {
-                    transactionErrorMessage = "ERROR: Deposit Transaction: Not owner of selected account!!";
-                    new Event(Event.getLeafLevelClassName(this), "processTransaction",
-                            "Failed to verify ownership of account number : " + accountNumber + ".",
-                            Event.ERROR);
-                }
-                else
-                {
-                    //createAndShowDepositAmountView();
-                }
-            }
-            catch (InvalidPrimaryKeyException ex)
-            {
-                transactionErrorMessage = "ACCOUNT FAILURE: Contact bank immediately!!";
-                new Event(Event.getLeafLevelClassName(this), "processTransaction",
-                        "Failed to create account for number : " + accountNumber + ". Reason: " + ex.toString(),
-                        Event.ERROR);
-
-            }
+        String barcode= props.getProperty("barcode");
+        if(myTree.getState("status").equals("Sold")){
+            transactionErrorMessage="Error: its has been sold";
+            return;
         }
-        else
-        if (props.getProperty("Amount") != null)
-        {
-            String amount = props.getProperty("Amount");
-            depositAmount = amount;
+        myTree.deleteStateInDatabase();
+        transactionErrorMessage=(String)myTree.getState("UpdateStatusMessage");
+    }
+    //-----------------------------------------------------------
+    public void searchTree(Properties props){
 
-            myAccount.credit(amount);
-            myAccount.update();
-            accountUpdateStatusMessage = (String)myAccount.getState("UpdateStatusMessage");
-            transactionErrorMessage = accountUpdateStatusMessage;
+        try{
 
-            createAndShowReceiptView();
+            String barcode= props.getProperty("barcode");
+            myTree= new Tree(barcode);
+            String treeBarcode=(String)myTree.getState("barcode");
+            System.out.println("tree barcode"+ treeBarcode);
+            props.setProperty("barcode", treeBarcode);
+            String treeStatus=(String)myTree.getState("status");
+            props.setProperty("status", treeStatus);
+            System.out.println("status: "+treeStatus);
+            String treeNotes=(String)myTree.getState("notes");
+            props.setProperty("notes", treeNotes);
+            createView2();
 
+        } catch(InvalidPrimaryKeyException e){
+            transactionErrorMessage="Error cannot do this 2.";
         }
     }
-
     //-----------------------------------------------------------
     public Object getState(String key)
     {
@@ -116,24 +102,32 @@ public class RemoveTreeTransaction extends Transaction
             return transactionErrorMessage;
         }
         else
-        if (key.equals("UpdateStatusMessage") == true)
+
+        if (key.equals("barcode") == true)
         {
-            return accountUpdateStatusMessage;
+            if (myTree != null) {
+                return myTree.getState("barcode");
+            }
+            else
+                return "Undefined";
         }
         else
-        if (key.equals("AccountNumberList") == true)
+        if (key.equals("status") == true)
         {
-            return myAccountIDs;
+            if (myTree != null) {
+                return myTree.getState("status");
+            }
+            else
+                return "Undefined";
         }
         else
-        if (key.equals("Account") == true)
+        if (key.equals("notes") == true)
         {
-            return myAccount;
-        }
-        else
-        if (key.equals("DepositAmount") == true)
-        {
-            return depositAmount;
+            if (myTree != null) {
+                return myTree.getState("notes");
+            }
+            else
+                return "Undefined";
         }
         return null;
     }
@@ -148,9 +142,14 @@ public class RemoveTreeTransaction extends Transaction
             doYourJob();
         }
         else
-        if (key.equals("RegisterWithScoutInfo")==true)
+        if (key.equals("RemoveTreeWithTreeInfo")==true)
         {
             processTransaction((Properties)value);
+        }
+        else
+        if (key.equals("searchTree")==true)
+        {
+            searchTree((Properties)value);
         }
 
         myRegistry.updateSubscribers(key, this);
@@ -161,16 +160,17 @@ public class RemoveTreeTransaction extends Transaction
      * swapToView() to display the view in the frame
      */
     //------------------------------------------------------
+
     protected Scene createView()
     {
-        Scene currentScene = myViews.get("RegisterScoutTransactionView");
+        Scene currentScene = myViews.get("RemoveTreeTransactionView");
 
         if (currentScene == null)
         {
             // create our initial view
-            View newView = ViewFactory.createView("RegisterScoutTransactionView", this);
+            View newView = ViewFactory.createView("RemoveTreeTransactionView", this);
             currentScene = new Scene(newView);
-            myViews.put("RegisterScoutTransactionView", currentScene);
+            myViews.put("RemoveTreeTransactionView", currentScene);
 
             return currentScene;
         }
@@ -181,20 +181,31 @@ public class RemoveTreeTransaction extends Transaction
     }
 
     //------------------------------------------------------
+    protected void  createView2()
 
-
-    //------------------------------------------------------
-    protected void createAndShowReceiptView()
     {
 
-        // create our initial view
-        View newView = ViewFactory.createView("DepositReceipt", this);
+
+        View newView = ViewFactory.createView("RemoveView", this);
         Scene newScene = new Scene(newView);
 
-        myViews.put("DepositReceipt", newScene);
+        myViews.put("RemoveView", newScene);
 
         // make the view visible by installing it into the frame
         swapToView(newScene);
     }
+
+
+
+
+    //------------------------------------------------------
+    protected void checkIfSold(Properties props) {
+        System.out.println("test2");
+        if (props.getProperty("status") != "sold") {
+            System.out.println("test3");
+            myTree.remove();
+        }
+    }
+
 
 }

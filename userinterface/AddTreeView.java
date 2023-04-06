@@ -48,7 +48,7 @@ public class AddTreeView extends View
         getChildren().add(container);
 
         populateFields();
-
+        myModel.subscribe("ServiceCharge", this);
         myModel.subscribe("UpdateStatusMessage", this);
     }
 
@@ -107,7 +107,7 @@ public class AddTreeView extends View
         treeStatusLabel.setFont(myFont);
         treeStatusLabel.setWrappingWidth(150);
         treeStatusLabel.setTextAlignment(TextAlignment.RIGHT);
-        grid.add(treeStatusLabel, 0 , 4);
+        grid.add(treeStatusLabel, 0 , 3);
 
         status = new ComboBox();
         ObservableList options = status.getItems();
@@ -116,7 +116,7 @@ public class AddTreeView extends View
         options.add("Damaged");
         status.setItems(options);
         status.getSelectionModel().selectFirst();
-        grid.add(status, 1,4);
+        grid.add(status, 1,3);
 
         HBox cont = new HBox(10);
         cont.setAlignment(Pos.CENTER);
@@ -138,12 +138,18 @@ public class AddTreeView extends View
                 p.setProperty("dateStatusUpdate", dUS);
                 System.out.println("The time is " + dUS);
 
-                if((p.getProperty("barcode")).equals("") ||
-                        (p.getProperty("notes")).equals("") || (p.getProperty("status")).equals("")){
-                    displayErrorMessage("All fields must be filled in.");
+                if((p.getProperty("barcode")).equals("") || (p.getProperty("barcode")).length() > 5) {
+                    displayErrorMessage("Barcode is empty or bigger than 5 numbers.");
                     return;
-                }else {
+                } else if ((p.getProperty("notes")).length() > 200) {
+                    displayErrorMessage("Notes is bigger than 200 charcters.");
+                    return;
+                }
+                else {
                     myModel.stateChangeRequest("AddTreeInfo", p);
+                    Tree tree = new Tree(p);
+                    tree.update();
+                    displayMessage("Tree Successfully Added.");
                 }
 
             }

@@ -20,7 +20,7 @@ public class UpdateTreeTransaction extends Transaction {
     private String dateStatusUpdate;
     protected  Tree myTree;
     //----------------------------------------------------------
-    public UpdateTreeTransaction() throws Exception {
+    public UpdateTreeTransaction() {
         super();
     }
     //----------------------------------------------------------
@@ -33,9 +33,9 @@ public class UpdateTreeTransaction extends Transaction {
     }
     //----------------------------------------------------------
     public void processTransaction(Properties props) {
-      //  try {
-            //            String barcode= props.getProperty("barcode");
-            //            myTree= new Tree(barcode);
+        try {
+            String barcode= props.getProperty("barcode");
+            myTree= new Tree(barcode);
             String treeType = (String) myTree.getState("treeType");
             props.setProperty("treeType", treeType);
             //-------
@@ -49,9 +49,9 @@ public class UpdateTreeTransaction extends Transaction {
             props.setProperty("dateStatusUpdate", treeDateStatusUpdate);
             //-------
             createAndShowUpdateTreeFormTransactionView();
-//        } catch(InvalidPrimaryKeyException e){
-//            transactionErrorMessage="Error cannot do this 2.";
-//        }
+        } catch(InvalidPrimaryKeyException e){
+                transactionErrorMessage="Error cannot do this 2.";
+        }
     }
     //-----------------------------------------------------------
     public Object getState(String key) {
@@ -101,12 +101,12 @@ public class UpdateTreeTransaction extends Transaction {
     //------------------------------------------------------
     //Create View.java within view factory
     protected Scene createView() {
-        Scene currentScene = myViews.get("UpdateTreeTransactionView");
+        Scene currentScene = myViews.get("UpdateTreeView");
         if (currentScene == null) {
             // create our initial view
-            View newView = ViewFactory.createView("UpdateTreeTransactionView", this);
+            View newView = ViewFactory.createView("UpdateTreeView", this);
             currentScene = new Scene(newView);
-            myViews.put("UpdateTreeTransactionView", currentScene);
+            myViews.put("UpdateTreeView", currentScene);
             return currentScene;
         } else {
             return currentScene;
@@ -114,7 +114,7 @@ public class UpdateTreeTransaction extends Transaction {
     }
     //------------------------------------------------------
     protected void createAndShowUpdateTreeFormTransactionView() {
-        View newView = ViewFactory.createView("UpdateTreeFormTransactionView", this);
+        View newView = ViewFactory.createView("UpdateTreeFormView", this);
         Scene newScene = new Scene(newView);
         //myViews.put("UpdateTreeFormTransactionView", newScene);
         swapToView(newScene);

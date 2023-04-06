@@ -16,39 +16,23 @@ public class TransactionFactory
 	 *
 	 */
 	//----------------------------------------------------------
-	public static Transaction createTransaction(String transType)
-
-	{
-		Transaction retValue = null;
-
-		if (transType.equals("RegisterScout") == true)
-		{
-			retValue = new RegisterScoutTransaction();
+	public static Transaction createTransaction(String transType) {
+		//Transaction retValue = null;
+		switch(transType) {
+			case "RegisterScout": return new RegisterScoutTransaction();
+			//case "UpdateScout": return new UpdateScoutTransaction();
+			case "RemoveScout": return new RemoveScoutTransaction();
+			case "AddTree": return new AddTreeTransaction();
+			case "UpdateTree": return new UpdateTreeTransaction();
+			case "RemoveTree": return new RemoveTreeTransaction();
+			case "AddTreeType": return new AddTreeTypeTransaction();
+			case "UpdateTreeType": return new UpdateTreeTypeTransaction();
+			//case "StartShift": return new StartShiftTransaction();
+			//case "EndShift": return new EndShiftTransaction();
+			//case "SellTree": return new SellTreeTransaction();
+			//case "Logout": return new LogoutTransaction();
+			default: return null;
 		}
-		else
-		if (transType.equals("AddTree") == true)
-		{
-			retValue = new AddTreeTransaction();
-		}
-
-		else
-		if (transType.equals("RemoveScout") == true)
-		{
-			retValue = new RemoveScoutTransaction();
-		}
-
-		else
-		if (transType.equals("AddTreeType") == true)
-		{
-			retValue = new AddTreeTypeTransaction();
-		}
-		/*
-		else
-		if (transType.equals("ImposeServiceCharge") == true)
-		{
-			retValue = new ImposeServiceChargeTransaction(cust);
-		}
-*/
-		return retValue;
+		//return retValue;
 	}
 }

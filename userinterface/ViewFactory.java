@@ -5,79 +5,26 @@ import impresario.IModel;
 //==============================================================================
 public class ViewFactory {
 
-	public static View createView(String viewName, IModel model)
-	{
-		if(viewName.equals("TellerView") == true)
-		{
-			return new TellerView(model);
+	public static View createView(String viewName, IModel model) {
+		switch (viewName) {
+			case "TLCView": return new TLCView(model);
+			case "RegisterScoutView": return new RegisterScoutView(model);
+			case "UpdateScoutTransactionView": return new UpdateScoutTransactionView(model);
+			case "RemoveScoutView": return new RemoveScoutView(model);
+			case "AddTreeView": return new AddTreeView(model);
+			case "UpdateTreeView": return new UpdateTreeView(model);
+			case "RemoveTreeTransactionView": return new RemoveTreeTransactionView(model);
+//			case "AddTreeTypeTransactionView": return new UpdateScoutInfoView(model);
+//			case "UpdateTreeTypeTransactionView": return new UpdateScoutListView(model);
+//			case "StartShiftTransactionView": return new RemoveScoutIDView(model);
+//			case "RemoveScoutListView": return new RemoveScoutListView(model);
+//			case "RemoveScoutConfirmView": return new RemoveScoutConfirmView(model);
+//			case "AddTreeTypeActionView": return new AddTreeTypeActionView(model);
+
+			//--
+			case "UpdateTreeFormView": return new UpdateTreeFormView(model);
+			//case "RemoveScoutView2": return new RemoveScoutView2(model);
 		}
-		else if(viewName.equals("TLCView") == true)
-		{
-			return new TLCView(model);
-		}
-		else if(viewName.equals("AccountCollectionView") == true)
-		{
-			return new AccountCollectionView(model);
-		}
-		else if(viewName.equals("AccountView") == true)
-		{
-			return new AccountView(model);
-		}
-		else if(viewName.equals("AddTreeView") == true)
-		{
-			return new AddTreeView(model);
-		}
-		else if(viewName.equals("RegisterScoutTransactionView") == true)
-		{
-			return new RegisterScoutTransactionView(model);
-		}
-		else if(viewName.equals("AddTreeTypeTransactionView") == true)
-		{
-			return new AddTreeTypeTransactionView(model);
-		}
-		else if(viewName.equals("RemoveScoutTransactionView") == true)
-		{
-			return new RemoveScoutTransactionView(model);
-		}
-		else if(viewName.equals("ScoutCollectionView") == true)
-		{
-			return new ScoutCollectionView(model);
-		}
-		else if(viewName.equals("ScoutSelectedView") == true)
-		{
-			return new ScoutSelectedView(model);
-		}
-		else if(viewName.equals("AddTreeTypeTransactionView") == true)
-		{
-			return new AddTreeTypeTransactionView(model);
-		}
-		else if(viewName.equals("WithdrawReceipt") == true)
-		{
-			return new WithdrawReceipt(model);
-		}
-		else if(viewName.equals("DepositReceipt") == true)
-		{
-			return new DepositReceipt(model);
-		}
-		else if(viewName.equals("TransferReceipt") == true)
-		{
-			return new TransferReceipt(model);
-		}
-		else
-			return null;
+		return null;
 	}
-
-
-	/*
-	public static Vector createVectorView(String viewName, IModel model)
-	{
-		if(viewName.equals("SOME VIEW NAME") == true)
-		{
-			//return [A NEW VECTOR VIEW OF THAT NAME TYPE]
-		}
-		else
-			return null;
-	}
-	*/
-
 }

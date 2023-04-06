@@ -164,8 +164,7 @@ public class Scout extends EntityBase implements IView
             if (persistentState.getProperty("scoutID") != null)
             {
                 Properties whereClause = new Properties();
-                whereClause.setProperty("scoutID",
-                        persistentState.getProperty("scoutID"));
+                whereClause.setProperty("scoutID", persistentState.getProperty("scoutID"));
                 updatePersistentState(mySchema, persistentState, whereClause);
                 updateStatusMessage = "Scout data updated successfully in database!";
             }

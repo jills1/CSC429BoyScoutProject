@@ -29,7 +29,6 @@ public class AddTreeTransaction extends Transaction
      */
     //----------------------------------------------------------
     public AddTreeTransaction()
-
     {
         super();
     }
@@ -59,10 +58,8 @@ public class AddTreeTransaction extends Transaction
     //----------------------------------------------------------
     public void processTransaction(Properties props)
     {
-
         String barcode = props.getProperty("barcode");
         String barcodePrefix = barcode.substring(0,2);
-        System.out.println("Extracted barcode prefix: " + barcodePrefix);
         try
         {
             Tree t = new Tree(barcode);
@@ -74,15 +71,13 @@ public class AddTreeTransaction extends Transaction
                 String treeTypeID = (String)treeType.getState("treeTypeID");
                 props.setProperty("treeType", treeTypeID);
                 myTree = new Tree(props);
-                myTree.setOldFlag(false);
+                //myTree.setOldFlag(false);
                 myTree.update();
-
             }
             catch (InvalidPrimaryKeyException excep)
             {
                 transactionErrorMessage = "ERROR: Invalid barcode, no associated tree type found!";
             }
-
         }
     }
 

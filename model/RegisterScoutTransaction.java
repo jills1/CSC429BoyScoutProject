@@ -106,34 +106,17 @@ public class RegisterScoutTransaction extends Transaction
 
 		myRegistry.updateSubscribers(key, this);
 	}
-
-	/**
-	 * Create the view of this class. And then the super-class calls
-	 * swapToView() to display the view in the frame
-	 */
 	//------------------------------------------------------
-	protected Scene createView()
-	{
-		Scene currentScene = myViews.get("RegisterScoutTransactionView");
-
-		if (currentScene == null)
-		{
+	protected Scene createView() {
+		Scene currentScene = myViews.get("RegisterScoutView");
+		if (currentScene == null) {
 			// create our initial view
-			View newView = ViewFactory.createView("RegisterScoutTransactionView", this);
+			View newView = ViewFactory.createView("RegisterScoutView", this);
 			currentScene = new Scene(newView);
-			myViews.put("RegisterScoutTransactionView", currentScene);
-
+			myViews.put("RegisterScoutView", currentScene);
 			return currentScene;
-		}
-		else
-		{
+		} else {
 			return currentScene;
 		}
 	}
-
-	//------------------------------------------------------
-
-
-
-
 }
