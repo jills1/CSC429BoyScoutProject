@@ -52,7 +52,8 @@ public class RemoveTreeTransaction extends Transaction
     {
         dependencies = new Properties();
         dependencies.setProperty("CancelDeposit", "CancelTransaction");
-        dependencies.setProperty("OK", "CancelTransaction");
+        dependencies.setProperty("searchTree", "transactionErrorMessage");
+
         dependencies.setProperty("RemoveTreeWithTreeInfo", "TransactionError");
 
         myRegistry.setDependencies(dependencies);
@@ -91,7 +92,7 @@ public class RemoveTreeTransaction extends Transaction
             createView2();
 
         } catch(InvalidPrimaryKeyException e){
-            transactionErrorMessage="Error cannot do this 2.";
+            transactionErrorMessage="No Tree with this barcode.";
         }
     }
     //-----------------------------------------------------------
@@ -196,16 +197,8 @@ public class RemoveTreeTransaction extends Transaction
         }
 
 
-
-
     //------------------------------------------------------
-    protected void checkIfSold(Properties props) {
-        System.out.println("test2");
-        if (props.getProperty("status") != "sold") {
-            System.out.println("test3");
-            myTree.remove();
-        }
-    }
+
 
 
 }

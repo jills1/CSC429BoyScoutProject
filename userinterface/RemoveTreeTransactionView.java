@@ -117,59 +117,7 @@ public class RemoveTreeTransactionView extends View
             }
         });
         grid.add(barcode, 1, 0);
-/*
-        Label treeTypeLabel = new Label("treeType : ");
-        grid.add(treeTypeLabel, 0, 1);
 
-        treeType = new TextField();
-        treeType.setOnAction(new EventHandler<ActionEvent>() {
-
-            @Override
-            public void handle(ActionEvent e) {
-                processAction(e);
-            }
-        });
-        grid.add(treeType, 1, 1);
-
-        Label statusLabel = new Label("status : ");
-        grid.add(statusLabel, 0, 2);
-
-        status = new TextField();
-        status.setOnAction(new EventHandler<ActionEvent>() {
-
-            @Override
-            public void handle(ActionEvent e) {
-                processAction(e);
-            }
-        });
-        grid.add(notes, 1, 2);
-
-        Label notesLabel = new Label("notes : ");
-        grid.add(notesLabel, 0, 3);
-
-        notes = new TextField();
-        notes.setOnAction(new EventHandler<ActionEvent>() {
-
-            @Override
-            public void handle(ActionEvent e) {
-                processAction(e);
-            }
-        });
-        grid.add(notes, 1, 3);
-
-        Label dateStatusUpdatedLabel = new Label("Date Status Updated : ");
-        grid.add(dateStatusUpdatedLabel, 0, 4);
-
-        dateStatusUpdated = new TextField();
-        dateStatusUpdated.setOnAction(new EventHandler<ActionEvent>() {
-
-            @Override
-            public void handle(ActionEvent e) {
-                processAction(e);
-            }
-        });
-        grid.add(dateStatusUpdated, 1, 4);
-*/
 
 
         submitButton = new Button("Submit");
@@ -232,7 +180,7 @@ public class RemoveTreeTransactionView extends View
 
 
     /**
-     * Process account number selected by user.
+     * Process barcode number selected by user.
      * Action is to pass this info on to the transaction object.
      */
     //----------------------------------------------------------
@@ -244,9 +192,7 @@ public class RemoveTreeTransactionView extends View
         if(barcodeEntered.length()!= 5){
             displayErrorMessage("Enter a valid barcode");
         }
-        //String treeTypeEntered = treeType.getText();
-        //String statusEntered = status.getText();
-        //String dateStatusUpdatedEntered = dateStatusUpdated.getText();
+
 
 
                     processTreeInfo(barcodeEntered);
@@ -261,8 +207,7 @@ public class RemoveTreeTransactionView extends View
         // call RemoveView here
         myModel.stateChangeRequest("searchTree", props);
         Tree tree = new Tree(props);
-        //tree.update();
-        //displayMessage("Successfully removed tree");
+
     }
     public void displayMessage(String message)
     {
