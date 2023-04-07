@@ -52,7 +52,8 @@ public class RemoveTreeTransaction extends Transaction
     {
         dependencies = new Properties();
         dependencies.setProperty("CancelDeposit", "CancelTransaction");
-        dependencies.setProperty("searchTree", "transactionErrorMessage");
+        dependencies.setProperty("OK", "CancelTransaction");
+        dependencies.setProperty("searchTree", "TransactionError");
 
         dependencies.setProperty("RemoveTreeWithTreeInfo", "TransactionError");
 
@@ -65,12 +66,14 @@ public class RemoveTreeTransaction extends Transaction
      */
     //----------------------------------------------------------
     public void processTransaction(Properties props){
-
+        System.out.println("I'm getting to processTransaction");
+        System.out.println("I'm getting into try");
         String barcode= props.getProperty("barcode");
          if(myTree.getState("status").equals("Sold")){
             transactionErrorMessage="Error: its has been sold";
             return;
         }
+        System.out.println("i'm getting to myTree.deleteStateInDatabase");
         myTree.deleteStateInDatabase();
         transactionErrorMessage=(String)myTree.getState("UpdateStatusMessage");
     }
@@ -92,7 +95,8 @@ public class RemoveTreeTransaction extends Transaction
             createView2();
 
         } catch(InvalidPrimaryKeyException e){
-            transactionErrorMessage="No Tree with this barcode.";
+            System.out.println("getting to catch");
+            transactionErrorMessage="Error this barcode does not exist.";
         }
     }
     //-----------------------------------------------------------
@@ -198,7 +202,13 @@ public class RemoveTreeTransaction extends Transaction
 
 
     //------------------------------------------------------
-
+    protected void checkIfSold(Properties props) {
+        System.out.println("test2");
+        if (props.getProperty("status") != "sold") {
+            System.out.println("test3");
+            myTree.remove();
+        }
+    }
 
 
 }

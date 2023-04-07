@@ -74,6 +74,7 @@ public class RemoveTreeTransactionView extends View
         getChildren().add(container);
 
         populateFields();
+        myModel.subscribe("TransactionError",this);
     }
 
 
@@ -163,7 +164,7 @@ public class RemoveTreeTransactionView extends View
 
     // Create the status log field
     //-------------------------------------------------------------
-    private MessageView createStatusLog(String initialMessage)
+    private Node createStatusLog(String initialMessage)
     {
         statusLog = new MessageView(initialMessage);
 
@@ -221,6 +222,8 @@ public class RemoveTreeTransactionView extends View
     //---------------------------------------------------------
     public void updateState(String key, Object value)
     {
+        if ((key.equals("TransactionError")))
+            displayErrorMessage((String)value);
 
     }
 
