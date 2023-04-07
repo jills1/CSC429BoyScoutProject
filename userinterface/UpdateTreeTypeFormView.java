@@ -6,11 +6,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -21,6 +17,8 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Properties;
 import java.util.Vector;
 
@@ -28,19 +26,18 @@ import java.util.Vector;
 import impresario.IModel;
 import model.*;
 //==============================================================
-public class UpdateTreeFormTransactionView extends View {
+public class UpdateTreeTypeFormView extends View {
     //protected TableView<AccountTableModel> tableOfAccounts;
-    private TextField barcode;
-    private TextField treeType;
-    private TextField notes;
-    private ComboBox<String> status; // Changed to ComboBox
-    private TextField dateStatusUpdate;
+    private TextField treeTypeID;
+    private TextField typeDescription;
+    private TextField cost;
+    private TextField barcodePrefix;
     private Button submitButton;
     private Button cancelButton;
     private MessageView statusLog;
     //-------------------------------------------------------------
-    public UpdateTreeFormTransactionView(IModel trans) {
-        super(trans, "UpdateTreeFormTransactionView");
+    public UpdateTreeTypeFormView(IModel trans) {
+        super(trans, "UpdateTreeTypeFormView");
         // create a container for showing the contents
         VBox container = new VBox(10);
         container.setPadding(new Insets(15, 5, 5, 5));
@@ -65,7 +62,6 @@ public class UpdateTreeFormTransactionView extends View {
     //-------------------------------------------------------------
     private VBox createFormContent() {
         //-----------------------------------------------------------
-        populateFields();
         // Container Padding
         VBox vbox = new VBox(10);
         GridPane grid = new GridPane();
@@ -75,35 +71,30 @@ public class UpdateTreeFormTransactionView extends View {
         grid.setPadding(new Insets(25, 25, 25, 25));
 //-------------------------------------------------------------------
         //Barcode Label, Box and Handler
-        Label barcodeLabel = new Label("Barcode : ");
+        Label barcodeLabel = new Label("TreeTypeID : ");
         grid.add(barcodeLabel, 0, 0);
-        barcode = new TextField();
-        grid.add(barcode, 1, 0);
+        treeTypeID = new TextField();
+        treeTypeID.setEditable(false);
+        grid.add(treeTypeID, 1, 0);
         //-------------------------------------------------------------------
         //Tree Type Label, Box and Handler
-        Label treeTypeLabel = new Label("Tree Type : ");
-        grid.add(treeTypeLabel, 0, 2);
-        treeType = new TextField();
-        grid.add(treeType, 1, 2);
+        Label descriptionLabel = new Label("Description : ");
+        grid.add(descriptionLabel, 0, 2);
+        typeDescription = new TextField();
+        grid.add(typeDescription, 1, 2);
         //-------------------------------------------------------------------
         //Notes Label, Box and Handler
-        Label notesLabel = new Label("notes : ");
-        grid.add(notesLabel, 0, 3);
-        notes = new TextField();
-        grid.add(notes, 1, 3);
-        //-------------------------------------------------------------------
-        //Status Label, Box and Handler
-        Label statusLabel = new Label("Status : ");
-        grid.add(statusLabel, 0, 4);
-        status = new ComboBox<String>(); // Changed to ComboBox
-        status.getItems().addAll("Active", "Inactive");
-        grid.add(status, 1, 4);
+        Label costLabel = new Label("Cost : ");
+        grid.add(costLabel, 0, 3);
+        cost = new TextField();
+        grid.add(cost, 1, 3);
         //-------------------------------------------------------------------
         //dateStatusUpdate Label, Box and Handler
-        Label dateStatusUpdateLabel = new Label("Date of last status update : ");
-        grid.add(dateStatusUpdateLabel, 0, 5);
-        dateStatusUpdate = new TextField();
-        grid.add(dateStatusUpdate, 1, 5);
+        Label barcodePrefixLabel = new Label("Barcode Prefix : ");
+        grid.add(barcodePrefixLabel, 0, 5);
+        barcodePrefix = new TextField();
+        //barcodePrefix.setEditable(false);
+        grid.add(barcodePrefix, 1, 5);
 //------------------------------------------------------------------
         //Submit Button and Event Handler
         submitButton = new Button("Submit");
@@ -129,30 +120,44 @@ public class UpdateTreeFormTransactionView extends View {
     }
     //-------------------------------------------------------------
     public void populateFields() {
-        barcode.setText((String)myModel.getState("barcode"));
-        treeType.setText((String)myModel.getState("treeType"));
-        status.setValue((String)myModel.getState("status"));
-        notes.setText((String)myModel.getState("notes"));
-        dateStatusUpdate.setText((String)myModel.getState("dateStatusUpdate"));
+        treeTypeID.setText((String)myModel.getState("treeTypeID"));
+        typeDescription.setText((String)myModel.getState("description"));
+        cost.setText((String)myModel.getState("cost"));
+        barcodePrefix.setText((String)myModel.getState("barcodePrefix"));
     }
     //----------------------------------------------------------
     private void processAction(Event evt) {
         //clearErrorMessage();
-        String barcodeEntered = barcode.getText();
-        if ((barcodeEntered == null) || (barcodeEntered.length() == 0)) {
-            displayErrorMessage("Please enter a barcode");
-        } else {
-            processTreeInfo(barcodeEntered);
+        LocalDateTime now = LocalDateTime.now();
+        String treeTypeIDEntered = treeTypeID.getText();
+        String typeDescriptionEntered = typeDescription.getText();
+        String costEntered = cost.getText();
+        String barcodePrefixEntered = barcodePrefix.getText();
+        if ((treeTypeIDEntered == null) || (treeTypeIDEntered.length() == 0)) {
+            displayErrorMessage("Please enter a valid treeTypeID");
+        } else if ((typeDescriptionEntered == null) || (typeDescriptionEntered.length() == 0)) {
+            displayErrorMessage("Please enter a type description");
+        } else if ((costEntered == null) || (costEntered.length() == 0)) {
+            displayErrorMessage("Please enter the price of treeType");
+        } else if ((barcodePrefixEntered == null) || (barcodePrefixEntered.length() == 0)) {
+            displayErrorMessage("Please enter a barcodePrefix");
+        } else{
+            processTreeInfo(treeTypeIDEntered,typeDescriptionEntered,costEntered, barcodePrefixEntered);
         }
     }
-    private void processTreeInfo(String barcode) {
+    private void processTreeInfo(String treeTypeID, String typeDescription, String cost, String barcodePrefix) {
         // modify to make update tree
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+        LocalDateTime now = LocalDateTime.now();
         Properties props = new Properties();
-        props.setProperty("barcode", barcode);
-        myModel.stateChangeRequest("RegisterTreeInfo", props);
-        Tree tree = new Tree(props);
-        tree.update();
-        displayMessage("Successfully added Tree");
+        props.setProperty("treeTypeID", treeTypeID);
+        props.setProperty("typeDescription", typeDescription);
+        props.setProperty("cost", cost);
+        props.setProperty("barcodePrefix",barcodePrefix);
+        //myModel.stateChangeRequest("RegisterTreeInfo", props);
+        TreeType treeID = new TreeType(props);
+        treeID.update();
+        displayMessage("Successfully updated TreeType");
     }
     public void displayMessage(String message)
     {

@@ -9,15 +9,8 @@ import userinterface.View;
 import userinterface.ViewFactory;
 //==============================================================
 public class UpdateTreeTransaction extends Transaction {
-    private Account myAccount;
-    private String depositAmount;
     private String transactionErrorMessage = "";
     private String accountUpdateStatusMessage = "";
-    private String barcode;
-    private String treeType;
-    private String notes;
-    private String status;
-    private String dateStatusUpdate;
     protected  Tree myTree;
     //----------------------------------------------------------
     public UpdateTreeTransaction() {
@@ -48,63 +41,67 @@ public class UpdateTreeTransaction extends Transaction {
             String treeDateStatusUpdate = (String) myTree.getState("dateStatusUpdate");
             props.setProperty("dateStatusUpdate", treeDateStatusUpdate);
             //-------
-            createAndShowUpdateTreeFormTransactionView();
+            createAndShowUpdateTreeFormView();
         } catch(InvalidPrimaryKeyException e){
                 transactionErrorMessage="Error cannot do this 2.";
         }
     }
     //-----------------------------------------------------------
     public Object getState(String key) {
-        if (key.equals("TransactionError") == true) {
-            return transactionErrorMessage;
-        } else if (key.equals("UpdateStatusMessage") == true) {
-            return accountUpdateStatusMessage;
-        } else if (key.equals("treeType") == true) {
-            if (myTree != null) {
-                return myTree.getState("treeType");
-            } else {
-                return "Undefined";
-            }
-        } else if (key.equals("notes") == true) {
-            if (myTree != null) {
-                return myTree.getState("notes");
-            } else {
-                return "Undefined";
-            }
-        } else if (key.equals("status") == true) {
-            if (myTree != null) {
-                return myTree.getState("status");
-            } else {
-                return "Undefined";
-            }
-        } else if (key.equals("dateStatusUpdate") == true) {
-            if (myTree != null) {
-                return myTree.getState("dateStatusUpdate");
-            } else {
-                return "Undefined";
-            }
+        switch (key) {
+            case "TransactionError":
+                return transactionErrorMessage;
+            case "UpdateStatusMessage":
+                return accountUpdateStatusMessage;
+            case "barcode":
+                if (myTree != null) {
+                    return myTree.getState("barcode");
+                } else {
+                    return "Undefined";
+                }
+            case "treeType":
+                if (myTree != null) {
+                    return myTree.getState("treeType");
+                } else {
+                    return "Undefined";
+                }
+            case "notes":
+                if (myTree != null) {
+                    return myTree.getState("notes");
+                } else {
+                    return "Undefined";
+                }
+            case "status":
+                if (myTree != null) {
+                    return myTree.getState("status");
+                } else {
+                    return "Undefined";
+                }
+            case "dateStatusUpdate":
+                if (myTree != null) {
+                    return myTree.getState("dateStatusUpdate");
+                } else {
+                    return "Undefined";
+                }
         }
         return null;
     }
-    //-----------------------------------------------------------
-    //State Change
+    //------------------------------------------------------
     public void stateChangeRequest(String key, Object value) {
-        // DEBUG System.out.println("DepositTransaction.sCR: key: " + key);
-        if (key.equals("DoYourJob") == true) {
+        if (key.equals("DoYourJob")) {
             doYourJob();
-        } else  if (key.equals("UpdateTreeInfo")==true) {
+        } else  if (key.equals("UpdateTreeFormView")) {
             processTransaction((Properties)value);
-
         }
         myRegistry.updateSubscribers(key, this);
     }
     //------------------------------------------------------
-    //Create View.java within view factory
     protected Scene createView() {
         Scene currentScene = myViews.get("UpdateTreeView");
         if (currentScene == null) {
             // create our initial view
             View newView = ViewFactory.createView("UpdateTreeView", this);
+            assert newView != null;
             currentScene = new Scene(newView);
             myViews.put("UpdateTreeView", currentScene);
             return currentScene;
@@ -113,19 +110,10 @@ public class UpdateTreeTransaction extends Transaction {
         }
     }
     //------------------------------------------------------
-    protected void createAndShowUpdateTreeFormTransactionView() {
-        View newView = ViewFactory.createView("UpdateTreeFormView", this);
-        Scene newScene = new Scene(newView);
-        //myViews.put("UpdateTreeFormTransactionView", newScene);
-        swapToView(newScene);
-        // return newScreen;
-    }
-    //------------------------------------------------------
-    protected void createAndShowReceiptView() {
-        // create our initial view
-        View newView = ViewFactory.createView("DepositReceipt", this);
-        Scene newScene = new Scene(newView);
-        myViews.put("DepositReceipt", newScene);
-        swapToView(newScene);
+    protected void createAndShowUpdateTreeFormView() {
+        View newsView = ViewFactory.createView("UpdateTreeFormView", this);
+        assert newsView != null;
+        Scene newsScene = new Scene(newsView);
+        swapToView(newsScene);
     }
 }

@@ -5,12 +5,7 @@ import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -19,17 +14,14 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
-import javafx.stage.Stage;
-
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Properties;
-import java.util.Vector;
-
 // project imports
 import impresario.IModel;
 import model.*;
 //==============================================================
 public class UpdateTreeFormView extends View {
-    //protected TableView<AccountTableModel> tableOfAccounts;
     private TextField barcode;
     private TextField treeType;
     private TextField notes;
@@ -41,19 +33,15 @@ public class UpdateTreeFormView extends View {
     //-------------------------------------------------------------
     public UpdateTreeFormView(IModel trans) {
         super(trans, "UpdateTreeFormView");
-        // create a container for showing the contents
         VBox container = new VBox(10);
         container.setPadding(new Insets(15, 5, 5, 5));
-        // create our GUI components, add them to this panel
         container.getChildren().add(createTitle());
         container.getChildren().add(createFormContent());
-        // Error message area
         container.getChildren().add(createStatusLog("                          "));
         getChildren().add(container);
         populateFields();
     }
     //-------------------------------------------------------------
-    // Creates Title for Container
     private Node createTitle() {
         Text titleText = new Text("       Troop 209          ");
         titleText.setFont(Font.font("Arial", FontWeight.BOLD, 20));
@@ -65,7 +53,6 @@ public class UpdateTreeFormView extends View {
     //-------------------------------------------------------------
     private VBox createFormContent() {
         //-----------------------------------------------------------
-        populateFields();
         // Container Padding
         VBox vbox = new VBox(10);
         GridPane grid = new GridPane();
@@ -78,6 +65,7 @@ public class UpdateTreeFormView extends View {
         Label barcodeLabel = new Label("Barcode : ");
         grid.add(barcodeLabel, 0, 0);
         barcode = new TextField();
+        barcode.setEditable(false);
         grid.add(barcode, 1, 0);
         //-------------------------------------------------------------------
         //Tree Type Label, Box and Handler
@@ -103,6 +91,7 @@ public class UpdateTreeFormView extends View {
         Label dateStatusUpdateLabel = new Label("Date of last status update : ");
         grid.add(dateStatusUpdateLabel, 0, 5);
         dateStatusUpdate = new TextField();
+        dateStatusUpdate.setEditable(false);
         grid.add(dateStatusUpdate, 1, 5);
 //------------------------------------------------------------------
         //Submit Button and Event Handler
@@ -136,37 +125,54 @@ public class UpdateTreeFormView extends View {
         dateStatusUpdate.setText((String)myModel.getState("dateStatusUpdate"));
     }
     //----------------------------------------------------------
-    private void processAction(Event evt) {
-        //clearErrorMessage();
+    private void processAction(Event e) {
+        clearErrorMessage();
+        LocalDateTime now = LocalDateTime.now();
         String barcodeEntered = barcode.getText();
+        String treeTypeEntered = treeType.getText();
+        String statusEntered = status.getValue();
+        String notesEntered = notes.getText();
+        String dateStatusUpdateEntered = now.format(DateTimeFormatter.ofPattern("yyyy/MM/dd"));
+        System.out.println(barcodeEntered + " " + treeTypeEntered + statusEntered);
         if ((barcodeEntered == null) || (barcodeEntered.length() == 0)) {
-            displayErrorMessage("Please enter a barcode");
-        } else {
-            processTreeInfo(barcodeEntered);
+            displayErrorMessage("Please enter a valid barcode");
+        } else if ((treeTypeEntered == null) || (treeTypeEntered.length() == 0)) {
+            displayErrorMessage("Please enter a tree type");
+        } else if ((statusEntered == null)) {
+            displayErrorMessage("Please enter a status");
+        } else if ((notesEntered == null) || (notesEntered.length() == 0)) {
+            displayErrorMessage("Please enter notes");
+        } else if ((dateStatusUpdateEntered == null) || (dateStatusUpdateEntered.length() == 0)) {
+            displayErrorMessage("Please enter a date");
+        } else{
+            processTreeInfo(barcodeEntered,treeTypeEntered,statusEntered,notesEntered, dateStatusUpdateEntered);
         }
     }
-    private void processTreeInfo(String barcode) {
+    private void processTreeInfo(String barcode, String treeType, String status, String notes, String dateStatusUpdateEntered) {
         // modify to make update tree
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+        LocalDateTime now = LocalDateTime.now();
         Properties props = new Properties();
         props.setProperty("barcode", barcode);
+        props.setProperty("treeType", treeType);
+        props.setProperty("status", status);
+        props.setProperty("notes", notes);
+        props.setProperty("dateStatusUpdated",dateStatusUpdateEntered);
         myModel.stateChangeRequest("RegisterTreeInfo", props);
         Tree tree = new Tree(props);
         tree.update();
-        displayMessage("Successfully added Tree");
+        displayMessage("Successfully updated Tree");
     }
+    //-------------------------------------------------------------
     public void displayMessage(String message)
     {
         statusLog.displayMessage(message);
     }
-    //---------------------------------------------------------
-    public void updateState(String key, Object value) {
-    }
-    //----------------------------------------------------------
+    public void updateState(String key, Object value) {}
     public void displayErrorMessage(String message)
     {
         statusLog.displayErrorMessage(message);
     }
-    //----------------------------------------------------------
     public void clearErrorMessage()
     {
         statusLog.clearErrorMessage();

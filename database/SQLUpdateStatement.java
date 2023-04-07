@@ -59,7 +59,7 @@ public class SQLUpdateStatement extends SQLStatement
 		// Now, traverse the update Properties object (used for creating
 		// the SET part of this statement)
 		Enumeration theSetColumns = updateValues.propertyNames();
-		while (theSetColumns.hasMoreElements() == true)
+		while (theSetColumns.hasMoreElements())
 		{
 			if (theSetString.equals(""))
 			{
@@ -79,12 +79,9 @@ public class SQLUpdateStatement extends SQLStatement
 			String updateType = schema.getProperty(theColumnName);
 			
 			// if the type is numeric, do NOT include quotes
-			if (updateType.equals("numeric") == true)
-			{
+			if (updateType.equals("numeric")) {
 				theSetString += theColumnName + " = " + theColumnValue;
-			}
-			else
-			{
+			} else {
 				// must the a text type, include the quotes
 				theSetString += theColumnName + " = '" + theColumnValue + "'";
 			}
@@ -99,7 +96,7 @@ public class SQLUpdateStatement extends SQLStatement
 		if (whereValues != null)
 		{
 			Enumeration theWhereColumns = whereValues.propertyNames();
-			while (theWhereColumns.hasMoreElements() == true)
+			while (theWhereColumns.hasMoreElements())
 			{
 				if (theWhereString.equals(""))
 				{
@@ -117,7 +114,7 @@ public class SQLUpdateStatement extends SQLStatement
 				String whereType = schema.getProperty(theColumnName);
 						
 				// if the type is numeric, do NOT include quotes
-				if (whereType.equals("numeric") == true)
+				if (whereType.equals("numeric"))
 				{
 					theWhereString += theColumnName + " = " + theColumnValue;
 				}

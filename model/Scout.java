@@ -126,6 +126,47 @@ public class Scout extends EntityBase implements IView
     }
 
     //----------------------------------------------------------------
+    public String getLastName()
+    {
+        return (String)persistentState.getProperty("lastName");
+    }
+
+    //---------------------------------------------------------------
+    public String getFirstName()
+    {
+        return (String)persistentState.getProperty("firstName");
+    }
+    //---------------------------------------------------------------
+    public String getMiddleName()
+    {
+        return (String)persistentState.getProperty("middleName");
+    }
+    //----------------------------------------------------------------
+    public String getDateOfBirth()
+    {
+        return (String)persistentState.getProperty("dateOfBirth");
+    }
+    //----------------------------------------------------------------
+    public String getPhoneNumber()
+    {
+        return (String)persistentState.getProperty("phoneNumber");
+    }
+    //----------------------------------------------------------------
+    public String getTroopID()
+    {
+        return (String)persistentState.getProperty("troopID");
+    }
+    //----------------------------------------------------------------
+    public String getEmail()
+    {
+        return (String)persistentState.getProperty("email");
+    }
+    //----------------------------------------------------------------
+    public String getScoutID()
+    {
+        return (String)persistentState.getProperty("scoutID");
+    }
+    //----------------------------------------------------------------
     public void stateChangeRequest(String key, Object value)
     {
         persistentState.setProperty(key, (String) value);
@@ -164,7 +205,8 @@ public class Scout extends EntityBase implements IView
             if (persistentState.getProperty("scoutID") != null)
             {
                 Properties whereClause = new Properties();
-                whereClause.setProperty("scoutID", persistentState.getProperty("scoutID"));
+                whereClause.setProperty("scoutID",
+                        persistentState.getProperty("scoutID"));
                 updatePersistentState(mySchema, persistentState, whereClause);
                 updateStatusMessage = "Scout data updated successfully in database!";
             }
@@ -230,5 +272,3 @@ public class Scout extends EntityBase implements IView
 
 
 }
-
-

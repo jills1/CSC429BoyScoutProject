@@ -17,7 +17,6 @@ public class TransactionFactory
 	 */
 	//----------------------------------------------------------
 	public static Transaction createTransaction(String transType) {
-		//Transaction retValue = null;
 		switch(transType) {
 			case "RegisterScout": return new RegisterScoutTransaction();
 			//case "UpdateScout": return new UpdateScoutTransaction();
@@ -33,6 +32,5 @@ public class TransactionFactory
 			//case "Logout": return new LogoutTransaction();
 			default: return null;
 		}
-		//return retValue;
 	}
 }

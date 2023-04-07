@@ -28,19 +28,14 @@ public class UpdateTreeView extends View {
     //-------------------------------------------------------------
     public UpdateTreeView(IModel trans) {
         super(trans, "UpdateTree");
-        // create a container for showing the contents
         VBox container = new VBox(10);
         container.setPadding(new Insets(15, 5, 5, 5));
-        // create our GUI components, add them to this panel
         container.getChildren().add(createTitle());
         container.getChildren().add(createFormContent());
-        // Error message area
         container.getChildren().add(createStatusLog("                          "));
         getChildren().add(container);
-        populateFields();
     }
     //-------------------------------------------------------------
-    // Creates Title for Container
     private Node createTitle() {
         Text titleText = new Text("       Troop 209          ");
         titleText.setFont(Font.font("Arial", FontWeight.BOLD, 20));
@@ -48,7 +43,6 @@ public class UpdateTreeView extends View {
         titleText.setFill(Color.DARKGREEN);
         return titleText;
     }
-    // Create the main data entry fields
     //-------------------------------------------------------------
     private VBox createFormContent() {
         // Container Padding
@@ -100,28 +94,21 @@ public class UpdateTreeView extends View {
         }
     }
     private void processTreeInfo(String barcode) {
-        // modify to make update tree
         Properties props = new Properties();
         props.setProperty("barcode", barcode);
-        myModel.stateChangeRequest("UpdateTreeInfo", props);
-        Tree tree = new Tree(props);
-        tree.update();
+        myModel.stateChangeRequest("UpdateTreeFormView", props);
         displayMessage("Retrieving Tree Information");
     }
+    //------------------------------------------------------------
     public void displayMessage(String message)
     {
         statusLog.displayMessage(message);
     }
-
-    //---------------------------------------------------------
-    public void updateState(String key, Object value) {
-    }
-    //----------------------------------------------------------
+    public void updateState(String key, Object value) {}
     public void displayErrorMessage(String message)
     {
         statusLog.displayErrorMessage(message);
     }
-    //----------------------------------------------------------
     public void clearErrorMessage()
     {
         statusLog.clearErrorMessage();

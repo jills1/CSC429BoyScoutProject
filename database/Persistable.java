@@ -44,107 +44,98 @@ import event.Event;
 abstract public class Persistable
 {
 
-    // local state variables
-    private JDBCBroker myBroker = null;		// database connection broker
+	// local state variables
+	private JDBCBroker myBroker = null;		// database connection broker
 
-    protected boolean available = false;		// whether or not we're available
-    private static final int MAX_ROWS = 20000;
+	protected boolean available = false;		// whether or not we're available
+	private static final int MAX_ROWS = 20000;
 
-    private Statement theStatement = null;
-    private Connection theDBConnection = null;
+	private Statement theStatement = null;
+	private Connection theDBConnection = null;
 
 //    protected String persistableStatus;
 
-   // class constructor
-   //------------------------------------------------------------
-    protected Persistable()
-    {
+	// class constructor
+	//------------------------------------------------------------
+	protected Persistable()
+	{
 
 		// DEBUG System.out.println("Persistable.");
 
 		// initialize our state
 		myBroker = JDBCBroker.getInstance();
-				
+
 		available = true;
-	
-	
+
+
 		// DEBUG System.out.println("Leaving Persistable constructor.");
-    }
+	}
 
-   /**
-     * Create a Properties object representing aspects of the
-     * 'schema' of a table - namely, the column names and the types
-     * of the columns
-     *
-     * @param  String Table name to get schema information for
-     *
-     * @return Properties object indicating column names as keys and column
-     *         types as values
-     */
-    //------------------------------------------------------------
-    protected Properties getSchemaInfo(String tableName)
-    {	
-    	// DEBUG System.out.println("Persistable.getSchemaInfo for table " + tableName);
-    	try
+
+	//------------------------------------------------------------
+	protected Properties getSchemaInfo(String tableName)
+	{
+		// DEBUG System.out.println("Persistable.getSchemaInfo for table " + tableName);
+		try
 		{
-		// Create a connection to the database
-		Connection theDBConnection = myBroker.getConnection();
-			
-		/* System.out.println("Persistable.getSchemaInfo(..) connection = " + theDBConnection); */
+			// Create a connection to the database
+			Connection theDBConnection = myBroker.getConnection();
 
-		// extract the metadata from the database
-		DatabaseMetaData dbMetaData = theDBConnection.getMetaData();
+			/* System.out.println("Persistable.getSchemaInfo(..) connection = " + theDBConnection); */
 
-    	// create a place to hold our return information
-    	Properties valToReturn = new Properties();
-    	// add the name of our table to the return props
-    	valToReturn.setProperty("TableName", tableName);
+			// extract the metadata from the database
+			DatabaseMetaData dbMetaData = theDBConnection.getMetaData();
 
-    	// get the names of the columns from the database
-    	ResultSet columnInfo = dbMetaData.getColumns(null, null, tableName, null);
-    	while (columnInfo.next())
-    	{
-    		// DEBUG System.out.println("Column Name = " + columnInfo.getString(4) + ", Column Type = " + columnInfo.getString(6));
-    		String typeValue = columnInfo.getString(6);
+			// create a place to hold our return information
+			Properties valToReturn = new Properties();
+			// add the name of our table to the return props
+			valToReturn.setProperty("TableName", tableName);
 
-			typeValue = typeValue.toLowerCase();
-    		if ((typeValue.startsWith("smallint") == true) || (typeValue.startsWith("mediumint") == true) ||
-    			(typeValue.startsWith("int") == true))
-    		{
-    			typeValue = "numeric";
-   			}
-    		else
+			// get the names of the columns from the database
+			ResultSet columnInfo = dbMetaData.getColumns(null, null, tableName, null);
+			while (columnInfo.next())
 			{
-    				typeValue = "text";
-    		}
+				// DEBUG System.out.println("Column Name = " + columnInfo.getString(4) + ", Column Type = " + columnInfo.getString(6));
+				String typeValue = columnInfo.getString(6);
 
-    		// add the column / field name and type to the return props
-    		valToReturn.setProperty(columnInfo.getString(4), typeValue);
-    	}   		
+				typeValue = typeValue.toLowerCase();
+				if ((typeValue.startsWith("smallint") == true) || (typeValue.startsWith("mediumint") == true) ||
+						(typeValue.startsWith("int") == true))
+				{
+					typeValue = "numeric";
+				}
+				else
+				{
+					typeValue = "text";
+				}
 
-		columnInfo.close();
+				// add the column / field name and type to the return props
+				valToReturn.setProperty(columnInfo.getString(4), typeValue);
+			}
 
-    	return valToReturn;
-		}	
+			columnInfo.close();
+
+			return valToReturn;
+		}
 		catch (SQLException sqle)
 		{
 //			DEBUG: System.err.println( "An SQL Error Occured:" + sqle + "\n" + sqle.getErrorCode() + "\n" + sqle.getMessage() + "\n" + sqle);
 			new Event(Event.getLeafLevelClassName(this), "getSchemaInfo", "SQL Exception: " + sqle.getErrorCode() + ": " + sqle.getMessage(), Event.ERROR);
 			return null;
 		}
-    }
+	}
 
 
-    /**
-     * Create and execute a SQL statement to extract the required
-     * fields from the database.
-     * Returns a Vector with each element being a Properties object
-     * containing the columnName=columnValue mappings
-     */
-    //------------------------------------------------------------
-    protected Vector getPersistentState(Properties schema,
-					Properties where)
-    {
+	/**
+	 * Create and execute a SQL statement to extract the required
+	 * fields from the database.
+	 * Returns a Vector with each element being a Properties object
+	 * containing the columnName=columnValue mappings
+	 */
+	//------------------------------------------------------------
+	protected Vector getPersistentState(Properties schema,
+										Properties where)
+	{
 		int numRSColumns = 0; 			// number of columns in ResultSet
 		Vector namesRSColumns = null;	// names of columns in ResultSet
 		ResultSet theResultSet = null;			// the resultset from the SQLStatement execution
@@ -166,7 +157,7 @@ abstract public class Persistable
 				return null;
 			}
 
-	    	// construct a SQL statement from the passed parameters
+			// construct a SQL statement from the passed parameters
 			SQLSelectStatement theSQLStatement = new SQLSelectStatement(schema, where);
 
 			// DEBUG System.out.println("SQL Statement: " + theSQLStatement.toString());
@@ -226,16 +217,16 @@ abstract public class Persistable
 					}
 				}
 				resultSetToReturn.addElement(thisRow);
-			}			
+			}
 
 			if (theResultSet != null)
-				theResultSet.close();	
+				theResultSet.close();
 			return resultSetToReturn;
 		}
 		catch (SQLException sqle)
 		{
 //			DEBUG: System.err.println( "An SQL Error Occurred:" + sqle + "\n" + sqle.getErrorCode() + "\n" + sqle.getMessage() + "\n" + sqle);
-			
+
 			new Event(Event.getLeafLevelClassName(this), "getPersistentState", "SQL Exception: " + sqle.getErrorCode() + ": " + sqle.getMessage(), Event.ERROR);
 			return null;
 		}
@@ -246,17 +237,17 @@ abstract public class Persistable
 	}
 
 
-    /**
-     * Create and execute a SQL statement to extract the required
-     * fields from the database.
-     * Returns a Vector with each element being a Properties object
-     * containing the columnName=columnValue mappings
-     */
-    //------------------------------------------------------------
-    protected Vector getQueriedState(Properties selSchema,
-    								 Properties projectionSchema,
+	/**
+	 * Create and execute a SQL statement to extract the required
+	 * fields from the database.
+	 * Returns a Vector with each element being a Properties object
+	 * containing the columnName=columnValue mappings
+	 */
+	//------------------------------------------------------------
+	protected Vector getQueriedState(Properties selSchema,
+									 Properties projectionSchema,
 									 Properties where)
-    {
+	{
 		int numRSColumns = 0; 			// number of columns in ResultSet
 		Vector namesRSColumns = null;	// names of columns in ResultSet
 		ResultSet theResultSet;			// the resultset from the SQLStatement execution
@@ -272,7 +263,7 @@ abstract public class Persistable
 				return null;
 			}
 
-	    	// construct a SQL statement from the passed parameters
+			// construct a SQL statement from the passed parameters
 			SQLQueryStatement theSQLStatement = new SQLQueryStatement(selSchema, projectionSchema, where);
 
 			// DEBUG: System.out.println("SQLQueryStatement: " + theSQLStatement.toString());
@@ -334,36 +325,36 @@ abstract public class Persistable
 				}
 				resultSetToReturn.addElement(thisRow);
 			}
-			
+
 			if (theResultSet != null)
 				theResultSet.close();
 			return resultSetToReturn;
 		}
 		catch (SQLException sqle)
 		{
-//			DEBUG: 
+//			DEBUG:
 			System.err.println( "Persistable.getQueriedState: An SQL Error Occurred:" + sqle + "\n" + sqle.getErrorCode() + "\n" + sqle.getMessage() + "\n" + sqle);
 			new Event(Event.getLeafLevelClassName(this), "getQueriedState", "SQL Exception: " + sqle.getErrorCode() + ": " + sqle.getMessage(), Event.ERROR);
 			return null;
 		}
 		finally
 		{
-				
+
 			closeStatement();
 		}
 	}
 
- 	/**
-     * Create and execute a SQL statement to extract the required
-     * fields from the database.
-     * Returns a Vector with each element being a Properties object
-     * containing the columnName=columnValue mappings
-     */
-    //------------------------------------------------------------
-    protected Vector getQueriedStateWithExactMatches(Properties selSchema,
-    								 Properties projectionSchema,
-									 Properties where)
-    {
+	/**
+	 * Create and execute a SQL statement to extract the required
+	 * fields from the database.
+	 * Returns a Vector with each element being a Properties object
+	 * containing the columnName=columnValue mappings
+	 */
+	//------------------------------------------------------------
+	protected Vector getQueriedStateWithExactMatches(Properties selSchema,
+													 Properties projectionSchema,
+													 Properties where)
+	{
 		int numRSColumns = 0; 			// number of columns in ResultSet
 		Vector namesRSColumns = null;	// names of columns in ResultSet
 		ResultSet theResultSet;			// the resultset from the SQLStatement execution
@@ -379,9 +370,9 @@ abstract public class Persistable
 				return null;
 			}
 
-	    	// construct a SQL statement from the passed parameters
-			SQLQueryStatementWithExactMatches theSQLStatement = 
-				new SQLQueryStatementWithExactMatches(selSchema, projectionSchema, where);
+			// construct a SQL statement from the passed parameters
+			SQLQueryStatementWithExactMatches theSQLStatement =
+					new SQLQueryStatementWithExactMatches(selSchema, projectionSchema, where);
 
 			// DEBUG: System.out.println("SQLQueryStatement: " + theSQLStatement.toString());
 
@@ -443,32 +434,32 @@ abstract public class Persistable
 			}
 
 			if (theResultSet != null)
-				theResultSet.close();	
+				theResultSet.close();
 			return resultSetToReturn;
 		}
 		catch (SQLException sqle)
 		{
-//			DEBUG: 
+//			DEBUG:
 			System.err.println( "An SQL Error Occured:" + sqle + "\n" + sqle.getErrorCode() + "\n" + sqle.getMessage() + "\n" + sqle);
 			new Event(Event.getLeafLevelClassName(this), "getQueriedState", "SQL Exception: " + sqle.getErrorCode() + ": " + sqle.getMessage(), Event.ERROR);
 			return null;
 		}
 		finally
 		{
-			
+
 			closeStatement();
 		}
 	}
 
- 	/**
-     * Execute the SQL SELECT statement specified by the String parameter to extract 
-     * the required fields from the database.
-     * Returns a Vector with each element being a Properties object
-     * containing the columnName=columnValue mappings
-     */
-    //------------------------------------------------------------
-    protected Vector getSelectQueryResult(String sqlSelectStatement)
-    {
+	/**
+	 * Execute the SQL SELECT statement specified by the String parameter to extract
+	 * the required fields from the database.
+	 * Returns a Vector with each element being a Properties object
+	 * containing the columnName=columnValue mappings
+	 */
+	//------------------------------------------------------------
+	protected Vector getSelectQueryResult(String sqlSelectStatement)
+	{
 		int numRSColumns = 0; 			// number of columns in ResultSet
 		Vector namesRSColumns = null;	// names of columns in ResultSet
 		ResultSet theResultSet = null;			// the resultset from the SQLStatement execution
@@ -545,16 +536,16 @@ abstract public class Persistable
 					}
 				}
 				resultSetToReturn.addElement(thisRow);
-			}			
+			}
 
 			if (theResultSet != null)
-				theResultSet.close();	
+				theResultSet.close();
 			return resultSetToReturn;
 		}
 		catch (SQLException sqle)
 		{
 //			DEBUG: System.err.println( "An SQL Error Occurred:" + sqle + "\n" + sqle.getErrorCode() + "\n" + sqle.getMessage() + "\n" + sqle);
-			
+
 			new Event(Event.getLeafLevelClassName(this), "getSelectQueryResult", "SQL Exception: " + sqle.getErrorCode() + ": " + sqle.getMessage(), Event.ERROR);
 			return null;
 		}
@@ -565,17 +556,17 @@ abstract public class Persistable
 	}
 
 
-    /**
-     * Create and execute a SQL statement to extract the required
-     * fields from the database.
-     * Returns an int indicating the return code from SQL UPDATE statement
-     */
-    //------------------------------------------------------------
-    protected Integer updatePersistentState(Properties schema, 			// the table schema
-    						  			    Properties updateValues,	// the values to update
-							  			    Properties whereValues) 	// the where values
+	/**
+	 * Create and execute a SQL statement to extract the required
+	 * fields from the database.
+	 * Returns an int indicating the return code from SQL UPDATE statement
+	 */
+	//------------------------------------------------------------
+	protected Integer updatePersistentState(Properties schema, 			// the table schema
+											Properties updateValues,	// the values to update
+											Properties whereValues) 	// the where values
 			throws SQLException
-    {
+	{
 
 		int numRSColumns = 0; 			// number of columns in ResultSet
 		Vector namesRSColumns = null;	// names of columns in ResultSet
@@ -591,7 +582,7 @@ abstract public class Persistable
 				return null;
 			}
 
-	    	// construct a SQL statement from the passed parameters
+			// construct a SQL statement from the passed parameters
 			SQLUpdateStatement theSQLStatement = new SQLUpdateStatement(schema, updateValues, whereValues);
 			// DEBUG System.out.println("SQL Statement: " + theSQLStatement.toString());
 
@@ -617,13 +608,13 @@ abstract public class Persistable
 
 			// DEBUG: throw new SQLException("Testing only");
 
-			
+
 
 			return new Integer(returnCode);
 		}
 		catch (SQLException sqle)
 		{
-//			DEBUG: 
+//			DEBUG:
 			System.err.println( "An SQL Error Occured:" + sqle + "\n" + sqle.getErrorCode() + "\n" + sqle.getMessage() + "\n" + sqle);
 			new Event(Event.getLeafLevelClassName(this), "updatePersistentState", "SQL Exception: " + sqle.getErrorCode() + ": " + sqle.getMessage(), Event.ERROR);
 			throw sqle;
@@ -635,16 +626,16 @@ abstract public class Persistable
 	}
 
 
-   /**
-     * Create and execute a SQL statement to insert the required
-     * fields into the database.
-     * Returns an int indicating the auto-incremental id from SQL INSERT statement
-     */
- //------------------------------------------------------------
+	/**
+	 * Create and execute a SQL statement to insert the required
+	 * fields into the database.
+	 * Returns an int indicating the auto-incremental id from SQL INSERT statement
+	 */
+	//------------------------------------------------------------
 	protected Integer insertAutoIncrementalPersistentState(Properties schema, 		// the table schema
 														   Properties insertValues)	// the values to update
-				throws SQLException
-    {
+			throws SQLException
+	{
 		int autoIncKey = -1; 			// auto-increment key extracted from ResultSet
 		ResultSet theResultSet = null;	// auto-increment key in ResultSet
 
@@ -683,51 +674,51 @@ abstract public class Persistable
 			int numRows = theStatement.executeUpdate(theSQLStatement.toString(), Statement.RETURN_GENERATED_KEYS);
 
 			// DEBUG: throw new SQLException("Testing only");
-			
+
 			// DEBUG: System.out.println("Testing only");
-			
+
 			theResultSet = theStatement.getGeneratedKeys();
-			
-			if (theResultSet.next()) 
+
+			if (theResultSet.next())
 			{
-        			autoIncKey = theResultSet.getInt(1);
-    		} 
-    		else 
-    		{
+				autoIncKey = theResultSet.getInt(1);
+			}
+			else
+			{
 				System.out.println("Persistable.insertAutoIncrementalPersistentState - can't get the auto-increment key");
 			}
-			
+
 			return new Integer(autoIncKey);
 		}
 		catch (SQLException sqle)
 		{
 //			DEBUG: System.err.println( "Persistable.insertAutoIncrementalPersistentState: An SQL Error Occurred: SQL State: " + sqle.getSQLState() + "; Error Code = " + sqle.getErrorCode() + "; Message: " + sqle.getMessage() + "\n" + sqle);
-			new Event(Event.getLeafLevelClassName(this), "insertAutoIncrementalPersistentState", "SQL Exception: " 
-			+ sqle.getErrorCode() + ": " + sqle.getMessage(), Event.ERROR); 
+			new Event(Event.getLeafLevelClassName(this), "insertAutoIncrementalPersistentState", "SQL Exception: "
+					+ sqle.getErrorCode() + ": " + sqle.getMessage(), Event.ERROR);
 			//return new Integer(28);
 			throw sqle;
-			
+
 		}
 		finally
 		{
 			if (theResultSet != null)
-				theResultSet.close();	
+				theResultSet.close();
 			closeStatement();
 		}
-	}				
-				
-				
-    /**
-     * Create and execute a SQL statement to insert the required
-     * fields into the database.
-     * Returns an int indicating the return code from SQL INSERT statement
-     */
-    //------------------------------------------------------------
-    protected Integer insertPersistentState(Properties schema, 			// the table schema
-    						  			    Properties insertValues)	// the values to update
-    			throws SQLException
+	}
 
-    {
+
+	/**
+	 * Create and execute a SQL statement to insert the required
+	 * fields into the database.
+	 * Returns an int indicating the return code from SQL INSERT statement
+	 */
+	//------------------------------------------------------------
+	protected Integer insertPersistentState(Properties schema, 			// the table schema
+											Properties insertValues)	// the values to update
+			throws SQLException
+
+	{
 		int numRSColumns = 0; 			// number of columns in ResultSet
 		Vector namesRSColumns = null;	// names of columns in ResultSet
 
@@ -742,10 +733,10 @@ abstract public class Persistable
 				return null;
 			}
 
-	    	// construct a SQL statement from the passed parameters
+			// construct a SQL statement from the passed parameters
 			SQLInsertStatement theSQLStatement = new SQLInsertStatement(schema, insertValues);
 			// DEBUG System.out.println("Persistable.insertPersistentState - SQL Statement: " + theSQLStatement.toString());
-		
+
 			// verify the construction (should be exception?)
 			if(theSQLStatement == null)
 			{
@@ -767,11 +758,11 @@ abstract public class Persistable
 
 			// DEBUG: throw new SQLException("Testing only");
 
-			 return new Integer(returnCode);
+			return new Integer(returnCode);
 		}
 		catch (SQLException sqle)
 		{
-//			DEBUG: 
+//			DEBUG:
 			System.err.println( "An SQL Error Occurred:" + sqle + "\n" + sqle.getErrorCode() + "\n" + sqle.getMessage() + "\n" + sqle);
 			new Event(Event.getLeafLevelClassName(this), "insertPersistentState", "SQL Exception: " + sqle.getErrorCode() + ": " + sqle.getMessage(), Event.ERROR);
 			throw sqle;
@@ -783,17 +774,17 @@ abstract public class Persistable
 	}
 
 
- 	/**
-     * Create and execture a SQL statement to delete the required
-     * fields from the database.
-     * Returns an integer indicating the return code from SQL DELETE statement
-     */
-    //------------------------------------------------------------
-    protected Integer deletePersistentState(Properties schema,			// the table schema
-    										Properties whereValues)		// the values to use to identify the delete row
-    			throws SQLException
-    {
-    	int numRSColumns = 0; 			// number of columns in ResultSet
+	/**
+	 * Create and execture a SQL statement to delete the required
+	 * fields from the database.
+	 * Returns an integer indicating the return code from SQL DELETE statement
+	 */
+	//------------------------------------------------------------
+	protected Integer deletePersistentState(Properties schema,			// the table schema
+											Properties whereValues)		// the values to use to identify the delete row
+			throws SQLException
+	{
+		int numRSColumns = 0; 			// number of columns in ResultSet
 		Vector namesRSColumns = null;	// names of columns in ResultSet
 
 		try
@@ -807,7 +798,7 @@ abstract public class Persistable
 				return null;
 			}
 
-	    	// construct a SQL statement from the passed parameters
+			// construct a SQL statement from the passed parameters
 			SQLDeleteStatement theSQLStatement = new SQLDeleteStatement(schema, whereValues);
 			// DEBUG System.out.println("Persistable.deletePersistentState - SQL Statement: " + theSQLStatement.toString());
 
@@ -832,12 +823,12 @@ abstract public class Persistable
 
 			// DEBUG: throw new SQLException("Testing only");
 
-			 
-			 return new Integer(returnCode);
+
+			return new Integer(returnCode);
 		}
 		catch (SQLException sqle)
 		{
-//			DEBUG: 
+//			DEBUG:
 			System.err.println( "An SQL Error Occured:" + sqle + "\n" + sqle.getErrorCode() + "\n" + sqle.getMessage() + "\n" + sqle);
 			new Event(Event.getLeafLevelClassName(this), "deletePersistentState", "SQL Exception: " + sqle.getErrorCode() + ": " + sqle.getMessage(), Event.ERROR);
 			throw sqle;
@@ -846,12 +837,12 @@ abstract public class Persistable
 		{
 			closeStatement();
 		}
-    }
+	}
 
 	// close the opened statement on the database
-    //------------------------------------------------------------
-    private void closeStatement()
-    {
+	//------------------------------------------------------------
+	private void closeStatement()
+	{
 		try
 		{
 			if (theStatement != null)
@@ -864,7 +855,7 @@ abstract public class Persistable
 		{
 			new Event(Event.getLeafLevelClassName(this), "closeStatement", "SQL Exception: " + sqle.getErrorCode() + ": " + sqle.getMessage(), Event.ERROR);
 		}
-    }
+	}
 
 }
 
@@ -875,10 +866,10 @@ abstract public class Persistable
 //	$Log: Persistable.java,v $
 //	Revision 1.1.1.2  2008/04/16 22:17:34  pwri0503
 //	no message
-//	
+//
 //	Revision 1.1.1.1  2008/04/08 19:21:02  tswa0407
 //	no message
-//	
+//
 //	Revision 1.19  2005/02/07 15:57:32  smitra
 //	Put in debug messages via event.Event
 //

@@ -33,11 +33,11 @@ import model.Scout;
 
 /** The class containing the Deposit Transaction View  for the ATM application */
 //==============================================================
-public class UpdateTreeTypeTransactionView extends View
+public class UpdateScoutView extends View
 {
 
     // Model
-
+    public String scoutID;
     // GUI components
     private TextField firstName;
     private TextField middleName;
@@ -55,9 +55,9 @@ public class UpdateTreeTypeTransactionView extends View
 
     // constructor for this class -- takes a model object
     //----------------------------------------------------------
-    public UpdateTreeTypeTransactionView(IModel trans)
+    public UpdateScoutView(IModel trans)
     {
-        super(trans, "RegisterScoutTransactionView");
+        super(trans, "UpdateScoutView");
 
         // create a container for showing the contents
         VBox container = new VBox(10);
@@ -81,7 +81,7 @@ public class UpdateTreeTypeTransactionView extends View
     private Node createTitle()
     {
 
-        Text titleText = new Text("       Troop 209          ");
+        Text titleText = new Text("       Update scout info          ");
         titleText.setFont(Font.font("Arial", FontWeight.BOLD, 20));
         titleText.setTextAlignment(TextAlignment.CENTER);
         titleText.setFill(Color.DARKGREEN);
@@ -114,6 +114,18 @@ public class UpdateTreeTypeTransactionView extends View
         });
         grid.add(firstName, 1, 0);
 
+        Label middleNameLabel = new Label("Middle Name : ");
+        grid.add(middleNameLabel, 0, 2);
+
+        middleName = new TextField();
+        middleName.setOnAction(new EventHandler<ActionEvent>() {
+
+            @Override
+            public void handle(ActionEvent e) {
+                processAction(e);
+            }
+        });
+
         Label lastNameLabel = new Label("Last Name : ");
         grid.add(lastNameLabel, 0, 1);
 
@@ -127,17 +139,7 @@ public class UpdateTreeTypeTransactionView extends View
         });
         grid.add(lastName, 1, 1);
 
-        Label middleNameLabel = new Label("Middle Name : ");
-        grid.add(middleNameLabel, 0, 2);
 
-        middleName = new TextField();
-        middleName.setOnAction(new EventHandler<ActionEvent>() {
-
-            @Override
-            public void handle(ActionEvent e) {
-                processAction(e);
-            }
-        });
         grid.add(middleName, 1, 2);
 
         Label dateOfBirthLabel = new Label("Date of Birth : ");
@@ -183,6 +185,7 @@ public class UpdateTreeTypeTransactionView extends View
         grid.add(troopIDLabel, 0, 6);
 
         troopID = new TextField();
+        troopID.setEditable(false);
         troopID.setOnAction(new EventHandler<ActionEvent>() {
 
             @Override
@@ -203,7 +206,7 @@ public class UpdateTreeTypeTransactionView extends View
             }
         });
 
-        cancelButton = new Button("Back");
+        cancelButton = new Button("Cancel");
         cancelButton.setOnAction(new EventHandler<ActionEvent>() {
 
             @Override
@@ -217,7 +220,7 @@ public class UpdateTreeTypeTransactionView extends View
                  */
                 //----------------------------------------------------------
                 clearErrorMessage();
-                myModel.stateChangeRequest("CancelDeposit", null);
+                myModel.stateChangeRequest("CancelUpdate", null);
             }
         });
 
@@ -245,7 +248,24 @@ public class UpdateTreeTypeTransactionView extends View
     //-------------------------------------------------------------
     public void populateFields()
     {
+        Scout leScoutChoisi = (Scout)myModel.getState("ScoutChosen");
+        String ln = leScoutChoisi.getLastName();
+        String fn = leScoutChoisi.getFirstName();
+        String mn = leScoutChoisi.getMiddleName();
+        String dob = leScoutChoisi.getDateOfBirth();
+        String nb = leScoutChoisi.getPhoneNumber();
+        String aEmail = leScoutChoisi.getEmail();
+        String troop = leScoutChoisi.getTroopID();
+        String scID = leScoutChoisi.getScoutID();
 
+        lastName.setText(ln);
+        firstName.setText(fn);
+        middleName.setText(mn);
+        dateOfBirth.setText(dob);
+        phoneNumber.setText(nb);
+        email.setText(aEmail);
+        troopID.setText(troop);
+        scoutID = scID;
     }
 
 
@@ -266,33 +286,42 @@ public class UpdateTreeTypeTransactionView extends View
         String emailEntered = email.getText();
         String troopIDEntered = troopID.getText();
 
-        if ((lastNameEntered == null) || (lastNameEntered.length() == 0))
+        if ((lastNameEntered == null) || (lastNameEntered.length() == 0) )
         {
-            displayErrorMessage("Please enter a last name");
+            displayErrorMessage("Please change the last name");
+        }
+        else if ((lastNameEntered.length() > 25)) {
+            displayErrorMessage("Last name too long for the database");
         }
         else if ((firstNameEntered == null) || (firstNameEntered.length() == 0))
         {
-            displayErrorMessage("Please enter a first name");
+            displayErrorMessage("Please change the first name");
+        }
+        else if ((firstNameEntered.length() > 25)) {
+            displayErrorMessage("First name too long for the database");
         }
         else if ((middleNameEntered == null) || (middleNameEntered.length() == 0))
         {
-            displayErrorMessage("Please enter a middle name");
+            displayErrorMessage("Please change the middle name");
+        }
+        else if ((middleNameEntered.length() > 25)) {
+            displayErrorMessage("Middle name too long for the database");
         }
         else if ((dateOfBirthEntered == null) || (dateOfBirthEntered.length() == 0))
         {
-            displayErrorMessage("Please enter a valid birth date");
+            displayErrorMessage("Please change for a valid birth date");
         }
-        else if ((phoneNumberEntered == null) || (phoneNumberEntered.length() == 0))
+        else if ((phoneNumberEntered == null) || (phoneNumberEntered.length() < 10) || (phoneNumberEntered.length() > 10) )
         {
-            displayErrorMessage("Please enter a phone number");
+            displayErrorMessage("Please change for a valid phone number");
         }
         else if ((emailEntered == null) || (emailEntered.length() == 0))
         {
-            displayErrorMessage("Please enter an email");
+            displayErrorMessage("Please change an email");
         }
         else if ((troopIDEntered == null) || (troopIDEntered.length() == 0))
         {
-            displayErrorMessage("Please enter a troopID");
+            displayErrorMessage("Please change a troopID");
         }
         else
             processScoutInfo(lastNameEntered,firstNameEntered,middleNameEntered,dateOfBirthEntered,phoneNumberEntered,emailEntered,troopIDEntered);
@@ -300,6 +329,7 @@ public class UpdateTreeTypeTransactionView extends View
     private void processScoutInfo(String lastName, String firstName, String middleName, String dateOfBirth, String phoneNumber,String email, String troopID)
     {
         Properties props = new Properties();
+        props.setProperty("scoutID", scoutID);
         props.setProperty("lastName", lastName);
         props.setProperty("firstName", firstName);
         props.setProperty("middleName", middleName);
@@ -307,10 +337,10 @@ public class UpdateTreeTypeTransactionView extends View
         props.setProperty("phoneNumber", phoneNumber);
         props.setProperty("email", email);
         props.setProperty("troopID", troopID);
-        myModel.stateChangeRequest("RegisterWithScoutInfo", props);
-        Scout scout = new Scout(props);
-        scout.update();
-        displayMessage("Successfully added new Scout");
+        myModel.stateChangeRequest("UpdateScoutInfo", props);
+        //Scout scout = new Scout(props);
+        //scout.update();
+        displayMessage("Successfully updated Scout");
     }
     public void displayMessage(String message)
     {

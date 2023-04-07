@@ -6,6 +6,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
@@ -20,14 +21,14 @@ import java.util.Properties;
 // project imports
 import impresario.IModel;
 import model.*;
-public class UpdateTreeTransactionView extends View {
-    private TextField barcode;
+public class UpdateTreeTypeView extends View {
+    private TextField treeTypeID;
     private Button submitButton;
     private Button cancelButton;
     private MessageView statusLog;
     //-------------------------------------------------------------
-    public UpdateTreeTransactionView(IModel trans) {
-        super(trans, "UpdateTree");
+    public UpdateTreeTypeView(IModel trans) {
+        super(trans, "UpdateTreeTypeView");
         // create a container for showing the contents
         VBox container = new VBox(10);
         container.setPadding(new Insets(15, 5, 5, 5));
@@ -37,7 +38,6 @@ public class UpdateTreeTransactionView extends View {
         // Error message area
         container.getChildren().add(createStatusLog("                          "));
         getChildren().add(container);
-        populateFields();
     }
     //-------------------------------------------------------------
     // Creates Title for Container
@@ -60,14 +60,19 @@ public class UpdateTreeTransactionView extends View {
         grid.setPadding(new Insets(25, 25, 25, 25));
 //-------------------------------------------------------------------
         //Barcode Label, Box and Handler
-        Label barcodeLabel = new Label("Barcode : ");
-        grid.add(barcodeLabel, 0, 0);
-        barcode = new TextField();
-        grid.add(barcode, 1, 0);
+        Label treeTypeIDLabel = new Label("TreeTypeID: ");
+        grid.add(treeTypeIDLabel, 0, 0);
+        treeTypeID = new TextField();
+        grid.add(treeTypeID, 1, 0);
 //------------------------------------------------------------------
         //Submit Button and Event Handler
         submitButton = new Button("Submit");
-        submitButton.setOnAction(new EventHandler<ActionEvent>() {@Override public void handle(ActionEvent e) {clearErrorMessage();processAction(e);}});
+        submitButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent e) {
+                clearErrorMessage();
+                processAction(e);
+            }});
 //----------------------------------------------------------------
         //Cancel Button and Event Handler
         cancelButton = new Button("Back");
@@ -92,20 +97,19 @@ public class UpdateTreeTransactionView extends View {
     }
     //----------------------------------------------------------
     private void processAction(Event evt) {
-        String barcodeEntered = barcode.getText();
-        if ((barcodeEntered == null) || (barcodeEntered.length() == 0)) {
-            displayErrorMessage("Please enter a barcode");
+        String treeTypeIDEntered = treeTypeID.getText();
+        if ((treeTypeIDEntered == null) || (treeTypeIDEntered.length() == 0)) {
+            displayErrorMessage("Please enter a treeTypeID");
         } else {
-            processTreeInfo(barcodeEntered);
+            processTreeTypeInfo(treeTypeIDEntered);
         }
     }
-    private void processTreeInfo(String barcode) {
-        // modify to make update tree
+    private void processTreeTypeInfo(String treeTypeID) {
         Properties props = new Properties();
-        props.setProperty("barcode", barcode);
-        myModel.stateChangeRequest("UpdateTreeInfo", props);
-        Tree tree = new Tree(props);
-        tree.update();
+        props.setProperty("treeTypeID", treeTypeID);
+        myModel.stateChangeRequest("UpdateTreeTypeFormView", props);
+        //Tree tree = new Tree(props);
+        //tree.update();
         displayMessage("Retrieving Tree Information");
     }
     public void displayMessage(String message)
