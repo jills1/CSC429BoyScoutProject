@@ -59,9 +59,9 @@ public class ViewFactory {
 		{
 			return new UpdateTreeFormTransactionView(model);
 		}
-		else if(viewName.equals("TransferReceipt") == true)
+		else if(viewName.equals("SelectedScoutToUpdateView") == true)
 		{
-			return new TransferReceipt(model);
+			return new SelectedScoutToUpdateView(model);
 		}
 		else
 			return null;

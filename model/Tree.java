@@ -75,6 +75,9 @@ public class Tree extends EntityBase implements IView {
         dependencies = new Properties();
         myRegistry.setDependencies(dependencies);
     }
+
+
+
     //----------------------------------------------------------
     public Object getState(String key)
     {

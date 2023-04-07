@@ -31,9 +31,9 @@ import java.util.Vector;
 import impresario.IModel;
 import model.Tree;
 
-/** The class containing the Update Tree Transaction View  for the Tree Sales application */
+/** The class containing the Deposit Transaction View  for the ATM application */
 //==============================================================
-public class UpdateTreeTransactionView extends View
+public class SelectedScoutToUpdateView extends View
 {
 
     // Model
@@ -42,8 +42,8 @@ public class UpdateTreeTransactionView extends View
     private TextField barcode;
     //private TextField treeType;
 
-    //private TextField status;
-    //private TextField notes;
+    private TextField status;
+    private TextField notes;
     //private TextField dateStatusUpdated;
 
 
@@ -56,9 +56,9 @@ public class UpdateTreeTransactionView extends View
 
     // constructor for this class -- takes a model object
     //----------------------------------------------------------
-    public UpdateTreeTransactionView(IModel trans)
+    public SelectedScoutToUpdateView(IModel trans)
     {
-        super(trans, "UpdateTreeTransactionView");
+        super(trans, "SelectedScoutToUpdateView");
 
         // create a container for showing the contents
         VBox container = new VBox(10);
@@ -74,6 +74,8 @@ public class UpdateTreeTransactionView extends View
         getChildren().add(container);
 
         populateFields();
+
+        myModel.subscribe("TransactionError", this);
     }
 
 
@@ -109,15 +111,62 @@ public class UpdateTreeTransactionView extends View
 
 
         barcode = new TextField();
-        barcode.setOnAction(new EventHandler<ActionEvent>() {
+        barcode.setEditable(false);
+
+        grid.add(barcode, 1, 0);
+/*
+        Label treeTypeLabel = new Label("treeType : ");
+        grid.add(treeTypeLabel, 0, 1);
+
+        treeType = new TextField();
+        treeType.setOnAction(new EventHandler<ActionEvent>() {
 
             @Override
             public void handle(ActionEvent e) {
                 processAction(e);
             }
         });
-        grid.add(barcode, 1, 0);
+        grid.add(treeType, 1, 1);*/
 
+        Label statusLabel = new Label("status : ");
+        grid.add(statusLabel, 0, 1);
+
+        status = new TextField();
+        status.setOnAction(new EventHandler<ActionEvent>() {
+
+            @Override
+            public void handle(ActionEvent e) {
+                processAction(e);
+            }
+        });
+        grid.add(status, 1, 1);
+
+        Label notesLabel = new Label("notes : ");
+        grid.add(notesLabel, 0, 2);
+
+        notes = new TextField();
+        notes.setOnAction(new EventHandler<ActionEvent>() {
+
+            @Override
+            public void handle(ActionEvent e) {
+                processAction(e);
+            }
+        });
+        grid.add(notes, 1, 2);
+
+        /*Label dateStatusUpdatedLabel = new Label("Date Status Updated : ");
+        grid.add(dateStatusUpdatedLabel, 0, 4);
+
+        dateStatusUpdated = new TextField();
+        dateStatusUpdated.setOnAction(new EventHandler<ActionEvent>() {
+
+            @Override
+            public void handle(ActionEvent e) {
+                processAction(e);
+            }
+        });
+        grid.add(dateStatusUpdated, 1, 4);
+*/
 
 
         submitButton = new Button("Submit");
@@ -136,16 +185,10 @@ public class UpdateTreeTransactionView extends View
 
             @Override
             public void handle(ActionEvent e) {
-                /**
-                 * Process the Cancel button.
-                 * The ultimate result of this action is that the transaction will tell the teller to
-                 * to switch to the transaction choice view. BUT THAT IS NOT THIS VIEW'S CONCERN.
-                 * It simply tells its model (controller) that the deposit transaction was canceled, and leaves it
-                 * to the model to decide to tell the teller to do the switch back.
-                 */
+
                 //----------------------------------------------------------
                 clearErrorMessage();
-                myModel.stateChangeRequest("CancelDeposit", null);
+                myModel.stateChangeRequest("CancelUpdate", null);
             }
         });
 
@@ -176,11 +219,15 @@ public class UpdateTreeTransactionView extends View
     public void populateFields()
     {
 
+        barcode.setText((String)myModel.getState("barcode"));
+        status.setText((String)myModel.getState("status"));
+        notes.setText((String)myModel.getState("notes"));
+
     }
 
 
     /**
-     * Process barcode number selected by user.
+     * Process account number selected by user.
      * Action is to pass this info on to the transaction object.
      */
     //----------------------------------------------------------
@@ -189,24 +236,28 @@ public class UpdateTreeTransactionView extends View
         clearErrorMessage();
 
         String barcodeEntered = barcode.getText();
-        if(barcodeEntered.length()!= 5){
-            displayErrorMessage("Enter a valid barcode");
-        }
+        //String treeTypeEntered = treeType.getText();
+        String statusEntered = status.getText();
+        String notesEntered = notes.getText();
+        //String dateStatusUpdatedEntered = dateStatusUpdated.getText();
 
 
-
-        processTreeInfo(barcodeEntered);
+        processTreeInfo(barcodeEntered,statusEntered,notesEntered);
     }
-    private void processTreeInfo(String barcode)
+    private void processTreeInfo(String barcode, String status,String notes)
     {
         Properties props = new Properties();
         props.setProperty("barcode", barcode);
 
+        props.setProperty("status", status);
+        props.setProperty("notes", notes);
 
 
-        // call RemoveView here
-        myModel.stateChangeRequest("searchTree", props);
-        Tree tree = new Tree(props);
+
+
+        myModel.stateChangeRequest("UpdateTreeWithTreeInfo", props);
+
+        //tree.update();
 
     }
     public void displayMessage(String message)
@@ -221,7 +272,14 @@ public class UpdateTreeTransactionView extends View
     //---------------------------------------------------------
     public void updateState(String key, Object value)
     {
-
+        if (key.equals("TransactionError"))
+        {
+            String msg = (String)value;
+            if (msg.startsWith("ERR") == true)
+                displayErrorMessage(msg);
+            else
+                displayMessage(msg);
+        }
     }
 
     /**

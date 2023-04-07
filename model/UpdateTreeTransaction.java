@@ -1,139 +1,225 @@
+// specify the package
 package model;
-import javafx.scene.Scene;
-import java.util.Properties;
+
+// system imports
 import exception.InvalidPrimaryKeyException;
+import javafx.scene.Scene;
+
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.Properties;
 
 // project imports
 
 import userinterface.View;
 import userinterface.ViewFactory;
+
+/**j The class containing the Update Tree Transaction for the Tree Sales application */
 //==============================================================
-public class UpdateTreeTransaction extends Transaction {
+public class UpdateTreeTransaction extends Transaction
+{
+
     private Account myAccount;
-    private String depositAmount;
+    private String depositAmount; // needed for GUI only
+
+    // GUI Components
+
     private String transactionErrorMessage = "";
-    private String accountUpdateStatusMessage = "";
-    private String barcode;
-    private String treeType;
-    private String notes;
-    private String status;
-    private String dateStatusUpdate;
+
     protected  Tree myTree;
+    /**
+     * Constructor for this class.
+     *
+     *
+     */
     //----------------------------------------------------------
-    public UpdateTreeTransaction()  {
+    public UpdateTreeTransaction()
+
+    {
         super();
     }
+
+
+
+
     //----------------------------------------------------------
-    protected void setDependencies() {
+    protected void setDependencies()
+    {
         dependencies = new Properties();
-        dependencies.setProperty("CancelDeposit", "CancelTransaction");
-        dependencies.setProperty("OK", "CancelTransaction");
-        dependencies.setProperty("AccountNumber", "TransactionError");
+        dependencies.setProperty("CancelUpdate", "CancelTransaction");
+        dependencies.setProperty("searchTree", "transactionErrorMessage");
+
+        dependencies.setProperty("RemoveTreeWithTreeInfo", "TransactionError");
+
         myRegistry.setDependencies(dependencies);
     }
+
+    /**
+     * This method encapsulates all the logic of creating the account,
+     * verifying ownership, crediting, etc. etc.
+     */
     //----------------------------------------------------------
-    public void processTransaction(Properties props) {
-        try{
-        String barcode = props.getProperty("barcode");
-        myTree = new Tree(barcode);
-        System.out.println("test4");
-        //  try {
-        //            String barcode= props.getProperty("barcode");
-        //            myTree= new Tree(barcode);
-        System.out.println("test5");
-        String treeType = (String) myTree.getState("treeType");
-        System.out.println("test6");
-        props.setProperty("treeType", treeType);
-        //-------
-        String treeStatus = (String) myTree.getState("status");
-        props.setProperty("status", treeStatus);
-        //-------
-        String treeNotes = (String) myTree.getState("notes");
-        props.setProperty("notes", treeNotes);
-        //-------
-        String treeDateStatusUpdate = (String) myTree.getState("dateStatusUpdate");
-        props.setProperty("dateStatusUpdate", treeDateStatusUpdate);
-        //-------
-        System.out.println("test3");
-        createAndShowUpdateTreeFormTransactionView();
-      } catch(InvalidPrimaryKeyException e){
-            transactionErrorMessage="Error cannot do this 2.";
-       }
+    public void processTransaction(Properties props){
+        try {
+            String barcode = props.getProperty("barcode");
+            String barcodePrefix = barcode.substring(0, 2);
+            String date = String.valueOf(java.time.LocalDateTime.now());
+            String dUS = date.substring(0,10);
+            System.out.println("getting to processTransaction");
+
+            String treeStatus = props.getProperty("status");
+            myTree.stateChangeRequest("status", treeStatus);
+            System.out.println("The new status is " + treeStatus);
+            TreeType treeType = new TreeType(barcodePrefix);
+            String treeTypeID = (String) treeType.getState("treeTypeID");
+            props.setProperty("treeType",treeTypeID);
+            myTree.stateChangeRequest("treeType", treeTypeID);
+            props.setProperty("dateStatusUpdate", dUS);
+            myTree.stateChangeRequest("dateStatusUpdate", dUS);
+
+            myTree = new Tree(props);
+
+            myTree.setOldFlag(false);
+
+            myTree.update();
+        }
+        catch (InvalidPrimaryKeyException excep)
+        {
+
+            transactionErrorMessage = "ERROR: Invalid barcode, no associated tree type found!";
+        }
+
+
+
+        transactionErrorMessage=(String)myTree.getState("UpdateStatusMessage");
     }
     //-----------------------------------------------------------
-    public Object getState(String key) {
-        if (key.equals("TransactionError") == true) {
+    public void searchTree(Properties props){
+
+        try{
+
+
+            String barcode= props.getProperty("barcode");
+            myTree= new Tree(barcode);
+            String treeBarcode=(String)myTree.getState("barcode");
+            System.out.println("tree barcode"+ treeBarcode);
+            props.setProperty("barcode", treeBarcode);
+            String treeStatus=(String)myTree.getState("status");
+            props.setProperty("status", treeStatus);
+            System.out.println("status: "+treeStatus);
+            String treeNotes=(String)myTree.getState("notes");
+            props.setProperty("notes", treeNotes);
+            createAndShowSelectedScoutToUpdateView();
+
+        } catch(InvalidPrimaryKeyException e){
+            transactionErrorMessage="No Tree with this barcode.";
+        }
+    }
+    //-----------------------------------------------------------
+    public Object getState(String key)
+    {
+        if (key.equals("TransactionError") == true)
+        {
             return transactionErrorMessage;
-        } else if (key.equals("UpdateStatusMessage") == true) {
-            return accountUpdateStatusMessage;
-        } else if (key.equals("treeType") == true) {
+        }
+        else
+
+        if (key.equals("barcode") == true)
+        {
             if (myTree != null) {
-                return myTree.getState("treeType");
-            } else {
-                return "Undefined";
+                return myTree.getState("barcode");
             }
-        } else if (key.equals("notes") == true) {
-            if (myTree != null) {
-                return myTree.getState("notes");
-            } else {
+            else
                 return "Undefined";
-            }
-        } else if (key.equals("status") == true) {
+        }
+        else
+        if (key.equals("status") == true)
+        {
             if (myTree != null) {
                 return myTree.getState("status");
-            } else {
-                return "Undefined";
             }
-        } else if (key.equals("dateStatusUpdate") == true) {
+            else
+                return "Undefined";
+        }
+        else
+        if (key.equals("notes") == true)
+        {
             if (myTree != null) {
-                return myTree.getState("dateStatusUpdate");
-            } else {
-                return "Undefined";
+                return myTree.getState("notes");
             }
+            else
+                return "Undefined";
         }
         return null;
     }
-    //-----------------------------------------------------------
-    //State Change
-    public void stateChangeRequest(String key, Object value){
-        // DEBUG System.out.println("DepositTransaction.sCR: key: " + key);
-        if (key.equals("DoYourJob") == true) {
-            doYourJob();
-        } else  if (key.equals("UpdateTreeInfo")==true) {
-            System.out.println("test2");
-            processTransaction((Properties)value);
 
+    //-----------------------------------------------------------
+    public void stateChangeRequest(String key, Object value)
+    {
+        // DEBUG System.out.println("DepositTransaction.sCR: key: " + key);
+
+        if (key.equals("DoYourJob") == true)
+        {
+            doYourJob();
         }
+        else
+        if (key.equals("UpdateTreeWithTreeInfo")==true)
+        {
+
+            processTransaction((Properties)value);
+        }
+        else
+        if (key.equals("searchTree")==true)
+        {
+            searchTree((Properties)value);
+        }
+
         myRegistry.updateSubscribers(key, this);
     }
+
+    /**
+     * Create the view of this class. And then the super-class calls
+     * swapToView() to display the view in the frame
+     */
     //------------------------------------------------------
-    //Create View.java within view factory
-    protected Scene createView() {
+
+    protected Scene createView()
+    {
         Scene currentScene = myViews.get("UpdateTreeTransactionView");
-        if (currentScene == null) {
+
+        if (currentScene == null)
+        {
             // create our initial view
             View newView = ViewFactory.createView("UpdateTreeTransactionView", this);
             currentScene = new Scene(newView);
             myViews.put("UpdateTreeTransactionView", currentScene);
+
             return currentScene;
-        } else {
+        }
+        else
+        {
             return currentScene;
         }
     }
+
     //------------------------------------------------------
-    protected void createAndShowUpdateTreeFormTransactionView() {
-        View newView = ViewFactory.createView("UpdateTreeFormTransactionView", this);
+    protected void  createAndShowSelectedScoutToUpdateView()
+
+    {
+
+
+        View newView = ViewFactory.createView("SelectedScoutToUpdateView", this);
         Scene newScene = new Scene(newView);
-        //myViews.put("UpdateTreeFormTransactionView", newScene);
+
+        myViews.put("SelectedScoutToUpdateView", newScene);
+
+        // make the view visible by installing it into the frame
         swapToView(newScene);
-        // return newScreen;
     }
+
+
     //------------------------------------------------------
-    protected void createAndShowReceiptView() {
-        // create our initial view
-        View newView = ViewFactory.createView("DepositReceipt", this);
-        Scene newScene = new Scene(newView);
-        myViews.put("DepositReceipt", newScene);
-        swapToView(newScene);
-    }
+
+
+
 }
