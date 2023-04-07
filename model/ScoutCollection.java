@@ -160,17 +160,17 @@ public class ScoutCollection  extends EntityBase implements IView
 	{
 		String query = "";
 		if ((fn==null||fn.length()==0)&&(ln==null||ln.length()==0))
-			query = "SELECT * FROM "+myTableName;
+			query = "SELECT * FROM "+myTableName+" WHERE status = 'Active'";
 		else if (fn==null || fn.length()==0)
 		{
-			query = "SELECT * FROM "+myTableName+" WHERE (lastName LIKE '%"+ln+"%')";
+			query = "SELECT * FROM "+myTableName+" WHERE (lastName LIKE '%"+ln+"%' AND status = 'Active')";
 		}
 		else if (ln==null || ln.length()==0)
 		{
-			query = "SELECT * FROM "+myTableName+" WHERE (firstName LIKE '%"+fn+"%')";
+			query = "SELECT * FROM "+myTableName+" WHERE (firstName LIKE '%"+fn+"%' AND status = 'Active')";
 		}
 		else
-			query = "SELECT * FROM "+myTableName+" WHERE ((firstName LIKE '%"+fn+"%') AND (lastName LIKE '%"+ln+"%'))";
+			query = "SELECT * FROM "+myTableName+" WHERE ((firstName LIKE '%"+fn+"%') AND (lastName LIKE '%"+ln+"%') AND status = 'Active')";
 System.out.println(query);
 		helper(query);
 	}
