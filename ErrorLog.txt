@@ -34,3 +34,4 @@
 [4/5/23 1:45 PM]|JDBCBroker|JDBCBroker|Error|NOTAG|null<Could not load driver class[org.mariadb.jdbc.Driver]>
 [4/5/23 1:47 PM]|JDBCBroker|JDBCBroker|Error|NOTAG|null<Could not load driver class[org.mariadb.jdbc.Driver]>
 [4/5/23 1:50 PM]|JDBCBroker|JDBCBroker|Error|NOTAG|null<Could not load driver class[org.mariadb.jdbc.Driver]>
+[4/6/23 12:44 PM]|Tree|insertPersistentState|Error|NOTAG|null<SQL Exception: 1406: (conn=20809) Data too long for column 'barcode' at row 1>

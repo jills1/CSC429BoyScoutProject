@@ -22,26 +22,13 @@ public class AddTreeTransaction extends Transaction
     // GUI Components
 
     private String transactionErrorMessage = "";
-    /**
-     * Constructor for this class.
-     *
-     *
-     */
+
     //----------------------------------------------------------
     public AddTreeTransaction()
             throws Exception
     {
         super();
     }
-
-    /**
-     * Constructor for this class.
-     * <p>
-     * Transaction remembers all the account IDs for this customer.
-     * It uses AccountCatalog to create this list of account IDs.
-     */
-
-
     //----------------------------------------------------------
     protected void setDependencies()
     {
@@ -52,10 +39,6 @@ public class AddTreeTransaction extends Transaction
         myRegistry.setDependencies(dependencies);
     }
 
-    /**
-     * This method encapsulates all the logic of creating the account,
-     * verifying ownership, crediting, etc. etc.
-     */
     //----------------------------------------------------------
     public void processTransaction(Properties props)
     {

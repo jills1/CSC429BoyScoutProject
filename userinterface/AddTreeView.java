@@ -1,5 +1,6 @@
 package userinterface;
 
+import exception.InvalidPrimaryKeyException;
 import impresario.IModel;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -19,6 +20,8 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import jdk.net.SocketFlow;
+import model.AddTreeTransaction;
+import model.TreeType;
 import userinterface.MessageView;
 import userinterface.View;
 import model.Tree;
@@ -31,8 +34,6 @@ public class AddTreeView extends View
     protected Button backButton;
     protected TextField barcode;
     protected TextField notes;
-    protected ComboBox<String> status;
-
     protected MessageView statusLog;
     protected String treeType;
 
@@ -95,28 +96,13 @@ public class AddTreeView extends View
 
         Text treeNotesLabel = new Text("Notes: ");
         treeNotesLabel.setFont(myFont);
-        treeBarcodeLabel.setWrappingWidth(150);
+        treeNotesLabel.setWrappingWidth(150);
         treeNotesLabel.setTextAlignment(TextAlignment.RIGHT);
         grid.add(treeNotesLabel, 0, 2);
 
         notes = new TextField();
         notes.setEditable(true);
         grid.add(notes, 1, 2);
-
-        Text treeStatusLabel = new Text("Status: ");
-        treeStatusLabel.setFont(myFont);
-        treeStatusLabel.setWrappingWidth(150);
-        treeStatusLabel.setTextAlignment(TextAlignment.RIGHT);
-        grid.add(treeStatusLabel, 0 , 3);
-
-        status = new ComboBox();
-        ObservableList options = status.getItems();
-        options.add("Available");
-        options.add("Sold");
-        options.add("Damaged");
-        status.setItems(options);
-        status.getSelectionModel().selectFirst();
-        grid.add(status, 1,3);
 
         HBox cont = new HBox(10);
         cont.setAlignment(Pos.CENTER);
@@ -129,24 +115,29 @@ public class AddTreeView extends View
                 treeType = barcode.getText().substring(0,2);
                 String date = String.valueOf(java.time.LocalDateTime.now());
                 String dUS = date.substring(0,10);
+                String status = "Available";
                 Properties p = new Properties();
 
                 p.setProperty("barcode", barcode.getText());
                 p.setProperty("treeType", treeType);
                 p.setProperty("notes", notes.getText());
-                p.setProperty("status", status.getValue());
+                p.setProperty("status", status);
                 p.setProperty("dateStatusUpdate", dUS);
                 System.out.println("The time is " + dUS);
+                System.out.println(treeType);
+                clearErrorMessage();
 
-                if((p.getProperty("barcode")).equals("") || (p.getProperty("barcode")).length() > 5) {
-                    displayErrorMessage("Barcode is empty or bigger than 5 numbers.");
+
+                if((p.getProperty("barcode")).equals("") || (p.getProperty("barcode")).length() != 5) {
+                    displayErrorMessage("The barcode is empty or greater than 5 digits.");
                     return;
                 } else if ((p.getProperty("notes")).length() > 200) {
-                    displayErrorMessage("Notes is bigger than 200 charcters.");
+                    displayErrorMessage("The note entered is longer than 200 characters.");
                     return;
-                }
-                else {
-                    myModel.stateChangeRequest("AddTreeInfo", p);
+                } else if (!checkPrefixes(treeType)) {
+                    displayErrorMessage("Barcode does not match with an existing tree type!");
+                    return;
+                } else {myModel.stateChangeRequest("AddTreeInfo", p);
                    Tree tree = new Tree(p);
                    tree.update();
                    displayMessage("Tree Successfully Added.");
@@ -174,11 +165,23 @@ public class AddTreeView extends View
         return vbox;
     }
 
+    public boolean checkPrefixes(String prefix) {
+        try {
+            TreeType treeType = new TreeType(prefix);
+            String iD = (String) treeType.getState("barcodePrefix");
+            System.out.println("The returned ID is:" + iD);
+            System.out.println("The prefix is: "+ prefix);
+            if (prefix.equals(iD)) {
+                return true;
+            }
+        } catch (InvalidPrimaryKeyException excep) {
+            return false;
+        }
+        return false;
+    }
     public void populateFields()
     {
-
     }
-
     public void updateState(String key, Object value){
         clearErrorMessage();
     }
