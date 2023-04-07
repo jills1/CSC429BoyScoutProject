@@ -307,7 +307,14 @@ public class UpdateScoutInfoView extends View
 		else if ((middleNameEntered.length() > 25)) {
 			displayErrorMessage("Middle name too long for the database");
 		}
+		else if ((dateOfBirthEntered.length() > 10) || (dateOfBirthEntered.length() < 10)) {
+			displayErrorMessage("Please change for a valid birth date");
+		}
 		else if ((dateOfBirthEntered == null) || (dateOfBirthEntered.length() == 0))
+		{
+			displayErrorMessage("Please change for a valid birth date");
+		}
+		else if (dateCheck(dateOfBirthEntered) == false)
 		{
 			displayErrorMessage("Please change for a valid birth date");
 		}
@@ -316,6 +323,10 @@ public class UpdateScoutInfoView extends View
 			displayErrorMessage("Please change for a valid phone number");
 		}
 		else if ((emailEntered == null) || (emailEntered.length() == 0))
+		{
+			displayErrorMessage("Please change an email");
+		}
+		else if (( !emailEntered.contains("@")))
 		{
 			displayErrorMessage("Please change an email");
 		}
@@ -356,7 +367,55 @@ public class UpdateScoutInfoView extends View
 	{
 
 	}
+	//----------------------------------------------------------
+	public boolean dateCheck(String date) {
 
+		if (dateFormatCheck(date) == false) {
+			return false;
+		}
+
+		String [] tests = date.split("-",3);
+		String year = tests[0];
+		System.out.println(year);
+		String months = tests[1];
+		System.out.println(months);
+		String day = tests[2];
+		System.out.println(day);
+
+		if ((day.length() < 2) || (day.length() > 2) || (Integer.parseInt(day) > 31) || (Integer.parseInt(day) < 1)){
+			return false;
+		}
+		else
+		if ((months.length() < 2) || (months.length() > 2) || (Integer.parseInt(months) > 12) || (Integer.parseInt(months) < 1)){
+			return false;
+		}
+		else if ((year.length() < 4) || (year.length() > 4)){
+			return false;
+		}
+		else {
+			return true;
+		}
+	}
+	//----------------------------------------------------------
+	public boolean dateFormatCheck (String date){
+		Integer count = 0;
+		Character check = '-';
+		Integer ct;
+
+		for ( ct = 0; ct < date.length(); ct++) {
+			if (date.charAt(ct) == check) {
+				count++;
+			}
+		}
+		if (count == 2) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+
+	//----------------------------------------------------------
 	/**
 	 * Display error message
 	 */

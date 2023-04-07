@@ -174,8 +174,8 @@ public class UpdateScoutTransaction extends Transaction
             else
             if(key.equals("UpdateScoutInfo") == true)
             {
-                //DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd");
-                //LocalDateTime now = LocalDateTime.now();
+                DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+                LocalDateTime now = LocalDateTime.now();
                 Scout tempScout = new Scout((Properties)value);
                 myScout.stateChangeRequest("scoutID", tempScout.getScoutID());
                 myScout.stateChangeRequest("firstName", tempScout.getFirstName());
@@ -185,7 +185,7 @@ public class UpdateScoutTransaction extends Transaction
                 myScout.stateChangeRequest("phoneNumber",tempScout.getPhoneNumber());
                 myScout.stateChangeRequest("email", tempScout.getEmail());
                 myScout.stateChangeRequest("troopID", tempScout.getTroopID());
-                //myScout.stateChangeRequest("dateStatusUpdated",dtf.format(now));
+                myScout.stateChangeRequest("dateStatusUpdated",dtf.format(now));
                 myScout.update();
 
             }
