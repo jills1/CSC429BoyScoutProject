@@ -71,13 +71,17 @@ public class SQLUpdateStatement extends SQLStatement
 			}
 
 			String theColumnName = (String)theSetColumns.nextElement();
-			/* DEBUG
 			System.out.println("SQLUpdateStatement.<init> : Column Name = " +
-				theColumnName + ". Length = " + theColumnName.length()); */
+				theColumnName + ". Length = " + theColumnName.length());
 			String theColumnValue = insertEscapes(updateValues.getProperty(theColumnName));
-					
+
 			String updateType = schema.getProperty(theColumnName);
-			
+			System.out.println("SQLUpdateStatement.<init> : Column Name = " +
+					theColumnName + ". Value = " + theColumnValue);
+
+			System.out.println("SQLUpdateStatement.<init> : Column Name = " +
+					theColumnName + ". Update Type = " + updateType);
+
 			// if the type is numeric, do NOT include quotes
 			if (updateType.equals("numeric")) {
 				theSetString += theColumnName + " = " + theColumnValue;

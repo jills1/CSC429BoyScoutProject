@@ -16,10 +16,10 @@ public class TransactionFactory
 	 *
 	 */
 	//----------------------------------------------------------
-	public static Transaction createTransaction(String transType) {
+	public static Transaction createTransaction(String transType){
 		switch(transType) {
 			case "RegisterScout": return new RegisterScoutTransaction();
-			//case "UpdateScout": return new UpdateScoutTransaction();
+			case "UpdateScout": return new UpdateScoutTransaction();
 			case "RemoveScout": return new RemoveScoutTransaction();
 			case "AddTree": return new AddTreeTransaction();
 			case "UpdateTree": return new UpdateTreeTransaction();

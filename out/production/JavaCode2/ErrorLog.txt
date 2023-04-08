@@ -1,0 +1,72 @@
+[11/20/11 9:12 AM]|Teller|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException>
+[11/20/11 9:15 AM]|Teller|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException>
+[11/20/11 9:22 AM]|DepositTransaction|Transaction|Error|NOTAG|null<Could not find any accounts for 1>
+[2/10/14 3:42 PM]|AccountHolder|getSelectQueryResult|Error|NOTAG|null<SQL Exception: 1064: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ';wlkrpekw)' at line 1>
+[2/10/14 3:42 PM]|AccountHolder|getSelectQueryResult|Error|NOTAG|null<SQL Exception: 1054: Unknown column 'ret54' in 'where clause'>
+[2/10/14 3:47 PM]|AccountHolder|getSelectQueryResult|Error|NOTAG|null<SQL Exception: 1054: Unknown column 'smitra' in 'where clause'>
+[2/10/14 3:47 PM]|AccountHolder|getSelectQueryResult|Error|NOTAG|null<SQL Exception: 1054: Unknown column 'klakshma' in 'where clause'>
+[2/10/14 3:47 PM]|AccountHolder|getSelectQueryResult|Error|NOTAG|null<SQL Exception: 1054: Unknown column 'matthew' in 'where clause'>
+[2/10/14 3:48 PM]|AccountHolder|getSelectQueryResult|Error|NOTAG|null<SQL Exception: 1054: Unknown column 'etienne' in 'where clause'>
+[6/11/15 4:42 PM]|DepositTransaction|processTransaction|Error|NOTAG|null<Failed to verify ownership of account number : 2.>
+[6/11/15 4:59 PM]|DepositTransaction|processTransaction|Error|NOTAG|null<Failed to verify ownership of account number : 2.>
+[6/11/15 4:59 PM]|DepositTransaction|processTransaction|Error|NOTAG|null<Failed to verify ownership of account number : 2.>
+[6/11/15 4:59 PM]|DepositTransaction|processTransaction|Error|NOTAG|null<Failed to verify ownership of account number : 2.>
+[6/11/15 5:04 PM]|DepositTransaction|processTransaction|Error|NOTAG|null<Failed to verify ownership of account number : 2.>
+[3/14/23, 3:56 AM]|JDBCBroker|JDBCBroker|Error|NOTAG|null<Could not load driver class[org.mariadb.jdbc.Driver]>
+[3/14/23, 4:07 AM]|JDBCBroker|JDBCBroker|Error|NOTAG|null<Could not load driver class[org.mariadb.jdbc.Driver]>
+[3/14/23, 4:11 AM]|JDBCBroker|JDBCBroker|Error|NOTAG|null<Could not load driver class[org.mariadb.jdbc.Driver]>
+[3/20/23, 3:00 PM]|TLC|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException>
+[3/20/23, 10:18 PM]|TLC|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException>
+[3/30/23, 1:47 PM]|TLC|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException>
+[3/30/23, 1:49 PM]|TLC|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException>
+[3/30/23, 2:37 PM]|TLC|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException>
+[3/30/23, 2:38 PM]|TLC|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException>
+[3/30/23, 10:52 PM]|TLC|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException>
+[3/31/23, 12:03 AM]|Scout|insertAutoIncrementalPersistentState|Error|NOTAG|null<SQL Exception: 1364: (conn=7893) Field 'dateStatusUpdated' doesn't have a default value>
+[3/31/23, 12:42 AM]|TLC|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException>
+[3/31/23, 3:49 PM]|TLC|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException>
+[4/5/23 7:24 PM]|TLC|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException>
+[4/5/23 7:24 PM]|TLC|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException>
+[4/5/23 7:24 PM]|TLC|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException>
+[4/5/23 7:24 PM]|TLC|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException>
+[4/5/23 7:24 PM]|TLC|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException>
+[4/5/23 7:24 PM]|TLC|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException>
+[4/5/23 7:24 PM]|TLC|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException>
+[4/5/23 7:29 PM]|TLC|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException>
+[4/5/23 7:29 PM]|TLC|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException>
+[4/5/23 7:29 PM]|TLC|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException>
+[4/5/23 7:29 PM]|TLC|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException>
+[4/5/23 7:32 PM]|TLC|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException>
+[4/5/23 8:17 PM]|TLC|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException: Root cannot be null>
+[4/5/23 8:47 PM]|TLC|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException: Root cannot be null>
+[4/5/23 8:47 PM]|TLC|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException: Root cannot be null>
+[4/5/23 8:50 PM]|TLC|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException>
+[4/5/23 8:50 PM]|TLC|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException: Root cannot be null>
+[4/5/23 8:50 PM]|TLC|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException: Root cannot be null>
+[4/5/23 8:50 PM]|TLC|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException: Root cannot be null>
+[4/5/23 8:50 PM]|TLC|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException>
+[4/5/23 8:50 PM]|TLC|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException: Root cannot be null>
+[4/5/23 8:50 PM]|TLC|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException>
+[4/5/23 8:50 PM]|TLC|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException>
+[4/5/23 8:50 PM]|TLC|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException>
+[4/5/23 8:50 PM]|TLC|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException>
+[4/5/23 9:52 PM]|TLC|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException>
+[4/5/23 9:52 PM]|TLC|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException: Root cannot be null>
+[4/5/23 9:52 PM]|TLC|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException: Root cannot be null>
+[4/5/23 9:52 PM]|TLC|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException: Root cannot be null>
+[4/5/23 9:52 PM]|TLC|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException>
+[4/6/23 12:27 PM]|TLC|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException: Root cannot be null>
+[4/6/23 12:28 PM]|TLC|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException>
+[4/6/23 12:28 PM]|TLC|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException: Root cannot be null>
+[4/6/23 12:28 PM]|TLC|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException: Root cannot be null>
+[4/6/23 12:28 PM]|TLC|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException>
+[4/6/23 12:28 PM]|TLC|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException: Root cannot be null>
+[4/6/23 1:07 PM]|TLC|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException>
+[4/7/23 9:50 AM]|TLC|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException: Root cannot be null>
+[4/7/23 9:51 AM]|TLC|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException: Root cannot be null>
+[4/7/23 9:55 AM]|TLC|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException: Root cannot be null>
+[4/7/23 9:55 AM]|TLC|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException: Root cannot be null>
+[4/7/23 9:56 AM]|TLC|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException: Root cannot be null>
+[4/7/23 12:41 PM]|TLC|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException: Root cannot be null>
+[4/7/23 12:42 PM]|TLC|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException: Root cannot be null>
+[4/7/23 12:49 PM]|TLC|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException: Root cannot be null>

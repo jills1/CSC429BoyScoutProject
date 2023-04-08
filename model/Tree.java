@@ -1,57 +1,86 @@
+// specify the package
 package model;
 
-import exception.InvalidPrimaryKeyException;
-import impresario.IView;
+// system imports
 import java.sql.SQLException;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Enumeration;
 import java.util.Properties;
 import java.util.Vector;
-import javax.swing.*;
+import javax.swing.JFrame;
 
+// project imports
+import exception.InvalidPrimaryKeyException;
 import database.*;
+
+import impresario.IView;
+
 //import userinterface.View;
 //import userinterface.ViewFactory;
 
-import impresario.IView;
+/** The class containing the Account for the ATM application */
+//==============================================================
 public class Tree extends EntityBase implements IView {
     private static final String myTableName = "Tree";
     protected Properties dependencies;
     private boolean oldFlag = true;
     // GUI Components
     private String updateStatusMessage = "";
+    private String deleteStatusMessage = "";
     //---------------------------------------------------------
-    public Tree() {
+    public Tree()
+    {
         super(myTableName);
     }
+
+    // constructor for this class
     //----------------------------------------------------------
-    public Tree(String barcode) throws InvalidPrimaryKeyException {
+    public Tree(String barcode)
+            throws InvalidPrimaryKeyException
+    {
         super(myTableName);
+
         setDependencies();
         String query = "SELECT * FROM " + myTableName + " WHERE (barcode = " + barcode + ")";
+
         Vector<Properties> allDataRetrieved = getSelectQueryResult(query);
-        // You must get one account at least
-        if (allDataRetrieved != null) {
+
+        // You must get one tree at least
+        if (allDataRetrieved != null)
+        {
             int size = allDataRetrieved.size();
+
             // There should be EXACTLY one account. More than that is an error
-            if (size != 1) {
-                throw new InvalidPrimaryKeyException("Multiple trees matching inputted barcode : " + barcode + " found.");
-            } else {
+            if (size != 1)
+            {
+                throw new InvalidPrimaryKeyException("Multiple trees matching barcode : "
+                        + barcode + " found.");
+            }
+            else
+            {
                 // copy all the retrieved data into persistent state
                 Properties retrievedTreeData = allDataRetrieved.elementAt(0);
                 persistentState = new Properties();
+
                 Enumeration allKeys = retrievedTreeData.propertyNames();
-                while (allKeys.hasMoreElements() == true) {
+                while (allKeys.hasMoreElements() == true)
+                {
                     String nextKey = (String)allKeys.nextElement();
                     String nextValue = retrievedTreeData.getProperty(nextKey);
-                    if (nextValue != null) {
+
+
+                    if (nextValue != null)
+                    {
                         persistentState.setProperty(nextKey, nextValue);
                     }
                 }
+
             }
-        } else {
-            throw new InvalidPrimaryKeyException("No tree matching inputted barcode : " + barcode+ " found.");
+        }
+        // If no tree found for this user barcode, throw an exception
+        else
+        {
+            throw new InvalidPrimaryKeyException("No tree matching barcode : "
+                    + barcode+ " found.");
         }
     }
 
@@ -61,87 +90,85 @@ public class Tree extends EntityBase implements IView {
     public Tree(Properties props)
     {
         super(myTableName);
+
         setDependencies();
         persistentState = new Properties();
         Enumeration allKeys = props.propertyNames();
-
-        while (allKeys.hasMoreElements() == true) {
+        while (allKeys.hasMoreElements() == true)
+        {
             String nextKey = (String)allKeys.nextElement();
             String nextValue = props.getProperty(nextKey);
-            if (nextValue != null) {
+
+            if (nextValue != null)
+            {
                 persistentState.setProperty(nextKey, nextValue);
             }
         }
     }
 
-    public String getTreeTypeID(Properties props)
-    {
-        String barcode = props.getProperty("barcode");
-        String sub = barcode.substring(0,2);
-        String query = "Select treeTypeID FROM treetype WHERE (barcodePrefix = " + sub + ")";
-        Vector<Properties> allDataRetrieved = getSelectQueryResult(query);
-        String ID ="";
-        for (int i =0; i < allDataRetrieved.size(); i++ )
-        {
-            ID += allDataRetrieved.get(i).getProperty("treeType");
-        }
-        return ID;
-    }
     //-----------------------------------------------------------------------------------
-    private void setDependencies() {
+    private void setDependencies()
+    {
         dependencies = new Properties();
+
         myRegistry.setDependencies(dependencies);
     }
+
     //----------------------------------------------------------
     public Object getState(String key)
     {
-        if (key.equals("UpdateStatusMessage") == true) {
+        if (key.equals("UpdateStatusMessage") == true)
             return updateStatusMessage;
-        }
+
         return persistentState.getProperty(key);
     }
+
     //----------------------------------------------------------------
     public void stateChangeRequest(String key, Object value)
     {
         persistentState.setProperty(key, (String) value);
         myRegistry.updateSubscribers(key, this);
     }
+
+    /** Called via the IView relationship */
     //----------------------------------------------------------
     public void updateState(String key, Object value)
     {
         stateChangeRequest(key, value);
     }
+
+
     //-----------------------------------------------------------------------------------
-    public static int compare(Tree a, Tree b) {
+    public static int compare(Tree a, Tree b)
+    {
         String aNum = (String)a.getState("barcode");
         String bNum = (String)b.getState("barcode");
+
         return aNum.compareTo(bNum);
     }
+
     //-----------------------------------------------------------------------------------
-    public void update() {
+    public void update() //save
+    {
         updateStateInDatabase();
     }
     //-----------------------------------------------------------------------------------
-    private void updateStateInDatabase() {
+    public  void remove()
+    {
+        System.out.println("test4");
+        deleteStateInDatabase();
+
+    }
+    //-----------------------------------------------------------------------------------
+    private void updateStateInDatabase()
+    {
         try
         {
             if (oldFlag)
             {
                 Properties whereClause = new Properties();
-                DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd");
-                LocalDateTime now = LocalDateTime.now();
                 whereClause.setProperty("barcode", persistentState.getProperty("barcode"));
-                whereClause.setProperty("treeType", persistentState.getProperty("treeType"));
-                whereClause.setProperty("status", persistentState.getProperty("status"));
-                whereClause.setProperty("notes", persistentState.getProperty("notes"));
-                System.out.println(persistentState.getProperty("barcode"));
-                System.out.println("Yrs Claw");
-                whereClause.setProperty("dateStatusUpdated",dtf.format(now));
-
-                System.out.println("Yr Claw");
                 updatePersistentState(mySchema, persistentState, whereClause);
-                System.out.println("Yr Claw");
-//
                 updateStatusMessage = "Data for Tree : " + persistentState.getProperty("barcode") + " updated successfully in database!";
             }
             else
@@ -156,30 +183,47 @@ public class Tree extends EntityBase implements IView {
         //DEBUG System.out.println("updateStateInDatabase " + updateStatusMessage);
     }
 
+    /**
+     * This method is needed solely to enable the Account information to be displayable in a table
+     *
+     */
+    //--------------------------------------------------------------------------
     public Vector<String> getEntryListView()
     {
         Vector<String> v = new Vector<String>();
+
         v.addElement(persistentState.getProperty("barcode"));
         v.addElement(persistentState.getProperty("treeType"));
         v.addElement(persistentState.getProperty("notes"));
         v.addElement(persistentState.getProperty("status"));
-        v.addElement(persistentState.getProperty("dateStatusUpdate"));
+        v.addElement(persistentState.getProperty("dateStatusUpdated"));
+
 
         return v;
-
     }
+
+
     //-----------------------------------------------------------------------------------
-    protected void initializeSchema(String tableName) {
-        if (mySchema == null) {
+    //this will be in every persistable
+    protected void initializeSchema(String tableName)
+    {
+        if (mySchema == null)
+        {
             mySchema = getSchemaInfo(tableName);
         }
     }
     public String toString()
     {
-        return "Tree: " + persistentState.getProperty("barcode") ;
+        return "Tree: " + persistentState.getProperty("barcode") + "; treeType: " +
+                persistentState.getProperty("treeType") + "; notes: " +
+                persistentState.getProperty("notes") + "; status: " +
+                persistentState.getProperty("status")+ "; dateStatusUpdated: " +
+                persistentState.getProperty("dateStatusUpdated") ;
     }
-    public String toString1() {
+    public String toString1()
+    {
         String retVal = "";
+
         Enumeration allKeys = persistentState.propertyNames();
         while (allKeys.hasMoreElements() == true) {
             String nextKey = (String) allKeys.nextElement();
@@ -187,17 +231,6 @@ public class Tree extends EntityBase implements IView {
             retVal += nextKey + ": " + nextValue + "; ";
         }
         return retVal;
-    }
-
-    protected void setOldFlag(boolean val)
-    {
-        oldFlag = val;
-    }
-    public  void remove()
-    {
-        System.out.println("test4");
-        deleteStateInDatabase();
-
     }
     public void deleteStateInDatabase(){
         try {

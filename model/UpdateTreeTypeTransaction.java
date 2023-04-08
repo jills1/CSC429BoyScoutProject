@@ -27,10 +27,8 @@ public class UpdateTreeTypeTransaction extends Transaction {
     //----------------------------------------------------------
     public void processTransaction(Properties props) {
         try {
-            //String treeTypeID= props.getProperty("treeTypeID");
-            String treeTypeID = (String) myTree.getState("treeTypeID");
-            props.setProperty("treeTypeID", treeTypeID);
-            myTree= new TreeType(treeTypeID);
+            String barcodePrefix= props.getProperty("barcodePrefix");
+            myTree= new TreeType(barcodePrefix);
             //-------
             String typeDescription = (String) myTree.getState("typeDescription");
             props.setProperty("typeDescription", typeDescription);
@@ -38,8 +36,8 @@ public class UpdateTreeTypeTransaction extends Transaction {
             String cost = (String) myTree.getState("cost");
             props.setProperty("cost", cost);
             //-------
-            String barcodePrefix = (String) myTree.getState("barcodePrefix");
-            props.setProperty("barcodePrefix", barcodePrefix);
+            String treeTypeID = (String) myTree.getState("treeTypeID");
+            props.setProperty("treeTypeID", treeTypeID);
             //-------
             createAndShowUpdateTreeTypeFormView();
         } catch(InvalidPrimaryKeyException e){
@@ -89,7 +87,6 @@ public class UpdateTreeTypeTransaction extends Transaction {
             doYourJob();
         } else  if (key.equals("UpdateTreeTypeFormView")) {
             processTransaction((Properties)value);
-
         }
         myRegistry.updateSubscribers(key, this);
     }
@@ -113,6 +110,6 @@ public class UpdateTreeTypeTransaction extends Transaction {
         Scene newsScene = new Scene(newView);
         myViews.put("UpdateTreeTypeFormView", newsScene);
         swapToView(newsScene);
-        // return newScreen;
+        //return newsScreen;
     }
 }

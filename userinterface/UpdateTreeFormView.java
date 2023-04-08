@@ -72,6 +72,7 @@ public class UpdateTreeFormView extends View {
         Label treeTypeLabel = new Label("Tree Type : ");
         grid.add(treeTypeLabel, 0, 2);
         treeType = new TextField();
+        treeType.setEditable(false);
         grid.add(treeType, 1, 2);
         //-------------------------------------------------------------------
         //Notes Label, Box and Handler
@@ -84,7 +85,7 @@ public class UpdateTreeFormView extends View {
         Label statusLabel = new Label("Status : ");
         grid.add(statusLabel, 0, 4);
         status = new ComboBox<String>(); // Changed to ComboBox
-        status.getItems().addAll("Active", "Inactive");
+        status.getItems().addAll( "Damaged", "Available");
         grid.add(status, 1, 4);
         //-------------------------------------------------------------------
         //dateStatusUpdate Label, Box and Handler
@@ -132,43 +133,51 @@ public class UpdateTreeFormView extends View {
         String treeTypeEntered = treeType.getText();
         String statusEntered = status.getValue();
         String notesEntered = notes.getText();
-        String dateStatusUpdateEntered = now.format(DateTimeFormatter.ofPattern("yyyy/MM/dd"));
+        String dateStatusUpdateEntered = now.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
         System.out.println(barcodeEntered + " " + treeTypeEntered + statusEntered);
-        if ((barcodeEntered == null) || (barcodeEntered.length() == 0)) {
+        if ((barcodeEntered == null) || (barcodeEntered.length() != 5)) {
             displayErrorMessage("Please enter a valid barcode");
         } else if ((treeTypeEntered == null) || (treeTypeEntered.length() == 0)) {
-            displayErrorMessage("Please enter a tree type");
+            displayErrorMessage("Please enter a valid treeType");
         } else if ((statusEntered == null)) {
-            displayErrorMessage("Please enter a status");
-        } else if ((notesEntered == null) || (notesEntered.length() == 0)) {
-            displayErrorMessage("Please enter notes");
-        } else if ((dateStatusUpdateEntered == null) || (dateStatusUpdateEntered.length() == 0)) {
-            displayErrorMessage("Please enter a date");
+            displayErrorMessage("Please enter a valid status");
+        } else if ((notesEntered == null) || (notesEntered.length() == 0) || (notesEntered.length() >= 201)) {
+            displayErrorMessage("Please enter valid notes");
+        } else if ((dateStatusUpdateEntered == null) || (dateStatusUpdateEntered.length() == 0) || (dateStatusUpdateEntered.length() >= 13)) {
+            displayErrorMessage("Please enter a valid date");
         } else{
             processTreeInfo(barcodeEntered,treeTypeEntered,statusEntered,notesEntered, dateStatusUpdateEntered);
         }
     }
-    private void processTreeInfo(String barcode, String treeType, String status, String notes, String dateStatusUpdateEntered) {
+    private void processTreeInfo(String barcode, String treeType, String status, String notes, String dateStatusUpdate) {
         // modify to make update tree
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd");
-        LocalDateTime now = LocalDateTime.now();
+        System.out.println(barcode+treeType+status+notes+dateStatusUpdate);
         Properties props = new Properties();
         props.setProperty("barcode", barcode);
         props.setProperty("treeType", treeType);
         props.setProperty("status", status);
         props.setProperty("notes", notes);
-        props.setProperty("dateStatusUpdated",dateStatusUpdateEntered);
+        props.setProperty("dateStatusUpdate",dateStatusUpdate);
         myModel.stateChangeRequest("RegisterTreeInfo", props);
         Tree tree = new Tree(props);
         tree.update();
-        displayMessage("Successfully updated Tree");
+        //displayMessage("Successfully updated Tree");
     }
     //-------------------------------------------------------------
     public void displayMessage(String message)
     {
         statusLog.displayMessage(message);
     }
-    public void updateState(String key, Object value) {}
+    public void updateState(String key, Object value) {
+//        if (key.equals("StatusMSG") ==true){
+//            String msg = (String)value;
+//            if(msg.startWith('ERR') ==true){
+//                displayErrorMessage(msg);
+//            } else{
+//                displayMessage(msg);
+//            }
+//        }
+    }
     public void displayErrorMessage(String message)
     {
         statusLog.displayErrorMessage(message);

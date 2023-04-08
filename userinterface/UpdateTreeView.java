@@ -87,8 +87,8 @@ public class UpdateTreeView extends View {
     //----------------------------------------------------------
     private void processAction(Event evt) {
         String barcodeEntered = barcode.getText();
-        if ((barcodeEntered == null) || (barcodeEntered.length() == 0)) {
-            displayErrorMessage("Please enter a barcode");
+        if ((barcodeEntered == null) || (barcodeEntered.length() != 5)) {
+            displayErrorMessage("Please enter a valid barcode");
         } else {
             processTreeInfo(barcodeEntered);
         }

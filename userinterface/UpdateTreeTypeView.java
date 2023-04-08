@@ -22,7 +22,7 @@ import java.util.Properties;
 import impresario.IModel;
 import model.*;
 public class UpdateTreeTypeView extends View {
-    private TextField treeTypeID;
+    private TextField barcodePrefix;
     private Button submitButton;
     private Button cancelButton;
     private MessageView statusLog;
@@ -60,19 +60,14 @@ public class UpdateTreeTypeView extends View {
         grid.setPadding(new Insets(25, 25, 25, 25));
 //-------------------------------------------------------------------
         //Barcode Label, Box and Handler
-        Label treeTypeIDLabel = new Label("TreeTypeID: ");
-        grid.add(treeTypeIDLabel, 0, 0);
-        treeTypeID = new TextField();
-        grid.add(treeTypeID, 1, 0);
+        Label barcodePrefixLabel = new Label("BarcodePrefix: ");
+        grid.add(barcodePrefixLabel, 0, 0);
+        barcodePrefix = new TextField();
+        grid.add(barcodePrefix, 1, 0);
 //------------------------------------------------------------------
         //Submit Button and Event Handler
         submitButton = new Button("Submit");
-        submitButton.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent e) {
-                clearErrorMessage();
-                processAction(e);
-            }});
+        submitButton.setOnAction(new EventHandler<ActionEvent>() {@Override public void handle(ActionEvent e) {clearErrorMessage();processAction(e);}});
 //----------------------------------------------------------------
         //Cancel Button and Event Handler
         cancelButton = new Button("Back");
@@ -97,19 +92,17 @@ public class UpdateTreeTypeView extends View {
     }
     //----------------------------------------------------------
     private void processAction(Event evt) {
-        String treeTypeIDEntered = treeTypeID.getText();
-        if ((treeTypeIDEntered == null) || (treeTypeIDEntered.length() == 0)) {
-            displayErrorMessage("Please enter a treeTypeID");
+        String barcodePrefixEntered = barcodePrefix.getText();
+        if ((barcodePrefixEntered == null) || (barcodePrefixEntered.length() >= 3) || (barcodePrefixEntered.length() == 0)) {
+            displayErrorMessage("Please enter a valid barcodePrefix");
         } else {
-            processTreeTypeInfo(treeTypeIDEntered);
+            processTreeTypeInfo(barcodePrefixEntered);
         }
     }
-    private void processTreeTypeInfo(String treeTypeID) {
+    private void processTreeTypeInfo(String barcodePrefix) {
         Properties props = new Properties();
-        props.setProperty("treeTypeID", treeTypeID);
+        props.setProperty("barcodePrefix", barcodePrefix);
         myModel.stateChangeRequest("UpdateTreeTypeFormView", props);
-        //Tree tree = new Tree(props);
-        //tree.update();
         displayMessage("Retrieving Tree Information");
     }
     public void displayMessage(String message)

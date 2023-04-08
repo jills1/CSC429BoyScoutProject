@@ -93,7 +93,7 @@ public class UpdateTreeTypeFormView extends View {
         Label barcodePrefixLabel = new Label("Barcode Prefix : ");
         grid.add(barcodePrefixLabel, 0, 5);
         barcodePrefix = new TextField();
-        //barcodePrefix.setEditable(false);
+        barcodePrefix.setEditable(false);
         grid.add(barcodePrefix, 1, 5);
 //------------------------------------------------------------------
         //Submit Button and Event Handler
@@ -135,12 +135,12 @@ public class UpdateTreeTypeFormView extends View {
         String barcodePrefixEntered = barcodePrefix.getText();
         if ((treeTypeIDEntered == null) || (treeTypeIDEntered.length() == 0)) {
             displayErrorMessage("Please enter a valid treeTypeID");
-        } else if ((typeDescriptionEntered == null) || (typeDescriptionEntered.length() == 0)) {
-            displayErrorMessage("Please enter a type description");
-        } else if ((costEntered == null) || (costEntered.length() == 0)) {
-            displayErrorMessage("Please enter the price of treeType");
-        } else if ((barcodePrefixEntered == null) || (barcodePrefixEntered.length() == 0)) {
-            displayErrorMessage("Please enter a barcodePrefix");
+        } else if ((typeDescriptionEntered == null) || (typeDescriptionEntered.length() == 0) || (typeDescriptionEntered.length() >= 26)) {
+            displayErrorMessage("Please enter a valid type description");
+        } else if ((costEntered == null) || (costEntered.length() == 0) || (costEntered.length() >= 21)) {
+            displayErrorMessage("Please enter a valid price for treeType");
+        } else if ((barcodePrefixEntered == null) || (barcodePrefixEntered.length() >= 3) || (barcodePrefixEntered.length() == 0)) {
+            displayErrorMessage("Please enter a valid barcodePrefix");
         } else{
             processTreeInfo(treeTypeIDEntered,typeDescriptionEntered,costEntered, barcodePrefixEntered);
         }
