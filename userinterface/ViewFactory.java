@@ -7,21 +7,25 @@ public class ViewFactory {
 
 	public static View createView(String viewName, IModel model)
 	{
-		if(viewName.equals("TellerView") == true)
+		if(viewName.equals("UpdateTreeView") == true)
 		{
-			return new TellerView(model);
+			return new UpdateTreeView(model);
+		}
+		else if(viewName.equals("UpdateTreeFormView") == true)
+		{
+			return new UpdateTreeFormView(model);
 		}
 		else if(viewName.equals("TLCView") == true)
 		{
 			return new TLCView(model);
 		}
-		else if(viewName.equals("AccountCollectionView") == true)
+		else if(viewName.equals("UpdateTreeTypeFormView") == true)
 		{
-			return new AccountCollectionView(model);
+			return new UpdateTreeTypeFormView(model);
 		}
-		else if(viewName.equals("AccountView") == true)
+		else if(viewName.equals("UpdateTreeTypeView") == true)
 		{
-			return new AccountView(model);
+			return new UpdateTreeTypeView(model);
 		}
 		else if(viewName.equals("AddTreeView") == true)
 		{

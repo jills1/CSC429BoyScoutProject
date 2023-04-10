@@ -8,12 +8,12 @@ import exception.InvalidPrimaryKeyException;
 import userinterface.View;
 import userinterface.ViewFactory;
 //==============================================================
-public class UpdateTreeTransaction extends Transaction {
+public class UpdateTreeTypeTransaction extends Transaction {
     private String transactionErrorMessage = "";
-    private String accountUpdateStatusMessage = "";
-    protected  Tree myTree;
+    private final String accountUpdateStatusMessage = "";
+    protected  TreeType myTree;
     //----------------------------------------------------------
-    public UpdateTreeTransaction() {
+    public UpdateTreeTypeTransaction() {
         super();
     }
     //----------------------------------------------------------
@@ -27,21 +27,19 @@ public class UpdateTreeTransaction extends Transaction {
     //----------------------------------------------------------
     public void processTransaction(Properties props) {
         try {
-            String barcode= props.getProperty("barcode");
-            myTree= new Tree(barcode);
-            String treeType = (String) myTree.getState("treeType");
-            props.setProperty("treeType", treeType);
+            String barcodePrefix= props.getProperty("barcodePrefix");
+            myTree= new TreeType(barcodePrefix);
             //-------
-            String treeStatus = (String) myTree.getState("status");
-            props.setProperty("status", treeStatus);
+            String typeDescription = (String) myTree.getState("typeDescription");
+            props.setProperty("typeDescription", typeDescription);
             //-------
-            String treeNotes = (String) myTree.getState("notes");
-            props.setProperty("notes", treeNotes);
+            String cost = (String) myTree.getState("cost");
+            props.setProperty("cost", cost);
             //-------
-            String treeDateStatusUpdate = (String) myTree.getState("dateStatusUpdate");
-            props.setProperty("dateStatusUpdate", treeDateStatusUpdate);
+            String treeTypeID = (String) myTree.getState("treeTypeID");
+            props.setProperty("treeTypeID", treeTypeID);
             //-------
-            createAndShowUpdateTreeFormView();
+            createAndShowUpdateTreeTypeFormView();
         } catch(InvalidPrimaryKeyException e){
             transactionErrorMessage="Error cannot do this 2.";
         }
@@ -53,67 +51,65 @@ public class UpdateTreeTransaction extends Transaction {
                 return transactionErrorMessage;
             case "UpdateStatusMessage":
                 return accountUpdateStatusMessage;
-            case "barcode":
+            case "treeTypeID":
                 if (myTree != null) {
-                    return myTree.getState("barcode");
+                    return myTree.getState("treeTypeID");
                 } else {
                     return "Undefined";
                 }
-            case "treeType":
+            case "typeDescription":
                 if (myTree != null) {
-                    return myTree.getState("treeType");
+                    return myTree.getState("typeDescription");
                 } else {
                     return "Undefined";
                 }
-            case "notes":
+            case "cost":
                 if (myTree != null) {
-                    return myTree.getState("notes");
+                    return myTree.getState("cost");
                 } else {
                     return "Undefined";
                 }
-            case "status":
+            case "barcodePrefix":
                 if (myTree != null) {
-                    return myTree.getState("status");
+                    return myTree.getState("barcodePrefix");
                 } else {
                     return "Undefined";
                 }
-            case "dateStatusUpdate":
-                if (myTree != null) {
-                    return myTree.getState("dateStatusUpdate");
-                } else {
-                    return "Undefined";
-                }
+            default:
+                return null;
         }
-        return null;
     }
-    //------------------------------------------------------
+    //-----------------------------------------------------------
+    //State Change
     public void stateChangeRequest(String key, Object value) {
+        // DEBUG System.out.println("DepositTransaction.sCR: key: " + key);
         if (key.equals("DoYourJob")) {
             doYourJob();
-        } else  if (key.equals("UpdateTreeFormView")) {
+        } else  if (key.equals("UpdateTreeTypeFormView")) {
             processTransaction((Properties)value);
         }
         myRegistry.updateSubscribers(key, this);
     }
     //------------------------------------------------------
+    //Create View.java within view factory
     protected Scene createView() {
-        Scene currentScene = myViews.get("UpdateTreeView");
+        Scene currentScene = myViews.get("UpdateTreeTypeView");
         if (currentScene == null) {
             // create our initial view
-            View newView = ViewFactory.createView("UpdateTreeView", this);
-            assert newView != null;
+            View newView = ViewFactory.createView("UpdateTreeTypeView", this);
             currentScene = new Scene(newView);
-            myViews.put("UpdateTreeView", currentScene);
+            myViews.put("UpdateTreeTypeView", currentScene);
             return currentScene;
         } else {
             return currentScene;
         }
     }
     //------------------------------------------------------
-    protected void createAndShowUpdateTreeFormView() {
-        View newsView = ViewFactory.createView("UpdateTreeFormView", this);
-        assert newsView != null;
-        Scene newsScene = new Scene(newsView);
+    protected void createAndShowUpdateTreeTypeFormView() {
+        View newView = ViewFactory.createView("UpdateTreeTypeFormView", this);
+        Scene newsScene = new Scene(newView);
+        myViews.put("UpdateTreeTypeFormView", newsScene);
         swapToView(newsScene);
+        //return newsScreen;
     }
 }

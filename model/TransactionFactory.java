@@ -42,6 +42,11 @@ public class TransactionFactory
 		{
 			retValue = new AddTreeTypeTransaction();
 		}
+		else
+		if (transType.equals("UpdateTreeType") == true)
+		{
+			retValue = new UpdateTreeTypeTransaction();
+		}
 
 		else
 		if (transType.equals("UpdateTree") == true)

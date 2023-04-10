@@ -236,7 +236,7 @@ public class AddTreeTypeTransactionView extends View
 
     public static boolean isDoubleValue(String input) {
         // Regular expression for a double value
-        String doubleRegex = "^[-+]?[0-9]*\\.[0-9]+([eE][-+]?[0-9]+)?$";
+        String doubleRegex = "^[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)?$";
         Pattern pattern = Pattern.compile(doubleRegex);
         return pattern.matcher(input).matches();
     }
