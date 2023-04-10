@@ -44,7 +44,7 @@ public class RegisterScoutTransactionView extends View
 	private TextField phoneNumber;
 	private TextField email;
 	private TextField troopID;
-	private ComboBox<String> status; // Changed to ComboBox
+
 
 	private Button submitButton;
 	private Button cancelButton;
@@ -187,13 +187,7 @@ public class RegisterScoutTransactionView extends View
 		});
 		grid.add(troopID, 1, 6);
 
-		Label statusLabel = new Label("Status : ");
-		grid.add(statusLabel, 0, 7);
 
-		status = new ComboBox<String>(); // Changed to ComboBox
-		status.getItems().addAll("Active", "Inactive");
-
-		grid.add(status, 1, 7);
 
 		submitButton = new Button("Submit");
 		submitButton.setOnAction(new EventHandler<ActionEvent>() {
@@ -259,7 +253,7 @@ public class RegisterScoutTransactionView extends View
 		String phoneNumberEntered = phoneNumber.getText();
 		String emailEntered = email.getText();
 		String troopIDEntered = troopID.getText();
-		String statusEntered = status.getValue(); // Changed to ComboBox
+
 
 
 		if ((lastNameEntered == null) || (lastNameEntered.length() == 0))
@@ -298,16 +292,13 @@ public class RegisterScoutTransactionView extends View
 		{
 			displayErrorMessage("Please enter a valid troopID");
 		}
-		else if ((statusEntered == null) || (statusEntered.length() == 0))
-		{
-			displayErrorMessage("Please enter a valid status");
-		}
+
 		else
-			processScoutInfo(lastNameEntered,firstNameEntered,middleNameEntered,dateOfBirthEntered,phoneNumberEntered,emailEntered,troopIDEntered,statusEntered);
+			processScoutInfo(lastNameEntered,firstNameEntered,middleNameEntered,dateOfBirthEntered,phoneNumberEntered,emailEntered,troopIDEntered);
 	}
 
 	//---------------------------------------------------------------------------------------
-	private void processScoutInfo(String lastName, String firstName, String middleName, String dateOfBirth, String phoneNumber,String email, String troopID, String status)
+	private void processScoutInfo(String lastName, String firstName, String middleName, String dateOfBirth, String phoneNumber,String email, String troopID)
 	{
 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd");
 		LocalDateTime now = LocalDateTime.now();
@@ -320,7 +311,7 @@ public class RegisterScoutTransactionView extends View
 		props.setProperty("phoneNumber", phoneNumber);
 		props.setProperty("email", email);
 		props.setProperty("troopID", troopID);
-		props.setProperty("status", status);
+		props.setProperty("status", "Active");
 		props.setProperty("dateStatusUpdated",dtf.format(now));
 		myModel.stateChangeRequest("RegisterWithScoutInfo", props);
 

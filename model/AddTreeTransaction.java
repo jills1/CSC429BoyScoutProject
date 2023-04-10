@@ -66,6 +66,7 @@ public class AddTreeTransaction extends Transaction
         try
         {
             Tree t = new Tree(barcode);
+            transactionMessage = "Error: Tree already exists";
         }
         catch (InvalidPrimaryKeyException ex)
         {

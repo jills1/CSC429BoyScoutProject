@@ -71,6 +71,7 @@ public class AddTreeTypeTransactionView extends View
         getChildren().add(container);
 
         populateFields();
+        myModel.subscribe("TransactionError", this);
     }
 
 
@@ -231,7 +232,7 @@ public class AddTreeTypeTransactionView extends View
 
         myModel.stateChangeRequest("AddTreeTypeWithInfo", props);
 
-        displayMessage("Successfully added new Tree Type");
+
     }
 
     public static boolean isDoubleValue(String input) {
@@ -254,7 +255,19 @@ public class AddTreeTypeTransactionView extends View
     //---------------------------------------------------------
     public void updateState(String key, Object value)
     {
+        clearErrorMessage();
 
+        if (key.equals("TransactionError"))
+        {
+            String messageToDisplay = (String)value;
+            if (messageToDisplay.startsWith("ERR")) {
+                displayErrorMessage(messageToDisplay);
+            }
+            else {
+                displayMessage(messageToDisplay);
+            }
+
+        }
     }
 
     /**

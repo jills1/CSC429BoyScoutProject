@@ -66,7 +66,7 @@ public class AddTreeTypeTransaction extends Transaction
             myTreeType = new TreeType(props);
             myTreeType.update();
 
-            transactionErrorMessage += myTreeType.getState("UpdateStatusMessage");
+            transactionErrorMessage = "Tree Type successfully added";
 
         }
 

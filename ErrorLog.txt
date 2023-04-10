@@ -31,3 +31,12 @@
 [4/7/23, 3:01 AM]|Tree|insertPersistentState|Error|NOTAG|null<SQL Exception: 1364: (conn=28741) Field 'treeType' doesn't have a default value>
 [4/7/23, 3:09 AM]|Tree|insertPersistentState|Error|NOTAG|null<SQL Exception: 1364: (conn=28742) Field 'dateStatusUpdate' doesn't have a default value>
 [4/7/23, 3:10 AM]|Tree|insertPersistentState|Error|NOTAG|null<SQL Exception: 1062: (conn=28743) Duplicate entry '61001' for key 'barcode'>
+[4/10/23, 2:05 AM]|TLC|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException>
+[4/10/23, 2:05 AM]|TLC|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException>
+[4/10/23, 2:11 AM]|TLC|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException>
+[4/10/23, 2:11 AM]|TLC|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException>
+[4/10/23, 2:11 AM]|TLC|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException>
+[4/10/23, 2:11 AM]|TLC|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException>
+[4/10/23, 2:11 AM]|TLC|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException>
+[4/10/23, 2:11 AM]|TLC|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException>
+[4/10/23, 2:12 AM]|TLC|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException>
