@@ -67,6 +67,18 @@ public class ViewFactory {
 		{
 			return new SelectedScoutToUpdateView(model);
 		}
+		else if(viewName.equals("SearchUpdateScoutView") == true)
+		{
+			return new SearchUpdateScoutView(model);
+		}
+		else if(viewName.equals("SelectUpdateScoutView") == true)
+		{
+			return new SelectUpdateScoutView(model);
+		}
+		else if(viewName.equals("UpdateScoutInfoView") == true)
+		{
+			return new UpdateScoutInfoView(model);
+		}
 		else
 			return null;
 	}

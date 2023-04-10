@@ -128,6 +128,23 @@ public class ScoutCollection  extends EntityBase implements IView
 		stateChangeRequest(key, value);
 	}
 
+	public Scout retrieveByTroopID(String troopId)
+	{
+		Scout retValue = null;
+		for (int cnt = 0; cnt < scoutList.size(); cnt++)
+		{
+			Scout nextSct = scoutList.elementAt(cnt);
+			String nextSctId = (String)nextSct.getState("troopID");
+			if (nextSctId.equals(troopId) == true)
+			{
+				retValue = nextSct;
+				return retValue; // we should say 'break;' here
+			}
+		}
+
+		return retValue;
+	}
+
 	//------------------------------------------------------
 	protected void createAndShowView()
 	{

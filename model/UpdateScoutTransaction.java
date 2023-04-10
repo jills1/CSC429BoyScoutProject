@@ -36,7 +36,7 @@ public class UpdateScoutTransaction extends Transaction
      *
      */
     //----------------------------------------------------------
-    public UpdateScoutTransaction() throws Exception
+    public UpdateScoutTransaction()
 
     {
         super();
@@ -248,14 +248,5 @@ public class UpdateScoutTransaction extends Transaction
         swapToView(newScene);
     }
 
-    protected void createAndShowTLC()
-    {
-        View newView = ViewFactory.createView("TLCView", this);
-        Scene newScene = new Scene(newView);
-
-        myViews.put("TLCView", newScene);
-
-        swapToView(newScene);
-    }
 
 }
