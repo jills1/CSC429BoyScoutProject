@@ -167,5 +167,17 @@ public class Tree extends EntityBase implements IView {
     {
         oldFlag = val;
     }
+    public void deleteStateInDatabase(){
+        try {
+            Properties whereClause = new Properties();
+            whereClause.setProperty("barcode",persistentState.getProperty("barcode"));
+            deletePersistentState( mySchema, whereClause );
+            updateStatusMessage = "The tree with barcode" + persistentState.getProperty("barcode")+"DELETED successfully!";
+
+        }
+        catch(SQLException ex){
+            updateStatusMessage ="Error in deleting tree data in database!";
+        }
+    }
 
 }

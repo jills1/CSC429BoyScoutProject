@@ -79,6 +79,14 @@ public class ViewFactory {
 		{
 			return new UpdateScoutInfoView(model);
 		}
+		else if(viewName.equals("RemoveTreeTransactionView") == true)
+		{
+			return new RemoveTreeTransactionView(model);
+		}
+		else if(viewName.equals("RemoveView") == true)
+		{
+			return new RemoveView(model);
+		}
 		else
 			return null;
 	}

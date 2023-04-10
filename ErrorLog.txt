@@ -40,3 +40,4 @@
 [4/10/23, 2:11 AM]|TLC|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException>
 [4/10/23, 2:11 AM]|TLC|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException>
 [4/10/23, 2:12 AM]|TLC|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException>
+[4/10/23, 3:52 AM]|Tree|getSelectQueryResult|Error|NOTAG|null<SQL Exception: 1064: (conn=32654) You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near ')' at line 1>
