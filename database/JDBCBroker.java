@@ -81,16 +81,17 @@ public class JDBCBroker
 	//----------------------------------------------------------
 	protected JDBCBroker()
 	{
-		// DEBUG: System.out.println("JDBCBroker.JDBCBroker()");
+		// DEBUG:
+		//System.out.println("JDBCBroker.JDBCBroker()");
 		props = new PropertyFile("dbConfig.ini");
 		if (props != null)
 		{
-			dbName = "spr23_csc429_jills1";
-			username = "jills1";
-			password = "database1";
-			server = "127.0.0.1";
+			dbName = "spr23_csc429_mholm2";
+			username = "mholm2";
+			password = "Righthand23";
+			server = "csdb.brockport.edu";
 			if (server == null)
-				server = "127.0.0.1";
+				server = "csdb.brockport.edu";
 			dbClassNameVal = props.getProperty("dbClassName");
 			if (dbClassNameVal == null)
 				dbClassNameVal = "org.mariadb.jdbc.Driver";
@@ -137,11 +138,11 @@ public class JDBCBroker
 					try
 					{
 						// Create a connection to the database
-						/*System.out.println(dbInstallationNameVal);
-						System.out.println(server);
-						System.out.println(dbName);
-						System.out.println(username);
-						System.out.println(password);*/
+						//System.out.println(dbInstallationNameVal);
+						//System.out.println(server);
+						//System.out.println(dbName);
+						//System.out.println(username);
+						//System.out.println(password);
 
 						theDBConnection = theDriver.connect("jdbc:" + dbInstallationNameVal +"://"+server+":3306/" +
 								dbName + "?" + "user=" + username + "&password=" +
