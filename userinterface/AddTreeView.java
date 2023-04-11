@@ -151,7 +151,7 @@ public class AddTreeView extends View
                 } else if ((p.getProperty("notes")).length() > 200) {
                     displayErrorMessage("Notes is bigger than 200 charcters.");
                     return;
-                
+
                 } else {myModel.stateChangeRequest("AddTreeInfo", p);
                     Tree tree = new Tree(p);
                     tree.update();

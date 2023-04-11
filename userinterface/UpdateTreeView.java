@@ -34,6 +34,7 @@ public class UpdateTreeView extends View {
         container.getChildren().add(createFormContent());
         container.getChildren().add(createStatusLog("                          "));
         getChildren().add(container);
+        myModel.subscribe("TransactionError", this);
     }
     //-------------------------------------------------------------
     private Node createTitle() {
@@ -104,7 +105,22 @@ public class UpdateTreeView extends View {
     {
         statusLog.displayMessage(message);
     }
-    public void updateState(String key, Object value) {}
+    public void updateState(String key, Object value)
+    {
+        clearErrorMessage();
+
+        if (key.equals("TransactionError"))
+        {
+            String messageToDisplay = (String)value;
+            if (messageToDisplay.startsWith("ERR")) {
+                displayErrorMessage(messageToDisplay);
+            }
+            else {
+                displayMessage(messageToDisplay);
+            }
+
+        }
+    }
     public void displayErrorMessage(String message)
     {
         statusLog.displayErrorMessage(message);

@@ -21,7 +21,8 @@ public class UpdateTreeTransaction extends Transaction {
         dependencies = new Properties();
         dependencies.setProperty("CancelDeposit", "CancelTransaction");
         dependencies.setProperty("OK", "CancelTransaction");
-        dependencies.setProperty("AccountNumber", "TransactionError");
+        dependencies.setProperty("RegisterTreeInfo", "TransactionError");
+        dependencies.setProperty("UpdateTreeFormView", "TransactionError");
         myRegistry.setDependencies(dependencies);
     }
     //----------------------------------------------------------
@@ -103,8 +104,19 @@ public class UpdateTreeTransaction extends Transaction {
         } else  if (key.equals("UpdateTreeFormView")) {
             processTransaction((Properties)value);
         }
+        else  if (key.equals("RegisterTreeInfo")) {
+            processUpdateTransaction((Properties)value);
+        }
         myRegistry.updateSubscribers(key, this);
     }
+
+    public void processUpdateTransaction(Properties props) {
+        myTree = new Tree(props);
+        myTree.update();
+
+        transactionErrorMessage = "Tree Updated Successfully";
+    }
+
     //------------------------------------------------------
     protected Scene createView() {
         Scene currentScene = myViews.get("UpdateTreeView");
