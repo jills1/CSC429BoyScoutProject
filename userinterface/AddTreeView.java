@@ -151,9 +151,7 @@ public class AddTreeView extends View
                 } else if ((p.getProperty("notes")).length() > 200) {
                     displayErrorMessage("Notes is bigger than 200 charcters.");
                     return;
-                } else if (!(treeTypeLastDigit.equals("0") || treeTypeLastDigit.equals("1"))) {
-                    displayErrorMessage("Barcode entered is not one of the available barcode within the system!");
-                    return;
+                
                 } else {myModel.stateChangeRequest("AddTreeInfo", p);
                     Tree tree = new Tree(p);
                     tree.update();

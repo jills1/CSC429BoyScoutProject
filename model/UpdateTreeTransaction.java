@@ -61,7 +61,17 @@ public class UpdateTreeTransaction extends Transaction {
                 }
             case "treeType":
                 if (myTree != null) {
-                    return myTree.getState("treeType");
+                    String treeTypeId = (String) myTree.getState("treeType");
+                    TreeType tt = new TreeType();
+                    try {
+                        tt.populateWithId(treeTypeId);
+                        return tt.getState("typeDescription");
+                    }
+                    catch (InvalidPrimaryKeyException excep)
+                    {
+                        return "";
+                    }
+
                 } else {
                     return "Undefined";
                 }

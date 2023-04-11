@@ -87,6 +87,58 @@ public class TreeType extends EntityBase implements IView
         }
     }
 
+    //----------------------------------------------------------
+    public void populateWithId(String treeTypeId)
+            throws InvalidPrimaryKeyException
+    {
+
+
+        setDependencies();
+        String query = "SELECT * FROM " + myTableName + " WHERE (treeTypeID = " + treeTypeId + ")";
+
+        Vector<Properties> allDataRetrieved = getSelectQueryResult(query);
+
+        // You must get one account at least
+        if (allDataRetrieved != null)
+        {
+            int size = allDataRetrieved.size();
+
+            // There should be EXACTLY one TreeType. More than that is an error
+            if (size != 1)
+            {
+                throw new InvalidPrimaryKeyException("Multiple tree types matching id : "
+                        + treeTypeId + " found.");
+            }
+            else
+            {
+                // copy all the retrieved data into persistent state
+                Properties retrievedTreeTypeData = allDataRetrieved.elementAt(0);
+                persistentState = new Properties();
+
+                Enumeration allKeys = retrievedTreeTypeData.propertyNames();
+                while (allKeys.hasMoreElements() == true)
+                {
+                    String nextKey = (String)allKeys.nextElement();
+                    String nextValue = retrievedTreeTypeData.getProperty(nextKey);
+
+
+                    if (nextValue != null)
+                    {
+                        persistentState.setProperty(nextKey, nextValue);
+                    }
+                }
+
+            }
+        }
+        // If no treeType found for this prefix, throw an exception
+        else
+        {
+            throw new InvalidPrimaryKeyException("No tree type matching tree type id : "
+                    + treeTypeId + " found.");
+        }
+    }
+
+
     /** Constructor that takes in a Properties object to populate. Can also be used to create a NEW TreeType */
     //----------------------------------------------------------
     public TreeType(Properties props)

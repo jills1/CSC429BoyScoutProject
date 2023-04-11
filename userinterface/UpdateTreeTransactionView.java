@@ -206,7 +206,7 @@ public class UpdateTreeTransactionView extends View
 
         // call RemoveView here
         myModel.stateChangeRequest("searchTree", props);
-        Tree tree = new Tree(props);
+        //Tree tree = new Tree(props);
 
     }
     public void displayMessage(String message)

@@ -97,7 +97,7 @@ public class UpdateTreeView extends View {
         Properties props = new Properties();
         props.setProperty("barcode", barcode);
         myModel.stateChangeRequest("UpdateTreeFormView", props);
-        displayErrorMessage("Tree with Barcode not found");
+       // displayErrorMessage("Tree with Barcode not found");
     }
     //------------------------------------------------------------
     public void displayMessage(String message)
