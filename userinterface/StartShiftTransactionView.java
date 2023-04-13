@@ -2,6 +2,8 @@
 package userinterface;
 
 // system imports
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.Event;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -10,6 +12,8 @@ import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -22,12 +26,14 @@ import javafx.stage.Stage;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Enumeration;
 import java.util.Properties;
 import java.util.Vector;
 
 // project imports
 import impresario.IModel;
 import model.Scout;
+import model.ScoutCollection;
 
 /** The class containing the Start Shift Transaction View  for the Tree Sales application */
 //==============================================================
@@ -42,6 +48,11 @@ public class StartShiftTransactionView extends View
     private TextField startTime;
     private TextField endTime;
 
+    private TextField scoutStartTime;
+    private TextField scoutEndTime;
+    protected TableView<ScoutTableModel> tableOfScouts;
+
+
     private TextField companion;
     private TextField companionHours;
     private ComboBox<String> listOfScouts;
@@ -49,6 +60,7 @@ public class StartShiftTransactionView extends View
 
     private Button submitButton;
     private Button cancelButton;
+    private Button addButton;
 
     // For showing error message
     private MessageView statusLog;
@@ -75,6 +87,43 @@ public class StartShiftTransactionView extends View
         populateFields();
 
         myModel.subscribe("TransactionError", this);
+    }
+    protected void populateFields()
+    {
+        getEntryTableModelValues();
+    }
+
+    //--------------------------------------------------------------------------
+    protected void getEntryTableModelValues()
+    {
+
+        ObservableList<ScoutTableModel> tableData = FXCollections.observableArrayList();
+        try
+        {
+            ScoutCollection scoutCollection = (ScoutCollection)myModel.getState("ScoutList");
+
+            Vector entryList = (Vector)scoutCollection.getState("Scouts");
+            // DEBUG System.out.println("Size of scout list retrieved: " + entryList.size());
+            Enumeration entries = entryList.elements();
+
+            while (entries.hasMoreElements() == true)
+            {
+                Scout nextScout = (Scout)entries.nextElement();
+                Vector<String> view = nextScout.getEntryListView();
+
+                // add this list entry to the list
+                ScoutTableModel nextTableRowData = new ScoutTableModel(view);
+                tableData.add(nextTableRowData);
+
+            }
+
+            tableOfScouts.setItems(tableData);
+        }
+        catch (Exception e) {//SQLException e) {
+            // Need to handle this exception
+            System.out.println(e.toString());
+            e.printStackTrace();
+        }
     }
 
 
@@ -144,6 +193,135 @@ public class StartShiftTransactionView extends View
         listOfScouts.getItems().addAll();//put Scouts in here;
         grid.add(listOfScouts, 1, 4);
 
+        Label companionLabel = new Label("Companion Name : ");
+        grid.add(companionLabel, 0, 5);
+
+        companion = new TextField();
+        companion.setOnAction(new EventHandler<ActionEvent>() {
+
+            @Override
+            public void handle(ActionEvent e) {
+                processAction(e);
+            }
+        });
+        grid.add(companion, 1, 5);
+
+        Label hourLabel = new Label("Companion Hours : ");
+        grid.add(hourLabel, 2, 5);
+
+        companionHours = new TextField();
+        companionHours.setOnAction(new EventHandler<ActionEvent>() {
+
+            @Override
+            public void handle(ActionEvent e) {
+                processAction(e);
+            }
+        });
+        grid.add(companionHours, 3, 5);
+
+        Label scStartLabel = new Label("Scout Start Time : ");
+        grid.add(scStartLabel, 0, 6);
+
+        scoutStartTime = new TextField();
+        scoutStartTime.setOnAction(new EventHandler<ActionEvent>() {
+
+            @Override
+            public void handle(ActionEvent e) {
+                processAction(e);
+            }
+        });
+        grid.add(scoutStartTime, 1, 6);
+
+        Label scEndLabel = new Label("Scout End Time : ");
+        grid.add(scEndLabel, 0, 7);
+
+        scoutEndTime = new TextField();
+        scoutEndTime.setOnAction(new EventHandler<ActionEvent>() {
+
+            @Override
+            public void handle(ActionEvent e) {
+                processAction(e);
+            }
+        });
+        grid.add(scoutEndTime, 1, 7);
+
+        addButton = new Button("Submit");
+        grid.add(addButton,2,7);
+        addButton.setOnAction(new EventHandler<ActionEvent>() {
+
+            @Override
+            public void handle(ActionEvent e) {
+                clearErrorMessage();
+
+                processAction(e);
+            }
+        });
+
+        Text prompt = new Text("Select From list Of Scouts");
+        prompt.setWrappingWidth(350);
+        prompt.setTextAlignment(TextAlignment.CENTER);
+        prompt.setFill(Color.BLACK);
+        grid.add(prompt, 0, 8, 1, 1);
+
+        tableOfScouts = new TableView<ScoutTableModel>();
+        tableOfScouts.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+
+        TableColumn fnColumn = new TableColumn("First Name") ;
+        fnColumn.setMinWidth(100);
+        fnColumn.setCellValueFactory(
+                new PropertyValueFactory<ScoutTableModel, String>("firstName"));
+
+        TableColumn lnColumn = new TableColumn("Last Name") ;
+        lnColumn.setMinWidth(100);
+        lnColumn.setCellValueFactory(
+                new PropertyValueFactory<ScoutTableModel, String>("lastName"));
+
+        TableColumn mnColumn = new TableColumn("Middle Name") ;
+        mnColumn.setMinWidth(100);
+        mnColumn.setCellValueFactory(
+                new PropertyValueFactory<ScoutTableModel, String>("middleName"));
+
+        TableColumn dobColumn = new TableColumn("Date Of Birth") ;
+        dobColumn.setMinWidth(100);
+        dobColumn.setCellValueFactory(
+                new PropertyValueFactory<ScoutTableModel, String>("dateOfBirth"));
+
+        TableColumn emailColumn = new TableColumn("Email") ;
+        emailColumn.setMinWidth(100);
+        emailColumn.setCellValueFactory(
+                new PropertyValueFactory<ScoutTableModel, String>("email"));
+
+        TableColumn phoneColumn = new TableColumn("Phone Number") ;
+        phoneColumn.setMinWidth(100);
+        phoneColumn.setCellValueFactory(
+                new PropertyValueFactory<ScoutTableModel, String>("phoneNumber"));
+
+        TableColumn troopColumn = new TableColumn("Troop ID") ;
+        troopColumn.setMinWidth(100);
+        troopColumn.setCellValueFactory(
+                new PropertyValueFactory<ScoutTableModel, String>("troopID"));
+
+        TableColumn statColumn = new TableColumn("Status") ;
+        statColumn.setMinWidth(100);
+        statColumn.setCellValueFactory(
+                new PropertyValueFactory<ScoutTableModel, String>("status"));
+
+        tableOfScouts.getColumns().addAll(fnColumn,
+                lnColumn, mnColumn, dobColumn,emailColumn,phoneColumn,troopColumn,statColumn);
+
+        tableOfScouts.setOnMousePressed(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event)
+            {
+                if (event.isPrimaryButtonDown() && event.getClickCount() >=2 ){
+                    processScoutSelected();
+                }
+            }
+        });
+        ScrollPane scrollPane = new ScrollPane();
+        scrollPane.setPrefSize(90, 50);
+        scrollPane.setContent(tableOfScouts);
+        grid.add(tableOfScouts,0,9);
 
         submitButton = new Button("Submit");
         submitButton.setOnAction(new EventHandler<ActionEvent>() {
@@ -190,10 +368,7 @@ public class StartShiftTransactionView extends View
     }
 
     //-------------------------------------------------------------
-    public void populateFields()
-    {
 
-    }
 
 
 
@@ -233,20 +408,13 @@ public class StartShiftTransactionView extends View
     }
 
     //---------------------------------------------------------------------------------------
-    private void processScoutInfo(String lastName, String firstName, String middleName, String dateOfBirth, String phoneNumber,String email, String troopID)
+    private void processScoutSelected()
     {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd");
         LocalDateTime now = LocalDateTime.now();
 
         Properties props = new Properties();
-        props.setProperty("lastName", lastName);
-        props.setProperty("firstName", firstName);
-        props.setProperty("middleName", middleName);
-        props.setProperty("dateOfBirth", dateOfBirth);
-        props.setProperty("phoneNumber", phoneNumber);
-        props.setProperty("email", email);
-        props.setProperty("troopID", troopID);
-        props.setProperty("status", "Active");
+
         props.setProperty("dateStatusUpdated",dtf.format(now));
         myModel.stateChangeRequest("RegisterWithScoutInfo", props);
 
