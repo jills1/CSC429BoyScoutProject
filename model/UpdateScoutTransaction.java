@@ -40,7 +40,6 @@ public class UpdateScoutTransaction extends Transaction
 
     {
         super();
-        System.out.println("Correct transaction taken");
 
     }
 
@@ -95,9 +94,7 @@ public class UpdateScoutTransaction extends Transaction
         else
         if (key.equals("ScoutChosen") == true)
         {
-            System.out.println("Scout required");
             if (myScout == null) {
-                System.out.println("Scout null");
                 return null;
             } else
                 return myScout;
@@ -105,7 +102,6 @@ public class UpdateScoutTransaction extends Transaction
         else
         if (myScout != null)
         {
-            System.out.println("State required");
             Object val = myScout.getState(key);
             if (val != null)
             {

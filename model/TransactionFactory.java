@@ -63,7 +63,10 @@ public class TransactionFactory
 		{
 			retValue = new RemoveTreeTransaction();
 		}
-
+		if (transType.equals("SellTree") == true)
+		{
+			retValue = new SellTreeTransaction();
+		}
 		return retValue;
 
 	}
