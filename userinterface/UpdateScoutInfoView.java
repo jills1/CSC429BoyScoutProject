@@ -376,11 +376,8 @@ public class UpdateScoutInfoView extends View
 
         String [] tests = date.split("-",3);
         String year = tests[0];
-        System.out.println(year);
         String months = tests[1];
-        System.out.println(months);
         String day = tests[2];
-        System.out.println(day);
 
         if ((day.length() < 2) || (day.length() > 2) || (Integer.parseInt(day) > 31) || (Integer.parseInt(day) < 1)){
             return false;
