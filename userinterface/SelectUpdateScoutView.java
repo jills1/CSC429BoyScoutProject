@@ -148,12 +148,12 @@ public class SelectUpdateScoutView extends View
         tableOfScouts = new TableView<ScoutTableModel>();
         tableOfScouts.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 
-        TableColumn firstNameColumn = new TableColumn("First Name") ;
+        TableColumn firstNameColumn = new TableColumn("Last Name") ;
         firstNameColumn.setMinWidth(100);
         firstNameColumn.setCellValueFactory(
                 new PropertyValueFactory<ScoutTableModel, String>("firstName"));
 
-        TableColumn lastNameColumn = new TableColumn("Last Name") ;
+        TableColumn lastNameColumn = new TableColumn("First Name") ;
         lastNameColumn.setMinWidth(100);
         lastNameColumn.setCellValueFactory(
                 new PropertyValueFactory<ScoutTableModel, String>("lastName"));
@@ -184,7 +184,7 @@ public class SelectUpdateScoutView extends View
                 new PropertyValueFactory<ScoutTableModel, String>("troopID"));
 
         tableOfScouts.getColumns().addAll(
-                lastNameColumn, firstNameColumn, middleNameColumn, dateOfBirthColumn, phoneNumberColumn, emailColumn, troopIDColumn);
+                lastNameColumn,firstNameColumn, middleNameColumn, dateOfBirthColumn, phoneNumberColumn, emailColumn, troopIDColumn);
 
         tableOfScouts.setOnMousePressed(new EventHandler<MouseEvent>() {
             @Override

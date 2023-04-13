@@ -63,9 +63,7 @@ public class ScoutCollectionView extends View
 
         // create our GUI components, add them to this panel
         container.getChildren().add(createTitle());
-        System.out.println("Jalen was here 1");
         container.getChildren().add(createFormContent());
-        System.out.println("Jalen was here 2");
 
         // Error message area
         container.getChildren().add(createStatusLog("                                            "));
@@ -91,7 +89,6 @@ public class ScoutCollectionView extends View
             ScoutCollection scoutCollection = (ScoutCollection)myModel.getState("ScoutList");
 
             Vector entryList = (Vector)scoutCollection.getState("Scouts");
-            // DEBUG System.out.println("Size of scout list retrieved: " + entryList.size());
             Enumeration entries = entryList.elements();
 
             while (entries.hasMoreElements() == true)
@@ -109,7 +106,6 @@ public class ScoutCollectionView extends View
         }
         catch (Exception e) {//SQLException e) {
             // Need to handle this exception
-            System.out.println(e.toString());
             e.printStackTrace();
         }
     }
