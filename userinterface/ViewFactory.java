@@ -87,6 +87,10 @@ public class ViewFactory {
 		{
 			return new RemoveView(model);
 		}
+		else if(viewName.equals("StartShiftTransactionView") == true)
+		{
+			return new StartShiftTransactionView(model);
+		}
 		else
 			return null;
 	}
