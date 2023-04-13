@@ -20,14 +20,14 @@ import java.util.Properties;
 // project imports
 import impresario.IModel;
 import model.*;
-public class UpdateTreeView extends View {
-    private TextField barcode;
+public class EndShiftView extends View {
+    private TextField sessionID;
     private Button submitButton;
     private Button cancelButton;
     private MessageView statusLog;
     //-------------------------------------------------------------
-    public UpdateTreeView(IModel trans) {
-        super(trans, "UpdateTree");
+    public EndShiftView(IModel trans) {
+        super(trans, "EndShiftView");
         VBox container = new VBox(10);
         container.setPadding(new Insets(15, 5, 5, 5));
         container.getChildren().add(createTitle());
@@ -39,9 +39,13 @@ public class UpdateTreeView extends View {
     //-------------------------------------------------------------
     private Node createTitle() {
         Text titleText = new Text("       Troop 209          ");
+        Text titleText2 = new Text("       End Shift          ");
         titleText.setFont(Font.font("Arial", FontWeight.BOLD, 20));
         titleText.setTextAlignment(TextAlignment.CENTER);
         titleText.setFill(Color.DARKGREEN);
+        titleText2.setFont(Font.font("Arial", FontWeight.BOLD, 20));
+        titleText2.setTextAlignment(TextAlignment.CENTER);
+        titleText2.setFill(Color.DARKGREEN);
         return titleText;
     }
     //-------------------------------------------------------------
@@ -55,14 +59,14 @@ public class UpdateTreeView extends View {
         grid.setPadding(new Insets(25, 25, 25, 25));
 //-------------------------------------------------------------------
         //Barcode Label, Box and Handler
-        Label barcodeLabel = new Label("Barcode : ");
-        grid.add(barcodeLabel, 0, 0);
-        barcode = new TextField();
-        grid.add(barcode, 1, 0);
+        Label sessionIDLabel = new Label("Session ID : ");
+        grid.add(sessionIDLabel, 0, 0);
+        sessionID = new TextField();
+        grid.add(sessionID, 1, 0);
 //------------------------------------------------------------------
         //Submit Button and Event Handler
         submitButton = new Button("Submit");
-        submitButton.setOnAction(new EventHandler<ActionEvent>() {@Override public void handle(ActionEvent e) {clearErrorMessage();processAction(e);}});
+        //submitButton.setOnAction(new EventHandler<ActionEvent>() {@Override public void handle(ActionEvent e) {clearErrorMessage();processAction(e);}});
 //----------------------------------------------------------------
         //Cancel Button and Event Handler
         cancelButton = new Button("Back");
@@ -78,21 +82,18 @@ public class UpdateTreeView extends View {
         return vbox;
     }
     //-------------------------------------------------------------
-    private MessageView createStatusLog(String initialMessage) {
-        statusLog = new MessageView(initialMessage);
-        return statusLog;
+    public void populateFields() {
+
     }
-    //-------------------------------------------------------------
-    public void populateFields() {}
     //----------------------------------------------------------
-    private void processAction(Event evt) {
-        String barcodeEntered = barcode.getText();
-        if ((barcodeEntered == null) || (barcodeEntered.length() != 5)) {
-            displayErrorMessage("Please enter a valid barcode");
-        } else {
-            processTreeInfo(barcodeEntered);
-        }
-    }
+//    private void processAction(Event evt) {
+//        String barcodeEntered = barcode.getText();
+//        if ((barcodeEntered == null) || (barcodeEntered.length() != 5)) {
+//            displayErrorMessage("Please enter a valid barcode");
+//        } else {
+//            processTreeInfo(barcodeEntered);
+//        }
+//    }
     private void processTreeInfo(String barcode) {
         Properties props = new Properties();
         props.setProperty("barcode", barcode);
@@ -100,26 +101,23 @@ public class UpdateTreeView extends View {
         // displayErrorMessage("Tree with Barcode not found");
     }
     //------------------------------------------------------------
-    public void displayMessage(String message)
-    {
-        statusLog.displayMessage(message);
-    }
-    public void updateState(String key, Object value)
-    {
+    public void updateState(String key, Object value) {
         clearErrorMessage();
-
-        if (key.equals("TransactionError"))
-        {
+        if (key.equals("TransactionError")) {
             String messageToDisplay = (String)value;
             if (messageToDisplay.startsWith("ERR")) {
                 displayErrorMessage(messageToDisplay);
-            }
-            else {
+            } else {
                 displayMessage(messageToDisplay);
             }
-
         }
     }
+    //------------------------------------------------------------
+    private MessageView createStatusLog(String initialMessage) {
+        statusLog = new MessageView(initialMessage);
+        return statusLog;
+    }
+    public void displayMessage(String message) {statusLog.displayMessage(message);}
     public void displayErrorMessage(String message)
     {
         statusLog.displayErrorMessage(message);

@@ -77,3 +77,7 @@
 [4/7/23 11:47 PM]|TLC|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException: Root cannot be null>
 [4/7/23 11:47 PM]|TLC|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException: Root cannot be null>
 [4/7/23 11:47 PM]|TLC|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException: Root cannot be null>
+[4/7/23 11:50 PM]|TLC|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException: Root cannot be null>
+[4/7/23 11:51 PM]|TLC|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException: Root cannot be null>
+[4/8/23 12:01 AM]|TLC|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException: Root cannot be null>
+[4/8/23 12:10 AM]|TLC|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException: Root cannot be null>

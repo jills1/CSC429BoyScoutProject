@@ -1,17 +1,10 @@
-// specify the package
 package userinterface;
-
-// system imports
-import javafx.event.Event;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -21,79 +14,39 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
-import javafx.stage.Stage;
-
-import java.util.Properties;
-
-// project imports
 import impresario.IModel;
-
-/** The class containing the Scout Selected View  for the Tree sales application */
-//==============================================================
-public class ScoutSelectedView extends View
-{
-
-    // GUI components
+public class ScoutSelectedView extends View {
     protected TextField firstName;
     protected TextField middleName;
     protected TextField lastName;
     protected TextField troopID;
-protected Button submitButton;
+    protected Button submitButton;
     protected Button cancelButton;
-
-    // For showing error message
     protected MessageView statusLog;
-
-    // constructor for this class -- takes a model object
-    //----------------------------------------------------------
-    public ScoutSelectedView(IModel account)
-    {
+    public ScoutSelectedView(IModel account) {
         super(account, "ScoutSelectedView");
-
-        // create a container for showing the contents
         VBox container = new VBox(10);
         container.setPadding(new Insets(15, 5, 5, 5));
-
-        // Add a title for this panel
         container.getChildren().add(createTitle());
-
-        // create our GUI components, add them to this Container
         container.getChildren().add(createFormContent());
-
         container.getChildren().add(createStatusLog("             "));
-
         getChildren().add(container);
-
         populateFields();
-
-
         myModel.subscribe("UpdateStatusMessage", this);
     }
-
-
-    // Create the title container
-    //-------------------------------------------------------------
-    private Node createTitle()
-    {
+    private Node createTitle() {
         HBox container = new HBox();
         container.setAlignment(Pos.CENTER);
-
         Text titleText = new Text(" Troop 209 ");
         titleText.setFont(Font.font("Arial", FontWeight.BOLD, 20));
         titleText.setWrappingWidth(300);
         titleText.setTextAlignment(TextAlignment.CENTER);
         titleText.setFill(Color.DARKGREEN);
         container.getChildren().add(titleText);
-
         return container;
     }
-
-    // Create the main form content
-    //-------------------------------------------------------------
-    private VBox createFormContent()
-    {
+    private VBox createFormContent() {
         VBox vbox = new VBox(10);
-
         GridPane grid = new GridPane();
         grid.setAlignment(Pos.CENTER);
         grid.setHgap(10);
@@ -180,70 +133,34 @@ protected Button submitButton;
 
         return vbox;
     }
-
+    //-----------------------------------------------------------------
     private void processAction(ActionEvent e) {
         myModel.stateChangeRequest("UpdateStatusInactive",this);
         displayMessage("Successfully Removed");
     }
-
-
-    // Create the status log field
-    //-------------------------------------------------------------
-    protected MessageView createStatusLog(String initialMessage)
-    {
+    protected MessageView createStatusLog(String initialMessage) {
         statusLog = new MessageView(initialMessage);
-
         return statusLog;
     }
-
-    //-------------------------------------------------------------
-    public void populateFields()
-    {
-
+    public void populateFields() {
         firstName.setText((String)myModel.getState("firstName"));
         middleName.setText((String)myModel.getState("middleName"));
         lastName.setText((String)myModel.getState("lastName"));
         troopID.setText((String)myModel.getState("troopID"));
     }
-
-    /**
-     * Update method
-     */
-    //---------------------------------------------------------
-    public void updateState(String key, Object value)
-    {
-        clearErrorMessage();
-
-
-    }
-
-    /**
-     * Display error message
-     */
-    //----------------------------------------------------------
+    public void updateState(String key, Object value) {clearErrorMessage();}
     public void displayErrorMessage(String message)
     {
         statusLog.displayErrorMessage(message);
     }
-
-    /**
-     * Display info message
-     */
-    //----------------------------------------------------------
     public void displayMessage(String message)
     {
         statusLog.displayMessage(message);
     }
-
-    /**
-     * Clear error message
-     */
-    //----------------------------------------------------------
     public void clearErrorMessage()
     {
         statusLog.clearErrorMessage();
     }
-
 }
 
 

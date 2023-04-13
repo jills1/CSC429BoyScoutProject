@@ -21,7 +21,8 @@ public class UpdateTreeTransaction extends Transaction {
         dependencies = new Properties();
         dependencies.setProperty("CancelDeposit", "CancelTransaction");
         dependencies.setProperty("OK", "CancelTransaction");
-        dependencies.setProperty("AccountNumber", "TransactionError");
+        dependencies.setProperty("RegisterTreeInfo", "TransactionError");
+        dependencies.setProperty("UpdateTreeFormView", "TransactionError");
         myRegistry.setDependencies(dependencies);
     }
     //----------------------------------------------------------
@@ -43,7 +44,7 @@ public class UpdateTreeTransaction extends Transaction {
             //-------
             createAndShowUpdateTreeFormView();
         } catch(InvalidPrimaryKeyException e){
-                transactionErrorMessage="Error cannot do this 2.";
+            transactionErrorMessage="Error cannot do this 2.";
         }
     }
     //-----------------------------------------------------------
@@ -61,7 +62,17 @@ public class UpdateTreeTransaction extends Transaction {
                 }
             case "treeType":
                 if (myTree != null) {
-                    return myTree.getState("treeType");
+                    String treeTypeId = (String) myTree.getState("treeType");
+                    TreeType tt = new TreeType();
+                    try {
+                        tt.populateWithId(treeTypeId);
+                        return tt.getState("typeDescription");
+                    }
+                    catch (InvalidPrimaryKeyException excep)
+                    {
+                        return "";
+                    }
+
                 } else {
                     return "Undefined";
                 }
@@ -93,8 +104,19 @@ public class UpdateTreeTransaction extends Transaction {
         } else  if (key.equals("UpdateTreeFormView")) {
             processTransaction((Properties)value);
         }
+        else  if (key.equals("RegisterTreeInfo")) {
+            processUpdateTransaction((Properties)value);
+        }
         myRegistry.updateSubscribers(key, this);
     }
+
+    public void processUpdateTransaction(Properties props) {
+        myTree = new Tree(props);
+        myTree.update();
+
+        transactionErrorMessage = "Tree Updated Successfully";
+    }
+
     //------------------------------------------------------
     protected Scene createView() {
         Scene currentScene = myViews.get("UpdateTreeView");

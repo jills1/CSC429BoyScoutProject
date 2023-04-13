@@ -40,6 +40,7 @@ public class UpdateTreeFormView extends View {
         container.getChildren().add(createStatusLog("                          "));
         getChildren().add(container);
         populateFields();
+        myModel.subscribe("TransactionError", this);
     }
     //-------------------------------------------------------------
     private Node createTitle() {
@@ -130,15 +131,13 @@ public class UpdateTreeFormView extends View {
         clearErrorMessage();
         LocalDateTime now = LocalDateTime.now();
         String barcodeEntered = barcode.getText();
-        String treeTypeEntered = treeType.getText();
+        //String treeTypeEntered = treeType.getText();
         String statusEntered = status.getValue();
         String notesEntered = notes.getText();
         String dateStatusUpdateEntered = now.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-        System.out.println(barcodeEntered + " " + treeTypeEntered + statusEntered);
+        //System.out.println(barcodeEntered + " " + treeTypeEntered + statusEntered);
         if ((barcodeEntered == null) || (barcodeEntered.length() != 5)) {
             displayErrorMessage("Please enter a valid barcode");
-        } else if ((treeTypeEntered == null) || (treeTypeEntered.length() == 0)) {
-            displayErrorMessage("Please enter a valid treeType");
         } else if ((statusEntered == null)) {
             displayErrorMessage("Please enter a valid status");
         } else if ((notesEntered == null) || (notesEntered.length() == 0) || (notesEntered.length() >= 201)) {
@@ -146,21 +145,20 @@ public class UpdateTreeFormView extends View {
         } else if ((dateStatusUpdateEntered == null) || (dateStatusUpdateEntered.length() == 0) || (dateStatusUpdateEntered.length() >= 13)) {
             displayErrorMessage("Please enter a valid date");
         } else{
-            processTreeInfo(barcodeEntered,treeTypeEntered,statusEntered,notesEntered, dateStatusUpdateEntered);
+            processTreeInfo(barcodeEntered, statusEntered,notesEntered, dateStatusUpdateEntered);
         }
     }
-    private void processTreeInfo(String barcode, String treeType, String status, String notes, String dateStatusUpdate) {
+    private void processTreeInfo(String barcode,  String status, String notes, String dateStatusUpdate) {
         // modify to make update tree
         System.out.println(barcode+treeType+status+notes+dateStatusUpdate);
         Properties props = new Properties();
         props.setProperty("barcode", barcode);
-        props.setProperty("treeType", treeType);
         props.setProperty("status", status);
         props.setProperty("notes", notes);
         props.setProperty("dateStatusUpdate",dateStatusUpdate);
         myModel.stateChangeRequest("RegisterTreeInfo", props);
-        Tree tree = new Tree(props);
-        tree.update();
+        //Tree tree = new Tree(props);
+        //tree.update();
         //displayMessage("Successfully updated Tree");
     }
     //-------------------------------------------------------------
@@ -168,16 +166,24 @@ public class UpdateTreeFormView extends View {
     {
         statusLog.displayMessage(message);
     }
-    public void updateState(String key, Object value) {
-//        if (key.equals("StatusMSG") ==true){
-//            String msg = (String)value;
-//            if(msg.startWith('ERR') ==true){
-//                displayErrorMessage(msg);
-//            } else{
-//                displayMessage(msg);
-//            }
-//        }
+    public void updateState(String key, Object value)
+    {
+        clearErrorMessage();
+
+        if (key.equals("TransactionError"))
+        {
+            String messageToDisplay = (String)value;
+            if (messageToDisplay.startsWith("ERR")) {
+                displayErrorMessage(messageToDisplay);
+            }
+            else {
+                displayMessage(messageToDisplay);
+            }
+
+        }
     }
+
+
     public void displayErrorMessage(String message)
     {
         statusLog.displayErrorMessage(message);

@@ -185,14 +185,14 @@ public class RemoveScoutTransaction extends Transaction
     //------------------------------------------------------
     protected Scene createView()
     {
-        Scene currentScene = myViews.get("RemoveScoutTransactionView");
+        Scene currentScene = myViews.get("RemoveScoutView");
 
         if (currentScene == null)
         {
             // create our initial view
-            View newView = ViewFactory.createView("RemoveScoutTransactionView", this);
+            View newView = ViewFactory.createView("RemoveScoutView", this);
             currentScene = new Scene(newView);
-            myViews.put("RemoveScoutTransactionView", currentScene);
+            myViews.put("RemoveScoutView", currentScene);
 
             return currentScene;
         }

@@ -95,7 +95,6 @@ public class UpdateScoutTransaction extends Transaction {
                 } catch (Exception ex) {
                     transactionErrorMessage = "Error getting Scout list";
                 }
-
                 break;
             case "ScoutChosen":
                 System.out.println("Scout chosen from table");
@@ -107,8 +106,6 @@ public class UpdateScoutTransaction extends Transaction {
 
                 break;
             case "UpdateScoutInfo":
-                //DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd");
-                //LocalDateTime now = LocalDateTime.now();
                 Scout tempScout = new Scout((Properties) value);
                 myScout.stateChangeRequest("scoutID", tempScout.getScoutID());
                 myScout.stateChangeRequest("firstName", tempScout.getFirstName());
@@ -118,7 +115,6 @@ public class UpdateScoutTransaction extends Transaction {
                 myScout.stateChangeRequest("phoneNumber", tempScout.getPhoneNumber());
                 myScout.stateChangeRequest("email", tempScout.getEmail());
                 myScout.stateChangeRequest("troopID", tempScout.getTroopID());
-                //myScout.stateChangeRequest("dateStatusUpdated",dtf.format(now));
                 myScout.update();
                 break;
         }
@@ -149,5 +145,4 @@ public class UpdateScoutTransaction extends Transaction {
         myViews.put("UpdateScoutInfoView", newScene);
         swapToView(newScene);
     }
-
 }

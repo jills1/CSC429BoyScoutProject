@@ -54,7 +54,7 @@ public class RemoveScoutView extends View
     //----------------------------------------------------------
     public RemoveScoutView(IModel trans)
     {
-        super(trans, "RemoveScoutTransactionView");
+        super(trans, "RemoveScoutView");
 
         // create a container for showing the contents
         VBox container = new VBox(10);
