@@ -63,6 +63,8 @@ public class TransactionFactory
 		{
 			retValue = new RemoveTreeTransaction();
 		}
+
 		return retValue;
+
 	}
 }

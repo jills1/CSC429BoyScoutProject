@@ -87,6 +87,10 @@ public class ViewFactory {
 		{
 			return new RemoveView(model);
 		}
+		else if(viewName.equals("SellTreeTransactionView") == true)
+		{
+		return new SellTreeTransactionView(model);
+		}
 		else
 			return null;
 	}
