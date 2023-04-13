@@ -1,4 +1,6 @@
 package userinterface;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.Event;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -14,9 +16,15 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
+
+import java.util.Enumeration;
 import java.util.Properties;
+import java.util.Vector;
 // project imports
 import impresario.IModel;
+import model.Scout;
+import model.ScoutCollection;
+
 public class EndShiftView extends View {
     private ComboBox<String> sessionID; // Changed to ComboBox
     private Button submitButton;
@@ -31,6 +39,7 @@ public class EndShiftView extends View {
         container.getChildren().add(createFormContent());
         container.getChildren().add(createStatusLog("                          "));
         getChildren().add(container);
+        populateFields();
         myModel.subscribe("TransactionError", this);
     }
     private Node createTitle() {
@@ -52,7 +61,7 @@ public class EndShiftView extends View {
         Label sessionIDLabel = new Label("Select SessionID : ");
         grid.add(sessionIDLabel, 0, 0);
         sessionID = new ComboBox<String>(); // Changed to ComboBox
-        sessionID.getItems().addAll( "Damaged", "Available");//change to accept dynamically retrieved sessionID's
+        //sessionID.getItems().addAll( "Damaged", "Available");//change to accept dynamically retrieved sessionID's
         grid.add(sessionID, 1, 0);
 //------------------------------------------------------------------
         //Submit Button and Event Handler
@@ -93,8 +102,30 @@ public class EndShiftView extends View {
         props.setProperty("sessionID", sessionID);
         myModel.stateChangeRequest("EndShiftDataViewTrans", props);
     }
-    protected void populateFields() {
+    protected void populateFields()
+    {
+        getEntryTableModelValues();
+    }
 
+    //--------------------------------------------------------------------------
+    protected void getEntryTableModelValues() {
+        ObservableList<ScoutTableModel> tableData = FXCollections.observableArrayList();
+        try {
+            ScoutCollection scoutCollection = (ScoutCollection)myModel.getState("ScoutList");
+            Vector entryList = (Vector)scoutCollection.getState("Scouts");
+            Enumeration entries = entryList.elements();
+            while (entries.hasMoreElements() == true) {
+                Scout nextScout = (Scout)entries.nextElement();
+                Vector<String> view = nextScout.getEntryListView();
+                // add this list entry to the list
+                ScoutTableModel nextTableRowData = new ScoutTableModel(view);
+                tableData.add(nextTableRowData);
+            }
+            tableOfScouts.setItems(tableData);
+        }
+        catch (Exception e) {//SQLException e) {
+            // Need to handle this exception
+        }
     }
     public void updateState(String key, Object value) {
         clearErrorMessage();
