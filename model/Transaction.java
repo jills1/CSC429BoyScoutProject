@@ -30,7 +30,6 @@ abstract public class Transaction implements IView, IModel
 	protected Stage myStage;
 	protected Hashtable<String, Scene> myViews;
 
-
 	/**
 	 * Constructor for this class.
 	 *
@@ -107,7 +106,6 @@ abstract public class Transaction implements IView, IModel
 	}
 
 
-	//-----------------------------------------------------------------------------
 	public void swapToView(Scene newScene)
 	{
 		

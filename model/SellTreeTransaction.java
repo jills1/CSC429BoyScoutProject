@@ -1,6 +1,8 @@
 package model;
 
 // system imports
+import impresario.IModel;
+import impresario.IView;
 import javafx.scene.Scene;
 import java.util.Properties;
 import java.time.format.DateTimeFormatter;
@@ -21,7 +23,7 @@ public class SellTreeTransaction extends Transaction {
     protected String transactionErrorMessage = "";
     protected String sellTreeStatusMessage = "";
 
-    protected static final String myTableName = "Tree";
+    private static final String myTableName = "Transaction";
 
     public SellTreeTransaction(){
         super ();
@@ -30,7 +32,7 @@ public class SellTreeTransaction extends Transaction {
     protected void setDependencies() {
         dependencies = new Properties();
         dependencies.setProperty("SellTree", "SellATreeTransaction");
-        dependencies.setProperty("CancelUpdate", "CancelTransaction");
+        dependencies.setProperty("CancelSell", "CancelTransaction");
         dependencies.setProperty("OK", "SellATreeTransaction");
         //dependencies.setProperty("SearchScoutInfo", "TransactionError");
         dependencies.setProperty("TreeChosen", "TransactionError");
@@ -88,7 +90,6 @@ public class SellTreeTransaction extends Transaction {
 
             return null;
     }
-
 
     public void stateChangeRequest(String key, Object value) {
         // DEBUG System.out.println("DepositTransaction.sCR: key: " + key);
