@@ -26,6 +26,7 @@ import java.util.Properties;
 // project imports
 import impresario.IModel;
 import model.Tree;
+import model.TreeType;
 
 /** The class containing the Deposit Transaction View  for the ATM application */
 //==============================================================
@@ -72,7 +73,7 @@ public class SellTreeTransactionView extends View
 
         getChildren().add(container);
 
-        populateFields();
+
         myModel.subscribe("TransactionError",this);
     }
 
@@ -221,16 +222,10 @@ public class SellTreeTransactionView extends View
 
             @Override
             public void handle(ActionEvent e) {
-                /**
-                 * Process the Cancel button.
-                 * The ultimate result of this action is that the transaction will tell the teller to
-                 * to switch to the transaction choice view. BUT THAT IS NOT THIS VIEW'S CONCERN.
-                 * It simply tells its model (controller) that the deposit transaction was canceled, and leaves it
-                 * to the model to decide to tell the teller to do the switch back.
-                 */
+
                 //----------------------------------------------------------
                 clearErrorMessage();
-                myModel.stateChangeRequest("CancelDeposit", null);
+                myModel.stateChangeRequest("Cancelsale", null);
             }
         });
 
@@ -260,7 +255,8 @@ public class SellTreeTransactionView extends View
     //-------------------------------------------------------------
     public void populateFields()
     {
-
+        cost.setText((String)myModel.getState("cost"));
+        notes.setText((String)myModel.getState("notes"));
     }
 
 
@@ -286,7 +282,13 @@ public class SellTreeTransactionView extends View
     {
 
         Properties props = new Properties();
+        Properties props2 = new Properties();
+        String prefix = firstTwo(barcode);
+        System.out.println(prefix);
         props.setProperty("barcode", barcode);
+
+        props2.setProperty("cost", prefix);
+        populateFields();
 
 
 
@@ -294,6 +296,9 @@ public class SellTreeTransactionView extends View
 
         Tree tree = new Tree(props);
 
+    }
+    public String firstTwo(String str) {
+        return str.length() < 2 ? str : str.substring(0,2);
     }
     public void displayMessage(String message)
     {

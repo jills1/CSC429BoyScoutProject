@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="c36429a9-fc74-41c8-af7b-80a3a49214ef" name="Changes" comment="added sellTreeTransactioview">
+      <change beforePath="$PROJECT_DIR$/ErrorLog.txt" beforeDir="false" afterPath="$PROJECT_DIR$/ErrorLog.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/JavaCode2.iml" beforeDir="false" afterPath="$PROJECT_DIR$/JavaCode2.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/JDBCBroker.java" beforeDir="false" afterPath="$PROJECT_DIR$/database/JDBCBroker.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dbConfig.ini" beforeDir="false" afterPath="$PROJECT_DIR$/dbConfig.ini" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/model/SellTreeTransaction.java" beforeDir="false" afterPath="$PROJECT_DIR$/model/SellTreeTransaction.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/JavaCode2/ErrorLog.txt" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JavaCode2/ErrorLog.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/JavaCode2/database/JDBCBroker.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JavaCode2/database/JDBCBroker.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/JavaCode2/dbConfig.ini" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JavaCode2/dbConfig.ini" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/JavaCode2/model/SellTreeTransaction.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JavaCode2/model/SellTreeTransaction.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/JavaCode2/userinterface/SellTreeTransactionView$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JavaCode2/userinterface/SellTreeTransactionView$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/JavaCode2/userinterface/SellTreeTransactionView$2.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JavaCode2/userinterface/SellTreeTransactionView$2.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/JavaCode2/userinterface/SellTreeTransactionView$3.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JavaCode2/userinterface/SellTreeTransactionView$3.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/JavaCode2/userinterface/SellTreeTransactionView$4.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JavaCode2/userinterface/SellTreeTransactionView$4.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/JavaCode2/userinterface/SellTreeTransactionView$5.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JavaCode2/userinterface/SellTreeTransactionView$5.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/JavaCode2/userinterface/SellTreeTransactionView$6.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JavaCode2/userinterface/SellTreeTransactionView$6.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/JavaCode2/userinterface/SellTreeTransactionView$7.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JavaCode2/userinterface/SellTreeTransactionView$7.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/JavaCode2/userinterface/SellTreeTransactionView$8.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JavaCode2/userinterface/SellTreeTransactionView$8.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/JavaCode2/userinterface/SellTreeTransactionView$9.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JavaCode2/userinterface/SellTreeTransactionView$9.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/JavaCode2/userinterface/SellTreeTransactionView.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JavaCode2/userinterface/SellTreeTransactionView.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/userinterface/SellTreeTransactionView.java" beforeDir="false" afterPath="$PROJECT_DIR$/userinterface/SellTreeTransactionView.java" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <favorite-branches>
+      <branch-storage>
+        <map>
+          <entry type="REMOTE">
+            <value>
+              <list>
+                <branch-info repo="$PROJECT_DIR$" source="origin/Miranda" />
+              </list>
+            </value>
+          </entry>
+        </map>
+      </branch-storage>
+    </favorite-branches>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectId" id="2NKdRBVLx1R475nIh6lGmat4jnS" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "last_opened_file_path": "C:/Users/miran/Documents/Brocckport/software development/CSC429BoyScoutProject/mariadb-java-client-3.0.3.jar",
+    "project.structure.last.edited": "Problems",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2"
+  },
+  "keyToStringList": {
+    "ChangesTree.GroupingKeys": [
+      "directory"
+    ]
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
+      <recent name="model" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration name="TLCTest" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="TLCTest" />
+      <module name="JavaCode2" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.TLCTest" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="c36429a9-fc74-41c8-af7b-80a3a49214ef" name="Changes" comment="" />
+      <created>1679416696808</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1679416696808</updated>
+    </task>
+    <task id="LOCAL-00001" summary="..">
+      <created>1680146273870</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1680146273870</updated>
+    </task>
+    <task id="LOCAL-00002" summary="..">
+      <created>1680195861626</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1680195861626</updated>
+    </task>
+    <task id="LOCAL-00003" summary="added sellTreeTransactioview">
+      <created>1681406716215</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1681406716215</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
+    <servers />
+  </component>
+  <component name="Vcs.Log.History.Properties">
+    <option name="COLUMN_ID_ORDER">
+      <list>
+        <option value="Default.Root" />
+        <option value="Default.Author" />
+        <option value="Default.Date" />
+        <option value="Default.Subject" />
+        <option value="Space.CommitStatus" />
+      </list>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value=".." />
+    <MESSAGE value="added sellTreeTransactioview" />
+    <option name="LAST_COMMIT_MESSAGE" value="added sellTreeTransactioview" />
+  </component>
+</project>

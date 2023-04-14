@@ -18,6 +18,7 @@ import userinterface.ViewFactory;
 public class SellTreeTransaction extends Transaction {
 
     protected Tree myTree;
+    protected Tree myTreeType;
     // GUI Components
 
     protected String transactionErrorMessage = "";
@@ -32,7 +33,7 @@ public class SellTreeTransaction extends Transaction {
     protected void setDependencies() {
         dependencies = new Properties();
         dependencies.setProperty("SellTree", "SellATreeTransaction");
-        dependencies.setProperty("CancelSell", "CancelTransaction");
+        dependencies.setProperty("CancelSale", "CancelTransaction");
         dependencies.setProperty("OK", "SellATreeTransaction");
         //dependencies.setProperty("SearchScoutInfo", "TransactionError");
         dependencies.setProperty("TreeChosen", "TransactionError");
@@ -86,6 +87,22 @@ public class SellTreeTransaction extends Transaction {
                 {
                     return val;
                 }
+            }
+            if (key.equals("notes") == true)
+            {
+                if (myTree != null) {
+                    return myTree.getState("notes");
+                }
+                else
+                    return "Undefined";
+            }
+            if (key.equals("cost") == true)
+            {
+                if (myTreeType != null) {
+                    return myTreeType.getState("cost");
+                }
+                else
+                    return "Undefined";
             }
 
             return null;
