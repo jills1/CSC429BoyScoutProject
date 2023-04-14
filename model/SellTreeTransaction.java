@@ -39,7 +39,7 @@ public class SellTreeTransaction extends Transaction {
     }
 
     protected Scene createView() {
-
+    System.out.println( "getting to createView");
         Scene currentScene = myViews.get("SellTreeTransactionView");
 
         if (currentScene == null)

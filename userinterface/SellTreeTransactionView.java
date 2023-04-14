@@ -11,6 +11,7 @@ import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.control.ComboBox;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -37,7 +38,7 @@ public class SellTreeTransactionView extends View
     private TextField barcode;
     private TextField cost;
     private TextField notes;
-    private TextField transType;
+    private ComboBox<String> transType;
     private TextField custName;
     private TextField custPhoneNumber;
     private TextField custEmail;
@@ -117,7 +118,7 @@ public class SellTreeTransactionView extends View
         });
         grid.add(barcode, 1, 0);
 
-        Label costLabel = new Label("cost : ");
+        Label costLabel = new Label("Cost : ");
         grid.add(costLabel, 0, 1);
 
 
@@ -131,7 +132,7 @@ public class SellTreeTransactionView extends View
         });
         grid.add(cost, 1, 1);
 
-        Label notesLabel = new Label("notes : ");
+        Label notesLabel = new Label("Notes : ");
         grid.add(notesLabel, 0, 2);
 
 
@@ -145,11 +146,13 @@ public class SellTreeTransactionView extends View
         });
         grid.add(notes, 1, 2);
 
-        Label transTypeLabel = new Label("transType : ");
+        Label transTypeLabel = new Label("Transaction Type : ");
         grid.add(transTypeLabel, 0, 3);
 
 
-        transType = new TextField();
+        transType = new ComboBox<String>();
+        transType.getItems().addAll("Check", "Cash");
+
         transType.setOnAction(new EventHandler<ActionEvent>() {
 
             @Override
@@ -157,9 +160,9 @@ public class SellTreeTransactionView extends View
                 processAction(e);
             }
         });
-        grid.add(barcode, 1, 3);
+        grid.add(transType, 1, 3);
 
-        Label custNameLabel = new Label("custName : ");
+        Label custNameLabel = new Label("Customer  Name : ");
         grid.add(custNameLabel, 0, 4);
 
 
@@ -171,9 +174,9 @@ public class SellTreeTransactionView extends View
                 processAction(e);
             }
         });
-        grid.add(barcode, 1, 4);
+        grid.add(custName, 1, 4);
 
-        Label custPhoneNumberLabel = new Label("custPhoneNumber : ");
+        Label custPhoneNumberLabel = new Label("Customer Phone Number : ");
         grid.add(custPhoneNumberLabel, 0, 5);
 
 
@@ -187,7 +190,7 @@ public class SellTreeTransactionView extends View
         });
         grid.add(custPhoneNumber, 1, 5);
 
-        Label custEmailLabel = new Label("custEmail : ");
+        Label custEmailLabel = new Label("Customer Email : ");
         grid.add(custEmailLabel, 0, 6);
 
 
@@ -199,7 +202,7 @@ public class SellTreeTransactionView extends View
                 processAction(e);
             }
         });
-        grid.add(custEmail, 1, 5);
+        grid.add(custEmail, 1, 6);
 
 
         submitButton = new Button("Submit");
@@ -287,8 +290,7 @@ public class SellTreeTransactionView extends View
 
 
 
-
-        myModel.stateChangeRequest("searchTree", props);
+        myModel.stateChangeRequest("SubmitSellTree", props);
 
         Tree tree = new Tree(props);
 
