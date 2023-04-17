@@ -47,6 +47,7 @@ public class StartShiftTransactionView extends View
     private DatePicker date; // Changed to DatePicker
     private TextField startTime;
     private TextField endTime;
+    private TextField startCash;
 
     private TextField scoutStartTime;
     private TextField scoutEndTime;
@@ -59,6 +60,7 @@ public class StartShiftTransactionView extends View
 
 
     private Button submitButton;
+    private Button startSessionButton;
     private Button cancelButton;
     private Button addButton;
 
@@ -102,18 +104,18 @@ public class StartShiftTransactionView extends View
         {
             ScoutCollection scoutCollection = (ScoutCollection)myModel.getState("ScoutList");
 
-            Vector entryList = (Vector)scoutCollection.getState("Scouts");
+           // Vector entryList = (Vector)scoutCollection.getState("Scouts");
             // DEBUG System.out.println("Size of scout list retrieved: " + entryList.size());
-            Enumeration entries = entryList.elements();
+           // Enumeration entries = entryList.elements();
 
-            while (entries.hasMoreElements() == true)
+           // while (entries.hasMoreElements() == true)
             {
-                Scout nextScout = (Scout)entries.nextElement();
-                Vector<String> view = nextScout.getEntryListView();
+               // Scout nextScout = (Scout)entries.nextElement();
+               // Vector<String> view = nextScout.getEntryListView();
 
                 // add this list entry to the list
-                ScoutTableModel nextTableRowData = new ScoutTableModel(view);
-                tableData.add(nextTableRowData);
+               // ScoutTableModel nextTableRowData = new ScoutTableModel(view);
+               // tableData.add(nextTableRowData);
 
             }
 
@@ -187,10 +189,62 @@ public class StartShiftTransactionView extends View
         });
         grid.add(endTime, 1, 2);
 
+        Label scashLabel = new Label("Starting Cash : ");
+        grid.add(scashLabel, 0, 3);
+
+        startCash = new TextField();
+        startCash.setOnAction(new EventHandler<ActionEvent>() {
+
+            @Override
+            public void handle(ActionEvent e) {
+                processAction(e);
+            }
+        });
+        grid.add(startCash, 1, 3);
+
+        startSessionButton = new Button("Start Session");
+        grid.add(startSessionButton,2,3);
+        startSessionButton.setOnAction(new EventHandler<ActionEvent>() {
+
+            @Override
+            public void handle(ActionEvent e) {
+                clearErrorMessage();
+
+                processAction(e);
+            }
+        });
+
         Label statusLabel = new Label("List of Scouts : ");
         grid.add(statusLabel, 0, 4);
         listOfScouts = new ComboBox<String>();
-        listOfScouts.getItems().addAll();//put Scouts in here;
+
+        //logic to populate combo box with Active Scouts only
+        ScoutCollection scoutCollection = new ScoutCollection();
+        scoutCollection.findScoutsWithNameLike("", ""); // Passing empty strings to get all active scouts
+
+        Vector<Scout> activeScouts = (Vector<Scout>)scoutCollection.getState("Scouts");
+
+        for (Scout scout : activeScouts) {
+            String scoutName = (String) scout.getState("firstName") + " " + (String) scout.getState("lastName");
+            listOfScouts.getItems().add(scoutName);
+        }
+        ObservableList<String> scoutNames = FXCollections.observableArrayList();
+        Vector entryList = (Vector) scoutCollection.getState("Scouts");
+        Enumeration entries = entryList.elements();
+        while (entries.hasMoreElements()) {
+            Scout nextScout = (Scout) entries.nextElement();
+            String scoutName = nextScout.getFirstName() + " " + nextScout.getLastName();
+            scoutNames.add(scoutName);
+        }
+        listOfScouts.setItems(scoutNames);
+       /* listOfScouts.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent e) {
+                processScoutID(e);
+            }
+        });
+
+          */
         grid.add(listOfScouts, 1, 4);
 
         Label companionLabel = new Label("Companion Name : ");
@@ -245,6 +299,12 @@ public class StartShiftTransactionView extends View
         });
         grid.add(scoutEndTime, 1, 7);
 
+
+
+
+
+
+
         addButton = new Button("Submit");
         grid.add(addButton,2,7);
         addButton.setOnAction(new EventHandler<ActionEvent>() {
@@ -253,18 +313,21 @@ public class StartShiftTransactionView extends View
             public void handle(ActionEvent e) {
                 clearErrorMessage();
 
-                processAction(e);
+                processOtherAction(e);
             }
         });
 
-        Text prompt = new Text("Select From list Of Scouts");
-        prompt.setWrappingWidth(350);
-        prompt.setTextAlignment(TextAlignment.CENTER);
-        prompt.setFill(Color.BLACK);
-        grid.add(prompt, 0, 8, 1, 1);
+// Create a new VBox for tableOfScouts
+        VBox tableVbox = new VBox(10);
+        tableVbox.setAlignment(Pos.CENTER);
+
+        Label scoutListLabel = new Label("Scouts Selected For Shift");
+        scoutListLabel.setFont(new Font("Arial", 18)); // Set the font size to 18
+        tableVbox.getChildren().add(scoutListLabel);
 
         tableOfScouts = new TableView<ScoutTableModel>();
         tableOfScouts.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+        tableOfScouts.setPrefHeight(200); // Added to resize the table
 
         TableColumn fnColumn = new TableColumn("First Name") ;
         fnColumn.setMinWidth(100);
@@ -314,16 +377,15 @@ public class StartShiftTransactionView extends View
             public void handle(MouseEvent event)
             {
                 if (event.isPrimaryButtonDown() && event.getClickCount() >=2 ){
-                    processScoutSelected();
+                    //processShiftInfo();
                 }
             }
         });
-        ScrollPane scrollPane = new ScrollPane();
-        scrollPane.setPrefSize(90, 50);
-        scrollPane.setContent(tableOfScouts);
-        grid.add(tableOfScouts,0,9);
 
-        submitButton = new Button("Submit");
+
+        tableVbox.getChildren().add(tableOfScouts);
+
+        submitButton = new Button("Start Shift");
         submitButton.setOnAction(new EventHandler<ActionEvent>() {
 
             @Override
@@ -334,7 +396,7 @@ public class StartShiftTransactionView extends View
             }
         });
 
-        cancelButton = new Button("Back");
+        cancelButton = new Button("Cancel");
         cancelButton.setOnAction(new EventHandler<ActionEvent>() {
 
             @Override
@@ -342,7 +404,7 @@ public class StartShiftTransactionView extends View
 
                 //----------------------------------------------------------
                 clearErrorMessage();
-                myModel.stateChangeRequest("CancelRegisterScout", null);
+                myModel.stateChangeRequest("CancelShift", null);
             }
         });
 
@@ -352,9 +414,39 @@ public class StartShiftTransactionView extends View
         btnContainer.getChildren().add(cancelButton);
 
         vbox.getChildren().add(grid);
+        vbox.getChildren().add(tableVbox); // Add the new VBox containing tableOfScouts
         vbox.getChildren().add(btnContainer);
 
         return vbox;
+    }
+
+    private void processOtherAction(ActionEvent e) {
+        String compNameEntered = companion.getText();
+        String compHoursEntered = companionHours.getText();
+        String scStartEntered = scoutStartTime.getText();
+        String scEndEntered = scoutEndTime.getText();
+
+
+          if ((compNameEntered == null) || (compNameEntered.length() == 0))
+        {
+            displayErrorMessage("Please enter a Companion name");
+        }
+
+        else if ((compHoursEntered == null) || (compHoursEntered.length() == 0))
+        {
+            displayErrorMessage("Please enter Companion Hours");
+        }
+        else if ((scStartEntered == null) || (scStartEntered.length() == 0))
+        {
+            displayErrorMessage("Please enter a Companion name");
+        }
+
+        else if ((scEndEntered == null) || (scEndEntered.length() == 0))
+        {
+            displayErrorMessage("Please enter Companion Hours");
+        }
+        else
+            processShiftInfo(compNameEntered,compHoursEntered,scStartEntered,scEndEntered);
     }
 
 
@@ -379,7 +471,7 @@ public class StartShiftTransactionView extends View
         String dateEntered = (date.getValue() != null) ? date.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")) : null; // Changed to DatePicker
         String startTimeEntered = startTime.getText();
         String endTimeEntered = endTime.getText();
-        String listOfScoutsEntered = listOfScouts.getValue();
+        String startCashEntered = startCash.getText();
 
 
 
@@ -393,31 +485,44 @@ public class StartShiftTransactionView extends View
             displayErrorMessage("Please enter a start time");
         }
 
-        else if ((endTimeEntered == null) || (endTimeEntered.length() == 0))
-        {
-            displayErrorMessage("Please enter an end time");
-        }
-
-        else if ((listOfScoutsEntered == null) || (listOfScoutsEntered.length()!=5))
-        {
-            displayErrorMessage("Scouts selected can't be null");
-        }
-
-        //else
-           // processScoutInfo(lastNameEntered,firstNameEntered,middleNameEntered,dateOfBirthEntered,phoneNumberEntered,emailEntered,troopIDEntered);
+        else
+            processSessionInfo(dateEntered,startTimeEntered,endTimeEntered,startCashEntered);
+    }
+   private void processScoutID(Event evt)
+    {
+        String listOfScoutsEntered = listOfScouts.getValue();
+        myModel.stateChangeRequest("ScoutSelectedForShift", listOfScoutsEntered);
     }
 
+
+
     //---------------------------------------------------------------------------------------
-    private void processScoutSelected()
+    private void processSessionInfo(String date,String startTime, String endTime, String cash)
     {
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd");
-        LocalDateTime now = LocalDateTime.now();
+        Properties sessionProps = new Properties();
+        sessionProps.setProperty("startDate",date);
+        sessionProps.setProperty("startTime",startTime);
+        sessionProps.setProperty("endTime",endTime);
+        sessionProps.setProperty("startingCash",cash);
 
-        Properties props = new Properties();
+        myModel.stateChangeRequest("OpenSession", sessionProps);
 
-        props.setProperty("dateStatusUpdated",dtf.format(now));
-        myModel.stateChangeRequest("RegisterWithScoutInfo", props);
+    }
+    private void processShiftInfo(String compName, String compHours, String scStart, String scEnd)
+    {
 
+        Properties shiftProps = new Properties();
+
+String sessionID =  myModel.getState("sessionID").toString();
+System.out.println("session Id: "+sessionID);
+
+        shiftProps.setProperty("sessionID", myModel.getState("sessionID").toString());
+        shiftProps.setProperty("scoutStartTime", scStart);
+        shiftProps.setProperty("scoutEndTime", scEnd);
+        shiftProps.setProperty("companionName", compName);
+        shiftProps.setProperty("companionHours", compHours);
+
+        myModel.stateChangeRequest("StartShiftForScouts", shiftProps);
     }
     public void displayMessage(String message)
     {

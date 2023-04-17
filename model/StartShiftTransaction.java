@@ -20,8 +20,10 @@ import userinterface.ViewFactory;
 public class StartShiftTransaction extends Transaction
 {
 
-    private Scout myScout;
+    private Session mySession;
     private ScoutCollection myScoutCollection;
+    private Scout myScout;
+    private Shift myShift;
 
     // GUI Components
 
@@ -46,30 +48,28 @@ public class StartShiftTransaction extends Transaction
     protected void setDependencies()
     {
         dependencies = new Properties();
-        dependencies.setProperty("CancelRegisterScout", "CancelTransaction");
-        dependencies.setProperty("RegisterWithScoutInfo", "TransactionError");
+        dependencies.setProperty("CancelShift", "CancelTransaction");
+        dependencies.setProperty("OpenSession", "TransactionError");
 
         myRegistry.setDependencies(dependencies);
     }
 
 
     //----------------------------------------------------------
-    public void processTransaction(Properties props)
+    public void processTransaction(Properties sessionProps)
     {
-        String troopID = props.getProperty("troopID");
-        try {
-            Scout scout = new Scout(troopID);
-            transactionErrorMessage = "ERROR: Scout with troopID: " + troopID + " already exists!";
-        }
-        catch (InvalidPrimaryKeyException ex) {
-            myScout = new Scout(props);
-            myScout.update();
+            mySession = new Session(sessionProps);
+            mySession.update();
 
-            transactionErrorMessage += myScout.getState("UpdateStatusMessage");
+            transactionErrorMessage += mySession.getState("UpdateStatusMessage");
 
-        }
+    }
 
+    private void startShiftForScouts(Properties shiftProps) {
+        Shift newShift = new Shift(shiftProps);
+        newShift.update();
 
+        transactionErrorMessage += myShift.getState("UpdateStatusMessage");
     }
 
     //-----------------------------------------------------------
@@ -93,10 +93,20 @@ public class StartShiftTransaction extends Transaction
             doYourJob();
         }
         else
-        if (key.equals("RegisterWithScoutInfo")==true)
+        if (key.equals("OpenSession")==true)
         {
             processTransaction((Properties)value);
         }
+        else if (key.equals("StartShiftForScouts") == true) {
+            startShiftForScouts((Properties) value);
+        }
+        else
+            if(key.equals("ScoutSelectedForShift")==true) {
+                String scoutID = (String) value;
+                //Properties props =(Properties)value;
+                //String scoutID = props.getProperty("scoutID");
+                myScout = myScoutCollection.retrieve(scoutID);
+            }
 
         myRegistry.updateSubscribers(key, this);
     }
