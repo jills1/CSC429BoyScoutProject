@@ -63,6 +63,11 @@ public class TransactionFactory
 		{
 			retValue = new RemoveTreeTransaction();
 		}
+		else
+		if (transType.equals("EndShift") == true)
+		{
+			retValue = new EndShiftTransaction();
+		}
 		return retValue;
 	}
 }

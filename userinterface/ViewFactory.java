@@ -87,7 +87,10 @@ public class ViewFactory {
 		{
 			return new RemoveView(model);
 		}
-		else
+		else if(viewName.equals("EndShiftDataView") == true)
+		{
+			return new EndShiftDataView(model);
+		}
 			return null;
 	}
 

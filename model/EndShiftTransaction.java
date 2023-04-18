@@ -7,7 +7,7 @@ import userinterface.ViewFactory;
 public class EndShiftTransaction extends Transaction {
     private String transactionErrorMessage = "";
     private String accountUpdateStatusMessage = "";
-    protected Tree mySession;
+    protected Session mySession;
     public EndShiftTransaction() {
         super();
     }
@@ -22,7 +22,8 @@ public class EndShiftTransaction extends Transaction {
     public void processTransaction(Properties props) {
         try {
             String sessionID= props.getProperty("sessionID");
-            mySession= new Tree(sessionID);
+            mySession= new Session(sessionID);
+            TransactionCollection.retrieve();
             String startDate = (String) mySession.getState("startDate");
             props.setProperty("startDate", startDate);
             //-------
@@ -118,7 +119,7 @@ public class EndShiftTransaction extends Transaction {
         myRegistry.updateSubscribers(key, this);
     }
     public void processUpdate(Properties props) {
-        mySession = new Tree(props);
+        mySession = new Session(props);
         mySession.update();
         transactionErrorMessage = "Session Ended Successfully";
     }

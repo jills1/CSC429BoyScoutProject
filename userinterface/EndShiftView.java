@@ -22,10 +22,11 @@ import java.util.Properties;
 import java.util.Vector;
 // project imports
 import impresario.IModel;
-import model.Scout;
-import model.ScoutCollection;
+import model.Session;
+import model.SessionCollection;
 
 public class EndShiftView extends View {
+    protected TableView<SessionModel> sessionTable;
     private ComboBox<String> sessionID; // Changed to ComboBox
     private Button submitButton;
     private Button cancelButton;
@@ -109,19 +110,19 @@ public class EndShiftView extends View {
 
     //--------------------------------------------------------------------------
     protected void getEntryTableModelValues() {
-        ObservableList<ScoutTableModel> tableData = FXCollections.observableArrayList();
+        ObservableList<SessionModel> tableData = FXCollections.observableArrayList();
         try {
-            ScoutCollection scoutCollection = (ScoutCollection)myModel.getState("ScoutList");
-            Vector entryList = (Vector)scoutCollection.getState("Scouts");
+            Session session = (Session)myModel.getState("Session");
+            Vector entryList = (Vector)scoutCollection.getState("sessionList");
             Enumeration entries = entryList.elements();
             while (entries.hasMoreElements() == true) {
-                Scout nextScout = (Scout)entries.nextElement();
-                Vector<String> view = nextScout.getEntryListView();
+                Session nextSession = (Session)entries.nextElement();
+                Vector<String> view = nextSession.getEntryListView();
                 // add this list entry to the list
                 ScoutTableModel nextTableRowData = new ScoutTableModel(view);
-                tableData.add(nextTableRowData);
+                //tableData.add(nextTableRowData);
             }
-            tableOfScouts.setItems(tableData);
+            sessionTable.setItems(tableData);
         }
         catch (Exception e) {//SQLException e) {
             // Need to handle this exception
