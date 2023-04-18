@@ -34,7 +34,8 @@ public class SellTreeTransactionView extends View
 {
 
     // Model
-
+    public Tree aTree;
+    public TreeType aTreeType;
     // GUI components
     private TextField barcode;
     private TextField cost;
@@ -50,6 +51,7 @@ public class SellTreeTransactionView extends View
 
     private Button submitButton;
     private Button cancelButton;
+    private Button enterButton;
 
     // For showing error message
     private MessageView statusLog;
@@ -121,6 +123,18 @@ public class SellTreeTransactionView extends View
 
         Label costLabel = new Label("Cost : ");
         grid.add(costLabel, 0, 1);
+
+        enterButton = new Button("EnterBarcode");
+        grid.add(enterButton, 2, 0);
+        enterButton.setOnAction(new EventHandler<ActionEvent>() {
+
+            @Override
+            public void handle(ActionEvent e) {
+                clearErrorMessage();
+
+                processAction2(e);
+            }
+        });
 
 
         cost = new TextField();
@@ -268,17 +282,22 @@ public class SellTreeTransactionView extends View
     private void processAction(Event evt)
     {
         clearErrorMessage();
+    }
+    private void processAction2(Event evt)
+    {
+        clearErrorMessage();
 
         String barcodeEntered = barcode.getText();
         if(barcodeEntered.length()!= 5){
             displayErrorMessage("Enter a valid barcode");
         }
 
+        String notesEntered = notes.getText();
 
 
-        processTreeInfo(barcodeEntered);
+        processTreeInfo(barcodeEntered,notesEntered);
     }
-    private void processTreeInfo(String barcode)
+    private void processTreeInfo(String barcode, String notesEntered)
     {
 
         Properties props = new Properties();
@@ -293,8 +312,11 @@ public class SellTreeTransactionView extends View
 
 
         myModel.stateChangeRequest("SubmitSellTree", props);
+        myModel.stateChangeRequest("SubmitSellTreeType", props2);
 
         Tree tree = new Tree(props);
+        TreeType treeType = new TreeType(props2);
+
 
     }
     public String firstTwo(String str) {

@@ -141,13 +141,13 @@ public class SellTransaction extends EntityBase implements IView
 
 
     //-----------------------------------------------------------------------------------
-    public static int compare(SellTransaction a, SellTransaction b)
+   /* public static int compare(SellTransaction a, SellTransaction b)
     {
         String aNum = (String)a.getState("scoutID");
         String bNum = (String)b.getState("scoutID");
 
         return aNum.compareTo(bNum);
-    }
+    }*/
 
     //-----------------------------------------------------------------------------------
     public void update() //save

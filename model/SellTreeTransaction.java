@@ -18,7 +18,7 @@ import userinterface.ViewFactory;
 public class SellTreeTransaction extends Transaction {
 
     protected Tree myTree;
-    protected Tree myTreeType;
+    protected TreeType myTreeType;
     // GUI Components
 
     protected String transactionErrorMessage = "";
@@ -119,6 +119,14 @@ public class SellTreeTransaction extends Transaction {
         if (key.equals("SubmitSellTree")==true)
         {
             Properties props =(Properties)value;
+            try {
+                myTree = getTreeFromBarcode(props);
+            }
+            catch (Exception ex)
+            {
+                transactionErrorMessage = "Error getting Tree";
+            }
+
 
             try
             {
@@ -131,6 +139,23 @@ public class SellTreeTransaction extends Transaction {
             }
 
         }
+        if (key.equals("SubmitSellTreeType")==true) {
+            Properties props = (Properties) value;
+            try {
+                myTreeType = getTreeTypeFromBarcode(props);
+            }
+            catch (Exception ex) {
+                transactionErrorMessage = "Error getting TreeType";
+            }
+
+
+            try {
+
+                //processTransaction(props);
+            } catch (Exception ex) {
+                transactionErrorMessage = "Error getting Tree";
+            }
+        }
         else
         if (key.equals("TreeChosen") == true)
         {
@@ -141,5 +166,18 @@ public class SellTreeTransaction extends Transaction {
         myRegistry.updateSubscribers(key, this);
 
 
+    }
+
+    public Tree getTreeFromBarcode(Properties value) throws InvalidPrimaryKeyException {
+        String tempBarcode = (String)value.getProperty("barcode");
+        Tree theTree = new Tree(tempBarcode);
+
+        return(theTree);
+    }
+    public TreeType getTreeTypeFromBarcode(Properties value) throws InvalidPrimaryKeyException {
+        String tempBarcode = (String)value.getProperty("prefix");
+         TreeType theTreeType = new TreeType(tempBarcode);
+
+        return(theTreeType);
     }
 }
