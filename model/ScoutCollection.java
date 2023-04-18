@@ -25,7 +25,7 @@ public class ScoutCollection  extends EntityBase implements IView
 	private static final String myTableName = "Scout";
 
 
-	private Vector<Scout> scoutList;
+	public Vector<Scout> scoutList;
 	// GUI Components
 
 	// constructor for this class

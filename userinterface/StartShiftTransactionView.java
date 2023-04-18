@@ -27,6 +27,7 @@ import javafx.stage.Stage;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.Properties;
 import java.util.Vector;
 
@@ -48,6 +49,7 @@ public class StartShiftTransactionView extends View
     private TextField startTime;
     private TextField endTime;
     private TextField startCash;
+    private HashMap<String, String> scoutNameToID = new HashMap<>();
 
     private TextField scoutStartTime;
     private TextField scoutEndTime;
@@ -218,25 +220,7 @@ public class StartShiftTransactionView extends View
         grid.add(statusLabel, 0, 4);
         listOfScouts = new ComboBox<String>();
 
-        //logic to populate combo box with Active Scouts only
-        ScoutCollection scoutCollection = new ScoutCollection();
-        scoutCollection.findScoutsWithNameLike("", ""); // Passing empty strings to get all active scouts
-
-        Vector<Scout> activeScouts = (Vector<Scout>)scoutCollection.getState("Scouts");
-
-        for (Scout scout : activeScouts) {
-            String scoutName = (String) scout.getState("firstName") + " " + (String) scout.getState("lastName") + " " + (String) scout.getState("scoutID");
-            listOfScouts.getItems().add(scoutName);
-        }
-        ObservableList<String> scoutNames = FXCollections.observableArrayList();
-        Vector entryList = (Vector) scoutCollection.getState("Scouts");
-        Enumeration entries = entryList.elements();
-        while (entries.hasMoreElements()) {
-            Scout nextScout = (Scout) entries.nextElement();
-            String scoutName = nextScout.getFirstName() + " " + nextScout.getLastName()+" "+nextScout.getScoutID();
-            scoutNames.add(scoutName);
-        }
-        listOfScouts.setItems(scoutNames);
+        populateListOfScoutsComboBox();
        /* listOfScouts.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
@@ -421,10 +405,13 @@ public class StartShiftTransactionView extends View
     }
 
     private void processOtherAction(ActionEvent e) {
+        String selectedScoutName = listOfScouts.getSelectionModel().getSelectedItem().toString();
+        String selectedScoutID = scoutNameToID.get(selectedScoutName);
         String compNameEntered = companion.getText();
         String compHoursEntered = companionHours.getText();
         String scStartEntered = scoutStartTime.getText();
         String scEndEntered = scoutEndTime.getText();
+
 
 
           if ((compNameEntered == null) || (compNameEntered.length() == 0))
@@ -446,7 +433,7 @@ public class StartShiftTransactionView extends View
             displayErrorMessage("Please enter Companion Hours");
         }
         else
-            processShiftInfo(compNameEntered,compHoursEntered,scStartEntered,scEndEntered);
+            processShiftInfo(selectedScoutID,compNameEntered,compHoursEntered,scStartEntered,scEndEntered);
     }
 
 
@@ -472,6 +459,7 @@ public class StartShiftTransactionView extends View
         String startTimeEntered = startTime.getText();
         String endTimeEntered = endTime.getText();
         String startCashEntered = startCash.getText();
+
 
 
 
@@ -533,21 +521,31 @@ public class StartShiftTransactionView extends View
             displayErrorMessage("ERROR: Invalid shift start data!");
         }
     }
-    private void processShiftInfo(String compName, String compHours, String scStart, String scEnd)
+    private void processShiftInfo(String scoutId,String compName, String compHours, String scStart, String scEnd)
     {
 
         Properties shiftProps = new Properties();
 
-String sessionID =  myModel.getState("sessionID").toString();
-System.out.println("session Id: "+sessionID);
 
-        shiftProps.setProperty("sessionID", myModel.getState("sessionID").toString());
+
+        shiftProps.setProperty("scoutID",scoutId);
         shiftProps.setProperty("scoutStartTime", scStart);
         shiftProps.setProperty("scoutEndTime", scEnd);
         shiftProps.setProperty("companionName", compName);
         shiftProps.setProperty("companionHours", compHours);
 
         myModel.stateChangeRequest("StartShiftForScouts", shiftProps);
+    }
+    private void populateListOfScoutsComboBox() {
+        ScoutCollection myScoutCollection = new ScoutCollection();
+        myScoutCollection.findScoutsWithNameLike("", ""); // retrieve all the scouts
+        for (int cnt = 0; cnt < myScoutCollection.scoutList.size(); cnt++) {
+            Scout scout = myScoutCollection.scoutList.elementAt(cnt);
+            String scoutID = scout.getState("scoutID").toString();
+            String scoutName = scout.getState("firstName").toString() + " " + scout.getState("lastName").toString();
+            scoutNameToID.put(scoutName, scoutID); // Store the mapping between scout name and ID
+            listOfScouts.getItems().add(scoutName); // Add only the scout name to the ComboBox
+        }
     }
     public void displayMessage(String message)
     {

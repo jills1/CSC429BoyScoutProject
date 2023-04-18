@@ -69,10 +69,13 @@ public class StartShiftTransaction extends Transaction
     }
 
     private void startShiftForScouts(Properties shiftProps) {
+        System.out.println("I've reached startshift method");
+        String sessionID = (String) mySession.getState("sessionID");
+        System.out.println(sessionID);
+        shiftProps.setProperty("sessionID",sessionID);
         Shift newShift = new Shift(shiftProps);
         newShift.update();
 
-        transactionErrorMessage += myShift.getState("UpdateStatusMessage");
     }
 
     //-----------------------------------------------------------
