@@ -87,7 +87,7 @@ public class TLCView extends View
 	private VBox createTitle()
 	{
 		VBox container = new VBox(10);
-		Text titleText = new Text("       Troop209          ");
+		Text titleText = new Text("        Troop209          ");
 		titleText.setFont(Font.font("Arial", FontWeight.BOLD, 20));
 		titleText.setWrappingWidth(300);
 		titleText.setTextAlignment(TextAlignment.CENTER);
@@ -95,7 +95,7 @@ public class TLCView extends View
 		container.getChildren().add(titleText);
 
 		String accountHolderGreetingName = (String)myModel.getState("Name");
-		Text welcomeText = new Text("Welcome, " + accountHolderGreetingName + "!");
+		Text welcomeText = new Text("Welcome" + accountHolderGreetingName + "!");
 		welcomeText.setFont(Font.font("Arial", FontWeight.BOLD, 20));
 		welcomeText.setWrappingWidth(300);
 		welcomeText.setTextAlignment(TextAlignment.CENTER);
