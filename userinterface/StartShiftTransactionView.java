@@ -225,7 +225,7 @@ public class StartShiftTransactionView extends View
         Vector<Scout> activeScouts = (Vector<Scout>)scoutCollection.getState("Scouts");
 
         for (Scout scout : activeScouts) {
-            String scoutName = (String) scout.getState("firstName") + " " + (String) scout.getState("lastName");
+            String scoutName = (String) scout.getState("firstName") + " " + (String) scout.getState("lastName") + " " + (String) scout.getState("scoutID");
             listOfScouts.getItems().add(scoutName);
         }
         ObservableList<String> scoutNames = FXCollections.observableArrayList();
@@ -233,7 +233,7 @@ public class StartShiftTransactionView extends View
         Enumeration entries = entryList.elements();
         while (entries.hasMoreElements()) {
             Scout nextScout = (Scout) entries.nextElement();
-            String scoutName = nextScout.getFirstName() + " " + nextScout.getLastName();
+            String scoutName = nextScout.getFirstName() + " " + nextScout.getLastName()+" "+nextScout.getScoutID();
             scoutNames.add(scoutName);
         }
         listOfScouts.setItems(scoutNames);
@@ -495,18 +495,43 @@ public class StartShiftTransactionView extends View
     }
 
 
+    //---------------------------------------------------------------------------------------
+    private boolean validate(String date, String startTime, String endTime, String cash)
+    {
+        try {
+            double cashVal = Double.parseDouble(cash);
+            if (cashVal > 0)
+            {
+
+            }
+            else
+            {
+                return false;
+            }
+        }
+        catch (Exception excep)
+        {
+            return false;
+        }
+        return true;
+    }
 
     //---------------------------------------------------------------------------------------
     private void processSessionInfo(String date,String startTime, String endTime, String cash)
     {
-        Properties sessionProps = new Properties();
-        sessionProps.setProperty("startDate",date);
-        sessionProps.setProperty("startTime",startTime);
-        sessionProps.setProperty("endTime",endTime);
-        sessionProps.setProperty("startingCash",cash);
+        if (validate(date, startTime, endTime, cash) == true) {
+            Properties sessionProps = new Properties();
+            sessionProps.setProperty("startDate", date);
+            sessionProps.setProperty("startTime", startTime);
+            sessionProps.setProperty("endTime", endTime);
+            sessionProps.setProperty("startingCash", cash);
 
-        myModel.stateChangeRequest("OpenSession", sessionProps);
-
+            myModel.stateChangeRequest("OpenSession", sessionProps);
+        }
+        else
+        {
+            displayErrorMessage("ERROR: Invalid shift start data!");
+        }
     }
     private void processShiftInfo(String compName, String compHours, String scStart, String scEnd)
     {
