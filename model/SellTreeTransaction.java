@@ -175,7 +175,7 @@ public class SellTreeTransaction extends Transaction {
         return(theTree);
     }
     public TreeType getTreeTypeFromBarcode(Properties value) throws InvalidPrimaryKeyException {
-        String tempBarcode = (String)value.getProperty("prefix");
+        String tempBarcode = (String)value.getProperty("barcodePrefix");
          TreeType theTreeType = new TreeType(tempBarcode);
 
         return(theTreeType);

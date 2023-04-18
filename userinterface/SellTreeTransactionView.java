@@ -306,7 +306,7 @@ public class SellTreeTransactionView extends View
         System.out.println(prefix);
         props.setProperty("barcode", barcode);
 
-        props2.setProperty("cost", prefix);
+        props2.setProperty("barcodePrefix", prefix);
         populateFields();
 
 
