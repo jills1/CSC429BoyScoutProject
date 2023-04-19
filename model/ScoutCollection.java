@@ -213,6 +213,14 @@ public class ScoutCollection  extends EntityBase implements IView
 	}
 
 	//------------------------------------------------------------------------------------
+	public void findAllScouts()
+	{
+		String query = "";
+		query = "SELECT * FROM "+myTableName+" WHERE status = 'Active'";
+		helper(query);
+	}
+
+	//------------------------------------------------------------------------------------
 	private void helper(String query)
 	{
 
