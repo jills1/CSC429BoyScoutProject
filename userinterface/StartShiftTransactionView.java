@@ -26,13 +26,12 @@ import javafx.stage.Stage;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.Properties;
-import java.util.Vector;
+import java.util.*;
 
 // project imports
 import impresario.IModel;
+import model.Account;
+import model.AccountCollection;
 import model.Scout;
 import model.ScoutCollection;
 
@@ -91,44 +90,14 @@ public class StartShiftTransactionView extends View
         populateFields();
 
         myModel.subscribe("TransactionError", this);
+        myModel.subscribe("ScoutAddedForShift", this);
     }
     protected void populateFields()
     {
-        getEntryTableModelValues();
+        populateListOfScoutsComboBox();
     }
 
-    //--------------------------------------------------------------------------
-    protected void getEntryTableModelValues()
-    {
 
-        ObservableList<ScoutTableModel> tableData = FXCollections.observableArrayList();
-        try
-        {
-            ScoutCollection scoutCollection = (ScoutCollection)myModel.getState("ScoutList");
-
-           // Vector entryList = (Vector)scoutCollection.getState("Scouts");
-            // DEBUG System.out.println("Size of scout list retrieved: " + entryList.size());
-           // Enumeration entries = entryList.elements();
-
-           // while (entries.hasMoreElements() == true)
-            {
-               // Scout nextScout = (Scout)entries.nextElement();
-               // Vector<String> view = nextScout.getEntryListView();
-
-                // add this list entry to the list
-               // ScoutTableModel nextTableRowData = new ScoutTableModel(view);
-               // tableData.add(nextTableRowData);
-
-            }
-
-            tableOfScouts.setItems(tableData);
-        }
-        catch (Exception e) {//SQLException e) {
-            // Need to handle this exception
-            System.out.println(e.toString());
-            e.printStackTrace();
-        }
-    }
 
 
     // Create the label (Text) for the title
@@ -204,7 +173,7 @@ public class StartShiftTransactionView extends View
         });
         grid.add(startCash, 1, 3);
 
-        startSessionButton = new Button("Start Session");
+        startSessionButton = new Button("Start Shift");
         grid.add(startSessionButton,2,3);
         startSessionButton.setOnAction(new EventHandler<ActionEvent>() {
 
@@ -283,13 +252,7 @@ public class StartShiftTransactionView extends View
         });
         grid.add(scoutEndTime, 1, 7);
 
-
-
-
-
-
-
-        addButton = new Button("Submit");
+        addButton = new Button("Add Scout to Shift");
         grid.add(addButton,2,7);
         addButton.setOnAction(new EventHandler<ActionEvent>() {
 
@@ -380,7 +343,7 @@ public class StartShiftTransactionView extends View
             }
         });
 
-        cancelButton = new Button("Cancel");
+        cancelButton = new Button("Return");
         cancelButton.setOnAction(new EventHandler<ActionEvent>() {
 
             @Override
@@ -394,7 +357,7 @@ public class StartShiftTransactionView extends View
 
         HBox btnContainer = new HBox(100);
         btnContainer.setAlignment(Pos.CENTER);
-        btnContainer.getChildren().add(submitButton);
+
         btnContainer.getChildren().add(cancelButton);
 
         vbox.getChildren().add(grid);
@@ -434,6 +397,7 @@ public class StartShiftTransactionView extends View
         }
         else
             processShiftInfo(selectedScoutID,compNameEntered,compHoursEntered,scStartEntered,scEndEntered);
+
     }
 
 
@@ -476,11 +440,7 @@ public class StartShiftTransactionView extends View
         else
             processSessionInfo(dateEntered,startTimeEntered,endTimeEntered,startCashEntered);
     }
-   private void processScoutID(Event evt)
-    {
-        String listOfScoutsEntered = listOfScouts.getValue();
-        myModel.stateChangeRequest("ScoutSelectedForShift", listOfScoutsEntered);
-    }
+
 
 
     //---------------------------------------------------------------------------------------
@@ -496,6 +456,7 @@ public class StartShiftTransactionView extends View
             {
                 return false;
             }
+
         }
         catch (Exception excep)
         {
@@ -521,35 +482,63 @@ public class StartShiftTransactionView extends View
             displayErrorMessage("ERROR: Invalid shift start data!");
         }
     }
-    private void processShiftInfo(String scoutId,String compName, String compHours, String scStart, String scEnd)
-    {
-
+    private void processShiftInfo(String scoutId, String compName, String compHours, String scStart, String scEnd) {
         Properties shiftProps = new Properties();
 
-
-
-        shiftProps.setProperty("scoutID",scoutId);
+        shiftProps.setProperty("scoutID", scoutId);
         shiftProps.setProperty("scoutStartTime", scStart);
         shiftProps.setProperty("scoutEndTime", scEnd);
         shiftProps.setProperty("companionName", compName);
         shiftProps.setProperty("companionHours", compHours);
 
         myModel.stateChangeRequest("StartShiftForScouts", shiftProps);
+
+
     }
     private void populateListOfScoutsComboBox() {
-        ScoutCollection myScoutCollection = new ScoutCollection();
-        myScoutCollection.findScoutsWithNameLike("", ""); // retrieve all the scouts
-        for (int cnt = 0; cnt < myScoutCollection.scoutList.size(); cnt++) {
-            Scout scout = myScoutCollection.scoutList.elementAt(cnt);
-            String scoutID = scout.getState("scoutID").toString();
-            String scoutName = scout.getState("firstName").toString() + " " + scout.getState("lastName").toString();
-            scoutNameToID.put(scoutName, scoutID); // Store the mapping between scout name and ID
-            listOfScouts.getItems().add(scoutName); // Add only the scout name to the ComboBox
+        scoutNameToID = (HashMap)myModel.getState("ListOfAllScoutsMappedToID");
+        ArrayList<String> allScoutNames = (ArrayList)myModel.getState("ListOfAllScouts");
+        for (int cnt = 0; cnt < allScoutNames.size(); cnt++)
+        {
+            String nextScoutName = allScoutNames.get(cnt);
+            listOfScouts.getItems().add(nextScoutName);
         }
+
+
     }
+
     public void displayMessage(String message)
     {
         statusLog.displayMessage(message);
+    }
+    //--------------------------------------------------------------------------
+    protected void getEntryTableModelValues()
+    {
+
+        ObservableList<ScoutTableModel> tableData = FXCollections.observableArrayList();
+        try
+        {
+            ScoutCollection scoutCollection = (ScoutCollection)myModel.getState("ChosenScouts");
+
+            Vector entryList = (Vector)scoutCollection.getState("Scouts");
+            Enumeration entries = entryList.elements();
+
+            while (entries.hasMoreElements() == true)
+            {
+                Scout nextScout = (Scout)entries.nextElement();
+                Vector<String> view = nextScout.getEntryListView();
+
+                // add this list entry to the list
+                ScoutTableModel nextTableRowData = new ScoutTableModel(view);
+                tableData.add(nextTableRowData);
+
+            }
+
+            tableOfScouts.setItems(tableData);
+        }
+        catch (Exception e) {//SQLException e) {
+            // Need to handle this exception
+        }
     }
 
 
@@ -571,6 +560,12 @@ public class StartShiftTransactionView extends View
                 displayMessage(messageToDisplay);
             }
 
+
+        }
+        else if (key.equals("ScoutAddedForShift")) {
+            System.out.println("Scout added for shift");
+            displayMessage("Scout added successfully to shift!");
+            getEntryTableModelValues();
         }
     }
 
