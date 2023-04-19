@@ -192,7 +192,7 @@ public class SellTreeTransaction extends Transaction {
             //-------------------------------------
             props3.setProperty("bacrode", barcode);
             //--------------------------------------
-            props3
+            //props3
 
             //-------
             String treeStatus = (String) myTree.getState("status");

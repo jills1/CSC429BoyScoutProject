@@ -21,6 +21,8 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Properties;
 
 // project imports
@@ -281,6 +283,31 @@ public class SellTreeTransactionView extends View
     //----------------------------------------------------------
     private void processAction(Event evt)
     {
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+        LocalDateTime now = LocalDateTime.now();
+        Integer hours = now.getHour();
+        Integer minutes = now.getMinute();
+        String hoursAndMinutes = (hours.toString() + minutes.toString());
+        //DEBUG System.out.println(hoursAndMinutes);
+
+        String barcodeEntered = barcode.getText();
+        if(barcodeEntered.length()!= 5){
+            displayErrorMessage("Enter a valid barcode");
+        }
+        String costEntered = cost.getText();
+        if(isNumeric(costEntered) == false) {
+            displayErrorMessage("Enter a valid cost");
+        }
+        String paymentMethod = transType.getValue();
+        //DEBUG System.out.println(paymentMethod);
+        String custNameEntered = custName.getText();
+        String custPhoneEntered = custPhoneNumber.getText();
+        String custEmailEntered = custEmail.getText();
+        String transactionDate = dtf.format(now);
+        String transactionTime = hoursAndMinutes;
+        String dateStatusUpdated = dtf.format(now);
+
+
         clearErrorMessage();
     }
     private void processAction2(Event evt)
@@ -291,7 +318,6 @@ public class SellTreeTransactionView extends View
         if(barcodeEntered.length()!= 5){
             displayErrorMessage("Enter a valid barcode");
         }
-
         String notesEntered = notes.getText();
 
 
@@ -357,5 +383,16 @@ public class SellTreeTransactionView extends View
         statusLog.clearErrorMessage();
     }
 
+    public static boolean isNumeric(String strNum) {
+        if (strNum == null) {
+            return false;
+        }
+        try {
+            double d = Double.parseDouble(strNum);
+        } catch (NumberFormatException nfe) {
+            return false;
+        }
+        return true;
+    }
 
 }
