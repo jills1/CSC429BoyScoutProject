@@ -19,6 +19,8 @@ public class SellTreeTransaction extends Transaction {
 
     protected Tree myTree;
     protected TreeType myTreeType;
+    protected Session mySession;
+    protected SellTransaction myTransaction;
     // GUI Components
 
     protected String transactionErrorMessage = "";
@@ -179,5 +181,32 @@ public class SellTreeTransaction extends Transaction {
          TreeType theTreeType = new TreeType(tempBarcode);
 
         return(theTreeType);
+    }
+    public void processTransaction(Properties props, Properties props2) {
+        try {
+            Properties props3 = new Properties();
+            String barcode= props.getProperty("barcode");
+            myTree= new Tree(barcode);
+            myTransaction = new SellTransaction(props3);
+            props3.setProperty("transactionType", "Tree Sale");
+            //-------------------------------------
+            props3.setProperty("bacrode", barcode);
+            //--------------------------------------
+            props3
+
+            //-------
+            String treeStatus = (String) myTree.getState("status");
+            props.setProperty("status", "sold");
+            //-------
+            String treeNotes = (String) myTree.getState("notes");
+            props.setProperty("notes", treeNotes);
+            //-------
+            String treeDateStatusUpdate = (String) myTree.getState("dateStatusUpdate");
+            props.setProperty("dateStatusUpdate", treeDateStatusUpdate);
+            //-------
+            //createAndShowUpdateTreeFormView();
+        } catch(InvalidPrimaryKeyException e){
+            transactionErrorMessage="Error cannot do this 2.";
+        }
     }
 }

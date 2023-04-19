@@ -37,13 +37,13 @@ public class SellTransaction extends EntityBase implements IView
 
     // constructor for this class
     //----------------------------------------------------------
-    public SellTransaction(String troopId)
+    public SellTransaction(String ID)
             throws InvalidPrimaryKeyException
     {
         super(myTableName);
 
         setDependencies();
-        String query = "SELECT * FROM " + myTableName + " WHERE (troopID = " + troopId + ")";
+        String query = "SELECT * FROM " + myTableName + " WHERE (ID = " + ID + ")";
 
         Vector<Properties> allDataRetrieved = getSelectQueryResult(query);
 
@@ -55,8 +55,8 @@ public class SellTransaction extends EntityBase implements IView
             // There should be EXACTLY one SellTransaction. More than that is an error
             if (size != 1)
             {
-                throw new InvalidPrimaryKeyException("Multiple scouts matching troop id : "
-                        + troopId + " found.");
+                throw new InvalidPrimaryKeyException("Multiple transactions matching id : "
+                        + ID + " found.");
             }
             else
             {
@@ -82,8 +82,8 @@ public class SellTransaction extends EntityBase implements IView
         // If no scout found for this troop id, throw an exception
         else
         {
-            throw new InvalidPrimaryKeyException("No scout matching troop id : "
-                    + troopId + " found.");
+            throw new InvalidPrimaryKeyException("No transaction matching id : "
+                    + ID + " found.");
         }
     }
 
@@ -141,13 +141,13 @@ public class SellTransaction extends EntityBase implements IView
 
 
     //-----------------------------------------------------------------------------------
-   /* public static int compare(SellTransaction a, SellTransaction b)
+    public static int compare(SellTransaction a, SellTransaction b)
     {
-        String aNum = (String)a.getState("scoutID");
-        String bNum = (String)b.getState("scoutID");
+        String aNum = (String)a.getState("ID");
+        String bNum = (String)b.getState("ID");
 
         return aNum.compareTo(bNum);
-    }*/
+    }
 
     //-----------------------------------------------------------------------------------
     public void update() //save
@@ -222,21 +222,21 @@ public class SellTransaction extends EntityBase implements IView
         try
         {
             // update
-            if (persistentState.getProperty("scoutID") != null)
+            if (persistentState.getProperty("ID") != null)
             {
                 Properties whereClause = new Properties();
-                whereClause.setProperty("scoutID",
-                        persistentState.getProperty("scoutID"));
+                whereClause.setProperty("ID",
+                        persistentState.getProperty("ID"));
                 updatePersistentState(mySchema, persistentState, whereClause);
-                updateStatusMessage = "Scout data updated successfully in database!";
+                updateStatusMessage = "Transaction data updated successfully in database!";
             }
             else
             {
                 //insert
                 Integer scoutId =
                         insertAutoIncrementalPersistentState(mySchema, persistentState);
-                persistentState.setProperty("scoutID", "" + scoutId.intValue());
-                updateStatusMessage = "Scout data for new scout installed successfully in database!";
+                persistentState.setProperty("ID", "" + scoutId.intValue());
+                updateStatusMessage = "Transaction data for new transaction installed successfully in database!";
             }
         }
         catch (SQLException ex)
