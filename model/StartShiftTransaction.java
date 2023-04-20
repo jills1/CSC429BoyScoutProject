@@ -58,13 +58,25 @@ public class StartShiftTransaction extends Transaction {
     }
 
     private void startShiftForScouts(Properties shiftProps) {
-        String scoutID = (String) shiftProps.getProperty("scoutID");
-        myChosenScout = myFullScoutCollection.retrieve(scoutID);
-        myChosenScoutCollection.addChosenScout(myChosenScout);
-        String sessionID = (String) mySession.getState("sessionID");
-        shiftProps.setProperty("sessionID", sessionID);
-        Shift newShift = new Shift(shiftProps);
-        newShift.update();
+       // if (sessionIsOpen() == true) {
+            String scoutID = (String) shiftProps.getProperty("scoutID");
+            myChosenScout = myFullScoutCollection.retrieve(scoutID);
+            myChosenScoutCollection.addChosenScout(myChosenScout);
+            String sessionID = (String) mySession.getState("sessionID");
+            shiftProps.setProperty("sessionID", sessionID);
+            Shift newShift = new Shift(shiftProps);
+            newShift.update();
+        }
+       // else
+           // transactionErrorMessage = "There is not an open session";
+    //}
+
+    private boolean sessionIsOpen() {
+        String session = ((String) mySession.getState("sessionID"));
+        if(session.length()==0)
+            return false;
+        else
+            return true;
     }
 
     public Object getState(String key) {
