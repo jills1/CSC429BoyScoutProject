@@ -291,13 +291,7 @@ public class SellTreeTransactionView extends View
         //DEBUG System.out.println(hoursAndMinutes);
 
         String barcodeEntered = barcode.getText();
-        if(barcodeEntered.length()!= 5){
-            displayErrorMessage("Enter a valid barcode");
-        }
         String costEntered = cost.getText();
-        if(isNumeric(costEntered) == false) {
-            displayErrorMessage("Enter a valid cost");
-        }
         String paymentMethod = transType.getValue();
         //DEBUG System.out.println(paymentMethod);
         String custNameEntered = custName.getText();
@@ -306,8 +300,40 @@ public class SellTreeTransactionView extends View
         String transactionDate = dtf.format(now);
         String transactionTime = hoursAndMinutes;
         String dateStatusUpdated = dtf.format(now);
+        if(barcodeEntered.length()!= 5){
+            displayErrorMessage("Enter a valid barcode");
+        }
 
+        else if(isNumeric(costEntered) == false) {
+            displayErrorMessage("Enter a valid cost");
+        }
 
+        else if ((custNameEntered.length() > 25)) {
+            displayErrorMessage("Name too long for the database");
+        }
+        else if ((custNameEntered == null) || (isNumeric(custNameEntered)== true)) {
+            displayErrorMessage("Enter a valid custommer name");
+        }
+
+        else if ((custPhoneEntered == null) || (isNumeric(custNameEntered)== false)) {
+            displayErrorMessage("Enter a valid telephone number");
+        }
+        else if ((custPhoneEntered == null) || (custPhoneEntered.length() < 10) || (custPhoneEntered.length() > 10) )
+        {
+            displayErrorMessage("Please change for a valid phone number");
+        }
+        else if ((custEmailEntered == null) || (custEmailEntered.length() == 0))
+        {
+            displayErrorMessage("Please change the email");
+        }
+        else if (( !custEmailEntered.contains("@")))
+        {
+            displayErrorMessage("Please change the email");
+        }
+        else {
+            processTransactionInfo(barcodeEntered, costEntered, paymentMethod, custNameEntered,
+                    custPhoneEntered, custEmailEntered, transactionDate, transactionTime, dateStatusUpdated);
+        }
         clearErrorMessage();
     }
     private void processAction2(Event evt)
@@ -333,17 +359,46 @@ public class SellTreeTransactionView extends View
         props.setProperty("barcode", barcode);
 
         props2.setProperty("barcodePrefix", prefix);
-        populateFields();
+
 
 
 
         myModel.stateChangeRequest("SubmitSellTree", props);
         myModel.stateChangeRequest("SubmitSellTreeType", props2);
 
+        populateFields();
         Tree tree = new Tree(props);
         TreeType treeType = new TreeType(props2);
 
 
+    }
+
+    private void processTransactionInfo (String barcodeEntered, String costEntered, String paymentMethod,
+                                         String custNameEntered, String custPhoneEntered, String custEmailEntered,
+                                         String transactionDate, String transactionTime,String dateStatusUpdated)
+    {
+        Properties props = new Properties();
+        Properties props2 = new Properties();
+
+        props.setProperty("transactionType", "Tree Sale");
+        props.setProperty("paymentMethod", paymentMethod);
+        props.setProperty("barcode", barcodeEntered);
+        props.setProperty("transactionAmount", costEntered);
+        props.setProperty("customerName", custNameEntered);
+        props.setProperty("customerPhone", custPhoneEntered);
+        props.setProperty("customerEmail", custEmailEntered);
+        props.setProperty("transactionDate", transactionDate);
+        props.setProperty("transactionTime", transactionTime);
+        props.setProperty("dateStatusUpdate", dateStatusUpdated);
+
+        props2.setProperty("barcode", barcodeEntered);
+        props2.setProperty("status", "Sold");
+        props2.setProperty("dateStatusUpdate", dateStatusUpdated);
+
+        myModel.stateChangeRequest("UpdateTransactionInfo", props);
+        myModel.stateChangeRequest("UpdateTreeInfo", props2);
+
+        displayMessage("Successfully updated Scout");
     }
     public String firstTwo(String str) {
         return str.length() < 2 ? str : str.substring(0,2);
@@ -394,5 +449,4 @@ public class SellTreeTransactionView extends View
         }
         return true;
     }
-
 }

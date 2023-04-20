@@ -160,6 +160,14 @@ public class SellTreeTransaction extends Transaction {
             //myTree = ;
 
         }
+        else if  (key.equals("UpdateTransactionInfo") == true)
+        {
+            processTransaction((Properties)value);
+        }
+        else if  (key.equals("UpdateTreeInfo") == true)
+        {
+            processTree((Properties)value);
+        }
         myRegistry.updateSubscribers(key, this);
 
 
@@ -178,17 +186,40 @@ public class SellTreeTransaction extends Transaction {
         return(theTreeType);
     }
 
-    public void processTransaction(Properties props, Properties props2) {
-        try {
+    public void processTree(Properties props) {
+       /* try {
             Properties props3 = new Properties();
             String barcode= props.getProperty("barcode");
             myTree= new Tree(barcode);
+            props3.setProperty("transactionType", "Tree Sale");
+            //-------------------------------------
+            props3.setProperty("barcode", barcode);
+            //--------------------------------------
+
+            //-------
+            String treeStatus = (String) myTree.getState("status");
+            props.setProperty("status", "sold");
+            //-------
+            String treeNotes = (String) myTree.getState("notes");
+            props.setProperty("notes", treeNotes);
+            //-------
+            String treeDateStatusUpdate = (String) myTree.getState("dateStatusUpdate");
+            props.setProperty("dateStatusUpdate", treeDateStatusUpdate);
+            //------
+            //createAndShowUpdateTreeFormView();
+        } catch(InvalidPrimaryKeyException e){
+            transactionErrorMessage="Error cannot do this 3.";
+        }*/
+    }
+    public void processTransaction(Properties props) {
+      /*  try {
+            Properties props3 = new Properties();
+            String barcode= props.getProperty("barcode");
             myTransaction = new SellTransaction(props3);
             props3.setProperty("transactionType", "Tree Sale");
             //-------------------------------------
-            props3.setProperty("bacrode", barcode);
+            props3.setProperty("barcode", barcode);
             //--------------------------------------
-            //props3
 
             //-------
             String treeStatus = (String) myTree.getState("status");
@@ -206,7 +237,7 @@ public class SellTreeTransaction extends Transaction {
             //------
             //createAndShowUpdateTreeFormView();
         } catch(InvalidPrimaryKeyException e){
-            transactionErrorMessage="Error cannot do this 2.";
-        }
+            transactionErrorMessage="Error cannot do this 4.";
+        }*/
     }
 }
