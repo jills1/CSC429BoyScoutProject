@@ -92,7 +92,7 @@ public class EndShiftDataView extends View
 
         sessionID = new TextField();
         sessionID.setEditable(false);
-        sessionID.setText(EndShiftDataTransaction.getSessionID());
+        //sessionID.setText(mySession.getState("sessionID"));
         grid.add(sessionID, 1,1);
 
         Text endCashLabel = new Text("Ending Cash: ");

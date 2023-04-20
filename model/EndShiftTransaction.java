@@ -19,6 +19,7 @@ public class EndShiftTransaction extends Transaction {
         dependencies.setProperty("OK", "CancelTransaction");
         dependencies.setProperty("RegisterTreeInfo", "TransactionError");
         dependencies.setProperty("UpdateTreeFormView", "TransactionError");
+        dependencies.setProperty("EndShift", "TransactionError");
         myRegistry.setDependencies(dependencies);
     }
     private void endCashTransaction() throws InvalidPrimaryKeyException {
@@ -57,7 +58,7 @@ public class EndShiftTransaction extends Transaction {
             String notes = (String) mySession.getState("notes");
             props.setProperty("notes", notes);
             //-------
-            showEndShiftDataView();
+            //showEndShiftDataView();
         } catch(InvalidPrimaryKeyException e){
             transactionErrorMessage="Error cannot do this 2.";
         }
@@ -137,20 +138,20 @@ public class EndShiftTransaction extends Transaction {
     }
     //------------------------------------------------------
     protected Scene createView() {
-        Scene currentScene = myViews.get("EndShiftView");
+        Scene currentScene = myViews.get("EndShiftDataView");
         if (currentScene == null) {
             // create our initial view
-            View newView = ViewFactory.createView("EndShiftView", this);
+            View newView = ViewFactory.createView("EndShiftDataView", this);
             assert newView != null;
             currentScene = new Scene(newView);
-            myViews.put("EndShiftView", currentScene);
+            myViews.put("EndShiftDataView", currentScene);
         }
         return currentScene;
     }
-    protected void showEndShiftDataView() {
-        View newsView = ViewFactory.createView("EndShiftDataView", this);
-        assert newsView != null;
-        Scene newsScene = new Scene(newsView);
-        swapToView(newsScene);
-    }
+    //protected void showEndShiftDataView() {
+        //View newsView = ViewFactory.createView("EndShiftDataView", this);
+        //assert newsView != null;
+        //Scene newsScene = new Scene(newsView);
+        //swapToView(newsScene);
+    //}
 }
