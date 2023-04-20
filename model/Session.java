@@ -6,9 +6,7 @@ import java.sql.SQLException;
 import java.util.Enumeration;
 import java.util.Properties;
 import java.util.Vector;
-import javax.swing.*;
 
-import database.*;
 public class Session extends EntityBase implements IView
 {
     private static final String myTableName = "Session";
@@ -204,6 +202,11 @@ public class Session extends EntityBase implements IView
         catch(SQLException ex){
             updateStatusMessage ="Error in deleting session data in database!";
         }
+    }
+    public static String getSessionId(){
+        String sessionId = "SELECT sessionID FROM" + myTableName + " WHERE endCash IS NULL";
+
+        return(sessionId);
     }
 
 }

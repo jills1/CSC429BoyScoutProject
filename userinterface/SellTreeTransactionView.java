@@ -241,7 +241,7 @@ public class SellTreeTransactionView extends View
 
                 //----------------------------------------------------------
                 clearErrorMessage();
-                myModel.stateChangeRequest("Cancelsale", null);
+                myModel.stateChangeRequest("CancelSale", null);
             }
         });
 

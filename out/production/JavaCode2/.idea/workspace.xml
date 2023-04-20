@@ -6,25 +6,17 @@
   <component name="ChangeListManager">
     <list default="true" id="c36429a9-fc74-41c8-af7b-80a3a49214ef" name="Changes" comment="added sellTreeTransactioview">
       <change beforePath="$PROJECT_DIR$/ErrorLog.txt" beforeDir="false" afterPath="$PROJECT_DIR$/ErrorLog.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/JavaCode2.iml" beforeDir="false" afterPath="$PROJECT_DIR$/JavaCode2.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/JDBCBroker.java" beforeDir="false" afterPath="$PROJECT_DIR$/database/JDBCBroker.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dbConfig.ini" beforeDir="false" afterPath="$PROJECT_DIR$/dbConfig.ini" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/model/SellTreeTransaction.java" beforeDir="false" afterPath="$PROJECT_DIR$/model/SellTreeTransaction.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/model/Session.java" beforeDir="false" afterPath="$PROJECT_DIR$/model/Session.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/JavaCode2/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JavaCode2/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/JavaCode2/ErrorLog.txt" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JavaCode2/ErrorLog.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/JavaCode2/database/JDBCBroker.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JavaCode2/database/JDBCBroker.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/JavaCode2/dbConfig.ini" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JavaCode2/dbConfig.ini" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/JavaCode2/model/SellTreeTransaction.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JavaCode2/model/SellTreeTransaction.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/JavaCode2/userinterface/SellTreeTransactionView$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JavaCode2/userinterface/SellTreeTransactionView$1.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/JavaCode2/userinterface/SellTreeTransactionView$2.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JavaCode2/userinterface/SellTreeTransactionView$2.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/JavaCode2/userinterface/SellTreeTransactionView$3.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JavaCode2/userinterface/SellTreeTransactionView$3.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/JavaCode2/userinterface/SellTreeTransactionView$4.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JavaCode2/userinterface/SellTreeTransactionView$4.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/JavaCode2/userinterface/SellTreeTransactionView$5.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JavaCode2/userinterface/SellTreeTransactionView$5.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/JavaCode2/userinterface/SellTreeTransactionView$6.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JavaCode2/userinterface/SellTreeTransactionView$6.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/JavaCode2/userinterface/SellTreeTransactionView$7.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JavaCode2/userinterface/SellTreeTransactionView$7.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/JavaCode2/userinterface/SellTreeTransactionView$8.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JavaCode2/userinterface/SellTreeTransactionView$8.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/JavaCode2/userinterface/SellTreeTransactionView$9.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JavaCode2/userinterface/SellTreeTransactionView$9.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/JavaCode2/userinterface/SellTreeTransactionView.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JavaCode2/userinterface/SellTreeTransactionView.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/userinterface/SellTreeTransactionView.java" beforeDir="false" afterPath="$PROJECT_DIR$/userinterface/SellTreeTransactionView.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -63,22 +55,22 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "last_opened_file_path": "C:/Users/miran/Documents/Brocckport/software development/CSC429BoyScoutProject/mariadb-java-client-3.0.3.jar",
-    "project.structure.last.edited": "Problems",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.2"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/miran/Documents/Brocckport/software development/CSC429BoyScoutProject/mariadb-java-client-3.0.3.jar&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Problems&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;
   },
-  "keyToStringList": {
-    "ChangesTree.GroupingKeys": [
-      "directory"
+  &quot;keyToStringList&quot;: {
+    &quot;ChangesTree.GroupingKeys&quot;: [
+      &quot;directory&quot;
     ]
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
       <recent name="model" />

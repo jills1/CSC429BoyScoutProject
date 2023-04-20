@@ -1,15 +1,10 @@
 package model;
 
 // system imports
-import impresario.IModel;
-import impresario.IView;
 import javafx.scene.Scene;
 import java.util.Properties;
-import java.time.format.DateTimeFormatter;
-import java.time.LocalDateTime;
 
 // project imports
-import event.Event;
 import exception.InvalidPrimaryKeyException;
 
 
@@ -182,6 +177,7 @@ public class SellTreeTransaction extends Transaction {
 
         return(theTreeType);
     }
+
     public void processTransaction(Properties props, Properties props2) {
         try {
             Properties props3 = new Properties();
@@ -204,6 +200,10 @@ public class SellTreeTransaction extends Transaction {
             String treeDateStatusUpdate = (String) myTree.getState("dateStatusUpdate");
             props.setProperty("dateStatusUpdate", treeDateStatusUpdate);
             //-------
+            String sessionId = Session.getSessionId();
+            mySession= new Session(sessionId);
+            props3.setProperty("sessionID",sessionId);
+            //------
             //createAndShowUpdateTreeFormView();
         } catch(InvalidPrimaryKeyException e){
             transactionErrorMessage="Error cannot do this 2.";
