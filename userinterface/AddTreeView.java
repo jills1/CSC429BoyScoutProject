@@ -105,21 +105,6 @@ public class AddTreeView extends View
         notes.setEditable(true);
         grid.add(notes, 1, 2);
 
-        //Text treeStatusLabel = new Text("Status: ");
-        //treeStatusLabel.setFont(myFont);
-        //treeStatusLabel.setWrappingWidth(150);
-        //treeStatusLabel.setTextAlignment(TextAlignment.RIGHT);
-        //grid.add(treeStatusLabel, 0 , 3);
-
-        //status = new ComboBox();
-        //ObservableList options = status.getItems();
-        //options.add("Available");
-        //options.add("Sold");
-        //options.add("Damaged");
-        //status.setItems(options);
-        //status.getSelectionModel().selectFirst();
-        //grid.add(status, 1,3);
-
         HBox cont = new HBox(10);
         cont.setAlignment(Pos.CENTER);
 
@@ -131,6 +116,7 @@ public class AddTreeView extends View
                 treeType = barcode.getText().substring(0,2);
                 treeTypeLastDigit = barcode.getText().substring(1,2);
                 String date = String.valueOf(java.time.LocalDateTime.now());
+                System.out.println(date);
                 String dUS = date.substring(0,10);
                 String status = "Available";
                 Properties p = new Properties();

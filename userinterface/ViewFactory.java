@@ -1,6 +1,7 @@
 package userinterface;
 
 import impresario.IModel;
+import model.EndShiftDataTransaction;
 
 //==============================================================================
 public class ViewFactory {
@@ -86,6 +87,10 @@ public class ViewFactory {
 		else if(viewName.equals("RemoveView") == true)
 		{
 			return new RemoveView(model);
+		}
+		else if (viewName.equals("EndShiftDataView") == true)
+		{
+			return new EndShiftDataView(model);
 		}
 		else
 			return null;
