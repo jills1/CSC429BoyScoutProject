@@ -3,6 +3,8 @@ import java.util.Properties;
 import java.util.Vector;
 import impresario.IView;
 public class TransactionCollection  extends EntityBase implements IView {
+    private double totalCashSales;
+    private double totalCheckSales;
     private static final String myTableName = "Transaction";
     private Vector<TransactionClass> transactionList;
     public TransactionCollection() {super(myTableName); transactionList = new Vector<>();}
@@ -56,6 +58,30 @@ public class TransactionCollection  extends EntityBase implements IView {
             }
         }
         return retValue;
+    }
+    public void retrieveSession(String sessionID) {
+        String query = "SELECT * FROM " + myTableName + " WHERE (sessionID = " + sessionID + " )";
+        Vector<Properties> info = getSelectQueryResult(query);
+        transactionList.clear();
+        for(int e = 0; e < info.size(); e++) {
+            Properties selectInfo = info.elementAt(e);
+            TransactionClass trans = new TransactionClass(selectInfo);
+            transactionList.add(trans);
+        }
+        totalAmountTrans();
+    }
+    private void totalAmountTrans() {
+        for(int i = 0; i < transactionList.size(); i++) {
+            TransactionClass t = transactionList.elementAt(i);
+            String paymentMethod = (String)t.getState("paymentMethod");
+            if(paymentMethod.equals("cash")){
+                double amount = Double.parseDouble((String)t.getState("transactionAmount"));
+                totalCashSales += amount;
+            } else if(paymentMethod.equals("check")) {
+                double amount = Double.parseDouble((String)t.getState("transactionAmount"));
+                totalCheckSales += amount;
+            }
+        }
     }
     public void updateState(String key, Object value)
     {

@@ -49,9 +49,7 @@ public class SelectUpdateScoutView extends View
     protected TableView<ScoutTableModel> tableOfScouts;
     protected Button cancelButton;
     protected Button submitButton;
-
     protected MessageView statusLog;
-
 
     //--------------------------------------------------------------------------
     public SelectUpdateScoutView(IModel wsc)

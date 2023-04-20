@@ -92,19 +92,19 @@ public class TransactionClass extends EntityBase implements IView {
     //-----------------------------------------------------------------------------------
     private void updateStateInDatabase() {
         try {
-            if (persistentState.getProperty("scoutID") != null) {
+            if (persistentState.getProperty("transactionID") != null) {
                 Properties whereClause = new Properties();
-                whereClause.setProperty("scoutID", persistentState.getProperty("scoutID"));
+                whereClause.setProperty("transactionID", persistentState.getProperty("transactionID"));
                 updatePersistentState(mySchema, persistentState, whereClause);
-                updateStatusMessage = "Scout data updated successfully in database!";
+                updateStatusMessage = "transaction data updated successfully in database!";
             } else {
                 //insert
-                Integer scoutId = insertAutoIncrementalPersistentState(mySchema, persistentState);
-                persistentState.setProperty("scoutID", "" + scoutId.intValue());
-                updateStatusMessage = "Scout data for new scout installed successfully in database!";
+                Integer transactionID = insertAutoIncrementalPersistentState(mySchema, persistentState);
+                persistentState.setProperty("transactionID", "" + transactionID.intValue());
+                updateStatusMessage = "Transaction data for new scout installed successfully in database!";
             }
         } catch (SQLException ex) {
-            updateStatusMessage = "Error in installing scout data in database!";
+            updateStatusMessage = "Error in installing transaction data in database!";
         }
         //DEBUG System.out.println("updateStateInDatabase " + updateStatusMessage);
     }
