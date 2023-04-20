@@ -93,12 +93,26 @@ public class Session extends EntityBase implements IView
             }
         }
     }
-
+    private void getSessionID() {
+        String query = "SELECT * FROM " + myTableName + " WHERE endTime IS NULL";
+        Vector<Properties> allData = getSelectQueryResult(query);
+        if(allData == null || allData.size() != 1)
+            return;
+        Properties data = allData.elementAt(0);
+        persistentState = new Properties();
+        Enumeration keys = data.propertyNames();
+        while(keys.hasMoreElements()) {
+            String nextKey = (String)keys.nextElement();
+            String value = data.getProperty(nextKey);
+            if(value != null) {
+                persistentState.setProperty(nextKey, value);
+            }
+        }
+    }
     private void setDependencies() {
         dependencies = new Properties();
         myRegistry.setDependencies(dependencies);
     }
-
     public Object getState(String key)
     {
         if (key.equals("UpdateStatusMessage") == true) {
@@ -106,7 +120,6 @@ public class Session extends EntityBase implements IView
         }
         return persistentState.getProperty(key);
     }
-
     public void stateChangeRequest(String key, Object value)
     {
         persistentState.setProperty(key, (String) value);
@@ -118,7 +131,7 @@ public class Session extends EntityBase implements IView
         stateChangeRequest(key, value);
     }
     //-----------------------------------------------------------------------------------
-    public static int compare(Tree a, Tree b) {
+    public static int compare(Session a, Session b) {
         String aNum = (String)a.getState("sessionID");
         String bNum = (String)b.getState("sessionID");
         return aNum.compareTo(bNum);
@@ -127,38 +140,31 @@ public class Session extends EntityBase implements IView
     public void update() {
         updateStateInDatabase();
     }
-
-    private void updateStateInDatabase()
-    {
-        try
-        {
-            // update
-            if (persistentState.getProperty("sessionID") != null)
-            {
+    private void updateStateInDatabase() {
+        try {
+            String sessionID = persistentState.getProperty("sessionID");
+            boolean sessionExists = sessionID != null;
+            if(sessionExists) {
+                // update
                 Properties whereClause = new Properties();
-                whereClause.setProperty("sessionID",
-                        persistentState.getProperty("sessionID"));
+                whereClause.setProperty("sessionID", sessionID);
                 updatePersistentState(mySchema, persistentState, whereClause);
-                updateStatusMessage = "Session Updated!";
+                String startDate = (String)getState("startDate");
+                String startTime = (String)getState("startTime");
+                updateStatusMessage = "Data for session starting on " + startDate + " at " + startTime + "saved successfully";
+            } else {
+                // insert
+                Integer newSessionID = insertAutoIncrementalPersistentState(mySchema, persistentState);
+                persistentState.setProperty("sessionID", "" + newSessionID.intValue());
+                String startDate = (String)getState("startDate");
+                String startTime = (String)getState("startTime");
+                updateStatusMessage = "Data for new session starting on " + startDate + " at " + startTime + "saved successfully";
             }
-            else
-            {
-                //insert
-                Integer sessionId =
-                        insertAutoIncrementalPersistentState(mySchema, persistentState);
-                persistentState.setProperty("sessionID", "" + sessionId.intValue());
-                updateStatusMessage = "Session Started!";
-            }
+        } catch (SQLException e) {
+            updateStatusMessage = "Error in saving session data to the database.";
         }
-        catch (SQLException ex)
-        {
-            updateStatusMessage = "Error in installing session data in database!";
-        }
-        //DEBUG System.out.println("updateStateInDatabase " + updateStatusMessage);
     }
-
-    public Vector<String> getEntryListView()
-    {
+    public Vector<String> getEntryListView() {
         Vector<String> v = new Vector<String>();
         v.addElement(persistentState.getProperty("sessionID"));
         v.addElement(persistentState.getProperty("startDate"));
@@ -168,42 +174,11 @@ public class Session extends EntityBase implements IView
         v.addElement(persistentState.getProperty("endingCash"));
         v.addElement(persistentState.getProperty("totalCheckTransactionAmount"));
         v.addElement(persistentState.getProperty("notes"));
-
         return v;
     }
-
     protected void initializeSchema(String tableName) {
         if (mySchema == null) {
             mySchema = getSchemaInfo(tableName);
         }
     }
-
-    public String toString()
-    {
-        return "session: " + persistentState.getProperty("sessionID") ;
-    }
-    public String toString1() {
-        String retVal = "";
-        Enumeration allKeys = persistentState.propertyNames();
-        while (allKeys.hasMoreElements() == true) {
-            String nextKey = (String) allKeys.nextElement();
-            String nextValue = persistentState.getProperty(nextKey);
-            retVal += nextKey + ": " + nextValue + "; ";
-        }
-        return retVal;
-    }
-
-    public void deleteStateInDatabase(){
-        try {
-            Properties whereClause = new Properties();
-            whereClause.setProperty("sessionID",persistentState.getProperty("sessionID"));
-            deletePersistentState( mySchema, whereClause );
-            updateStatusMessage = "Session with ID" + persistentState.getProperty("sessionID")+"DELETED successfully!";
-
-        }
-        catch(SQLException ex){
-            updateStatusMessage ="Error in deleting session data in database!";
-        }
-    }
-
 }

@@ -5,6 +5,8 @@ import exception.InvalidPrimaryKeyException;
 import userinterface.View;
 import userinterface.ViewFactory;
 public class EndShiftTransaction extends Transaction {
+    private double totalCheckSales;
+    private double endCash;
     private String transactionErrorMessage = "";
     private String accountUpdateStatusMessage = "";
     protected Session mySession;
@@ -19,11 +21,21 @@ public class EndShiftTransaction extends Transaction {
         dependencies.setProperty("UpdateTreeFormView", "TransactionError");
         myRegistry.setDependencies(dependencies);
     }
+    private void endCashTransaction() throws InvalidPrimaryKeyException {
+        Session currentSession = new Session();
+        String sessionID = (String)currentSession.getState("sessionID");
+        TransactionCollection transactions = new TransactionCollection();
+        transactions.retrieveSession(sessionID);
+        double startCash = Double.parseDouble((String)currentSession.getState("startingCash"));
+        double cashSales = (double)transactions.getState("cashSales");
+        endCash = startCash + cashSales;
+        totalCheckSales = (double)transactions.getState("checkSales");
+    }
     public void processTransaction(Properties props) {
         try {
             String sessionID= props.getProperty("sessionID");
             mySession= new Session(sessionID);
-            TransactionCollection.retrieve();
+            //TransactionCollection.retrieve(String.valueOf(mySession));
             String startDate = (String) mySession.getState("startDate");
             props.setProperty("startDate", startDate);
             //-------
