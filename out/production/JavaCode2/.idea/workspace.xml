@@ -5,13 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="42a9de0e-dc93-405f-946e-a04e330aeca0" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ErrorLog.txt" beforeDir="false" afterPath="$PROJECT_DIR$/ErrorLog.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/database/JDBCBroker.java" beforeDir="false" afterPath="$PROJECT_DIR$/database/JDBCBroker.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dbConfig.ini" beforeDir="false" afterPath="$PROJECT_DIR$/dbConfig.ini" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/model/TransactionFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/model/TransactionFactory.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/userinterface/AddTreeView.java" beforeDir="false" afterPath="$PROJECT_DIR$/userinterface/AddTreeView.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/userinterface/ViewFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/userinterface/ViewFactory.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/userinterface/EndShiftDataView.java" beforeDir="false" afterPath="$PROJECT_DIR$/userinterface/EndShiftDataView.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -45,6 +41,19 @@
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">
+    <option name="selectedUrlAndAccountId">
+      <UrlAndAccount>
+        <option name="accountId" value="ddeac8e8-bd2e-4868-aa48-d5feaf17a8e7" />
+        <option name="url" value="https://github.com/jills1/CSC429BoyScoutProject.git" />
+      </UrlAndAccount>
+    </option>
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
