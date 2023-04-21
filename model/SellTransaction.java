@@ -43,7 +43,8 @@ public class SellTransaction extends EntityBase implements IView
         super(myTableName);
 
         setDependencies();
-        String query = "SELECT * FROM " + myTableName + " WHERE (ID = " + ID + ")";
+        String query = "SELECT * FROM " + myTableName + " WHERE (transactionID = " + ID + ")";
+
 
         Vector<Properties> allDataRetrieved = getSelectQueryResult(query);
 
@@ -143,8 +144,8 @@ public class SellTransaction extends EntityBase implements IView
     //-----------------------------------------------------------------------------------
     public static int compare(SellTransaction a, SellTransaction b)
     {
-        String aNum = (String)a.getState("ID");
-        String bNum = (String)b.getState("ID");
+        String aNum = (String)a.getState("transactionID");
+        String bNum = (String)b.getState("transactionID");
 
         return aNum.compareTo(bNum);
     }
@@ -152,6 +153,7 @@ public class SellTransaction extends EntityBase implements IView
     //-----------------------------------------------------------------------------------
     public void update() //save
     {
+        System.out.println("I've reached update()");
         updateStateInDatabase();
     }
 
@@ -222,26 +224,26 @@ public class SellTransaction extends EntityBase implements IView
         try
         {
             // update
-            if (persistentState.getProperty("ID") != null)
+            if (persistentState.getProperty("transactionID") != null)
             {
                 Properties whereClause = new Properties();
-                whereClause.setProperty("ID",
-                        persistentState.getProperty("ID"));
+                whereClause.setProperty("transactionID",
+                        persistentState.getProperty("transactionID"));
                 updatePersistentState(mySchema, persistentState, whereClause);
                 updateStatusMessage = "Transaction data updated successfully in database!";
             }
             else
             {
                 //insert
-                Integer scoutId =
+                Integer transId =
                         insertAutoIncrementalPersistentState(mySchema, persistentState);
-                persistentState.setProperty("ID", "" + scoutId.intValue());
-                updateStatusMessage = "Transaction data for new transaction installed successfully in database!";
+                persistentState.setProperty("transactionID", "" + transId.intValue());
+                updateStatusMessage = "Transaction data for new scout installed successfully in database!";
             }
         }
         catch (SQLException ex)
         {
-            updateStatusMessage = "Error in installing scout data in database!";
+            updateStatusMessage = "Error in installing transaction data in database!";
         }
         //DEBUG System.out.println("updateStateInDatabase " + updateStatusMessage);
     }
@@ -256,7 +258,7 @@ public class SellTransaction extends EntityBase implements IView
     {
         Vector<String> v = new Vector<String>();
 
-        v.addElement(persistentState.getProperty("ID"));
+        v.addElement(persistentState.getProperty("transactionID"));
         v.addElement(persistentState.getProperty("sessionID"));
         v.addElement(persistentState.getProperty("transactionType"));
         v.addElement(persistentState.getProperty("barcode"));

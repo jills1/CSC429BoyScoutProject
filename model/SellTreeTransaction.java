@@ -215,6 +215,7 @@ public class SellTreeTransaction extends Transaction {
             props3.setProperty("transactionType", "Tree Sale");
             //-------------------------------------
             String treeBarcode = props.getProperty("barcode");
+            System.out.println("tree barcode is: "+treeBarcode);
             props3.setProperty("barcode", treeBarcode);
             //---------------------------------------
             String paymentMethod = props.getProperty("paymentMethod");
@@ -233,6 +234,7 @@ public class SellTreeTransaction extends Transaction {
             props3.setProperty("customerEmail", custEmailEntered);
             //-----------------------------------------
             String transactionDate = props.getProperty("transactionDate");
+            System.out.println("transaction date is: "+transactionDate);
             props3.setProperty("transactionDate", transactionDate);
             //------------------------------------------
             String  transactionTime = props.getProperty("transactionTime");
@@ -241,11 +243,12 @@ public class SellTreeTransaction extends Transaction {
             String dateStatusUpdated = props.getProperty("dateStatusUpdate");
             props3.setProperty("dateStatusUpdate", dateStatusUpdated);
            //-------------------------------------------------------
-            String sessionId = Session.getSessionId();
-            mySession= new Session(sessionId);
+            mySession= new Session("","");
+            String sessionId = mySession.getSessionId();
             props3.setProperty("sessionID",sessionId);
+            System.out.println("sessionID is: "+sessionId);
             //------
-            //myTransaction.update();
+            myTransaction.update();
         } catch(InvalidPrimaryKeyException e){
             transactionErrorMessage="Error cannot do this 4.";
         }

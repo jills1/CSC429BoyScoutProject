@@ -170,13 +170,7 @@ public class SellTreeTransactionView extends View
         transType = new ComboBox<String>();
         transType.getItems().addAll("Check", "Cash");
 
-        transType.setOnAction(new EventHandler<ActionEvent>() {
 
-            @Override
-            public void handle(ActionEvent e) {
-                processAction(e);
-            }
-        });
         grid.add(transType, 1, 3);
 
         Label custNameLabel = new Label("Customer  Name : ");
@@ -287,24 +281,30 @@ public class SellTreeTransactionView extends View
         LocalDateTime now = LocalDateTime.now();
         Integer hours = now.getHour();
         Integer minutes = now.getMinute();
-        String hoursAndMinutes = (hours.toString() + minutes.toString());
-        //DEBUG System.out.println(hoursAndMinutes);
+        String hoursAndMinutes = (hours.toString()+":" + minutes.toString());
+        System.out.println(hoursAndMinutes);
 
         String barcodeEntered = barcode.getText();
+        System.out.println(barcodeEntered);
         String costEntered = cost.getText();
+        System.out.println(costEntered);
         String paymentMethod = transType.getValue();
-        //DEBUG System.out.println(paymentMethod);
-        String custNameEntered = custName.getText();
-        String custPhoneEntered = custPhoneNumber.getText();
-        String custEmailEntered = custEmail.getText();
-        String transactionDate = dtf.format(now);
-        String transactionTime = hoursAndMinutes;
-        String dateStatusUpdated = dtf.format(now);
-        if(barcodeEntered.length()!= 5){
-            displayErrorMessage("Enter a valid barcode");
-        }
+        System.out.println(paymentMethod);
 
-        else if(isNumeric(costEntered) == false) {
+        String custNameEntered = custName.getText();
+        System.out.println(custNameEntered);
+        String custPhoneEntered = custPhoneNumber.getText();
+        System.out.println(custPhoneEntered);
+        String custEmailEntered = custEmail.getText();
+        System.out.println(custEmailEntered);
+        String transactionDate = dtf.format(now);
+        System.out.println(transactionDate);
+        String transactionTime = hoursAndMinutes;
+        System.out.println(transactionTime);
+        String dateStatusUpdated = dtf.format(now);
+        System.out.println(dateStatusUpdated);
+
+        /*if((costEntered == null) || !isNumeric(costEntered)) {
             displayErrorMessage("Enter a valid cost");
         }
 
@@ -312,7 +312,7 @@ public class SellTreeTransactionView extends View
             displayErrorMessage("Name too long for the database");
         }
         else if ((custNameEntered == null) || (isNumeric(custNameEntered)== true)) {
-            displayErrorMessage("Enter a valid custommer name");
+            displayErrorMessage("Enter a valid customer name");
         }
 
         else if ((custPhoneEntered == null) || (isNumeric(custNameEntered)== false)) {
@@ -330,10 +330,12 @@ public class SellTreeTransactionView extends View
         {
             displayErrorMessage("Please change the email");
         }
-        else {
+        else {*/
+            System.out.println("getting to else  before ProcesTransactionInfo call");
             processTransactionInfo(barcodeEntered, costEntered, paymentMethod, custNameEntered,
                     custPhoneEntered, custEmailEntered, transactionDate, transactionTime, dateStatusUpdated);
-        }
+        //}
+
         clearErrorMessage();
     }
     private void processAction2(Event evt)
@@ -390,11 +392,11 @@ public class SellTreeTransactionView extends View
         props.setProperty("transactionDate", transactionDate);
         props.setProperty("transactionTime", transactionTime);
         props.setProperty("dateStatusUpdate", dateStatusUpdated);
-
+        System.out.println("collection of transaction info");
         props2.setProperty("barcode", barcodeEntered);
         props2.setProperty("status", "Sold");
         props2.setProperty("dateStatusUpdate", dateStatusUpdated);
-
+        System.out.println("collection of tree info");
         myModel.stateChangeRequest("UpdateTransactionInfo", props);
         myModel.stateChangeRequest("UpdateTreeInfo", props2);
 

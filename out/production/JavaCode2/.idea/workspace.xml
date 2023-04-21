@@ -5,18 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c36429a9-fc74-41c8-af7b-80a3a49214ef" name="Changes" comment="added sellTreeTransactioview">
-      <change beforePath="$PROJECT_DIR$/ErrorLog.txt" beforeDir="false" afterPath="$PROJECT_DIR$/ErrorLog.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/model/SellTreeTransaction.java" beforeDir="false" afterPath="$PROJECT_DIR$/model/SellTreeTransaction.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/model/Session.java" beforeDir="false" afterPath="$PROJECT_DIR$/model/Session.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/JavaCode2/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JavaCode2/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/JavaCode2/ErrorLog.txt" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JavaCode2/ErrorLog.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/JavaCode2/model/SellTreeTransaction.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JavaCode2/model/SellTreeTransaction.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/JavaCode2/userinterface/SellTreeTransactionView$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JavaCode2/userinterface/SellTreeTransactionView$1.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/JavaCode2/userinterface/SellTreeTransactionView$2.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JavaCode2/userinterface/SellTreeTransactionView$2.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/JavaCode2/userinterface/SellTreeTransactionView$4.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JavaCode2/userinterface/SellTreeTransactionView$4.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/JavaCode2/userinterface/SellTreeTransactionView$8.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JavaCode2/userinterface/SellTreeTransactionView$8.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/JavaCode2/userinterface/SellTreeTransactionView$9.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JavaCode2/userinterface/SellTreeTransactionView$9.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/JavaCode2/userinterface/SellTreeTransactionView$10.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JavaCode2/userinterface/SellTreeTransactionView$10.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/JavaCode2/userinterface/SellTreeTransactionView.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JavaCode2/userinterface/SellTreeTransactionView.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/userinterface/SellTreeTransactionView.java" beforeDir="false" afterPath="$PROJECT_DIR$/userinterface/SellTreeTransactionView.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
