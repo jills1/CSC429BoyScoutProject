@@ -187,18 +187,15 @@ public class SellTreeTransaction extends Transaction {
     }
 
     public void processTree(Properties props) {
-       /* try {
+       try {
             Properties props3 = new Properties();
             String barcode= props.getProperty("barcode");
             myTree= new Tree(barcode);
-            props3.setProperty("transactionType", "Tree Sale");
             //-------------------------------------
             props3.setProperty("barcode", barcode);
             //--------------------------------------
-
-            //-------
             String treeStatus = (String) myTree.getState("status");
-            props.setProperty("status", "sold");
+            props3.setProperty("status", "Sold");
             //-------
             String treeNotes = (String) myTree.getState("notes");
             props.setProperty("notes", treeNotes);
@@ -206,38 +203,51 @@ public class SellTreeTransaction extends Transaction {
             String treeDateStatusUpdate = (String) myTree.getState("dateStatusUpdate");
             props.setProperty("dateStatusUpdate", treeDateStatusUpdate);
             //------
-            //createAndShowUpdateTreeFormView();
+           myTree.update();
         } catch(InvalidPrimaryKeyException e){
             transactionErrorMessage="Error cannot do this 3.";
-        }*/
+        }
     }
     public void processTransaction(Properties props) {
-      /*  try {
+        try {
             Properties props3 = new Properties();
-            String barcode= props.getProperty("barcode");
             myTransaction = new SellTransaction(props3);
             props3.setProperty("transactionType", "Tree Sale");
             //-------------------------------------
-            props3.setProperty("barcode", barcode);
-            //--------------------------------------
-
-            //-------
-            String treeStatus = (String) myTree.getState("status");
-            props.setProperty("status", "sold");
-            //-------
-            String treeNotes = (String) myTree.getState("notes");
-            props.setProperty("notes", treeNotes);
-            //-------
-            String treeDateStatusUpdate = (String) myTree.getState("dateStatusUpdate");
-            props.setProperty("dateStatusUpdate", treeDateStatusUpdate);
-            //-------
+            String treeBarcode = props.getProperty("barcode");
+            props3.setProperty("barcode", treeBarcode);
+            //---------------------------------------
+            String paymentMethod = props.getProperty("paymentMethod");
+            props3.setProperty("paymentMethod", paymentMethod);
+            //---------------------------------------
+            String costEntered = props.getProperty("transactionAmount");
+            props3.setProperty("transactionAmount", costEntered);
+            //---------------------------------------
+            String custNameEntered = props.getProperty("customerName");
+            props3.setProperty("customerName", custNameEntered);
+            //----------------------------------------
+            String custPhoneEntered = props.getProperty("customerPhone");
+            props3.setProperty("customerPhone", custPhoneEntered);
+            //----------------------------------------
+            String custEmailEntered = props.getProperty("customerEmail");
+            props3.setProperty("customerEmail", custEmailEntered);
+            //-----------------------------------------
+            String transactionDate = props.getProperty("transactionDate");
+            props3.setProperty("transactionDate", transactionDate);
+            //------------------------------------------
+            String  transactionTime = props.getProperty("transactionTime");
+            props3.setProperty("transactionTime", transactionTime);
+            //------------------------------------------
+            String dateStatusUpdated = props.getProperty("dateStatusUpdate");
+            props3.setProperty("dateStatusUpdate", dateStatusUpdated);
+           //-------------------------------------------------------
             String sessionId = Session.getSessionId();
             mySession= new Session(sessionId);
             props3.setProperty("sessionID",sessionId);
             //------
-            //createAndShowUpdateTreeFormView();
+            //myTransaction.update();
         } catch(InvalidPrimaryKeyException e){
             transactionErrorMessage="Error cannot do this 4.";
-        }*/
+        }
     }
 }
