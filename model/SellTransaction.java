@@ -14,8 +14,7 @@ import database.*;
 
 import impresario.IView;
 
-//import userinterface.View;
-//import userinterface.ViewFactory;
+
 
 /** The class containing the SellTransaction information for the Tree Sales application */
 //==============================================================
@@ -153,7 +152,6 @@ public class SellTransaction extends EntityBase implements IView
     //-----------------------------------------------------------------------------------
     public void update() //save
     {
-        System.out.println("I've reached update()");
         updateStateInDatabase();
     }
 
@@ -245,7 +243,6 @@ public class SellTransaction extends EntityBase implements IView
         {
             updateStatusMessage = "Error in installing transaction data in database!";
         }
-        //DEBUG System.out.println("updateStateInDatabase " + updateStatusMessage);
     }
 
 
@@ -276,7 +273,6 @@ public class SellTransaction extends EntityBase implements IView
 
 
     //-----------------------------------------------------------------------------------
-    //this will be in every persistable
     protected void initializeSchema(String tableName)
     {
         if (mySchema == null)
