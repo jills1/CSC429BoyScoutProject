@@ -30,7 +30,7 @@ import impresario.IModel;
 import model.Tree;
 import model.TreeType;
 
-/** The class containing the Deposit Transaction View  for the ATM application */
+/** The class containing the sell tree  Transaction View  for TLC application  */
 //==============================================================
 public class SellTreeTransactionView extends View
 {
@@ -278,7 +278,7 @@ public class SellTreeTransactionView extends View
 
 
     /**
-     * Process barcode number selected by user.
+     * Process barcode number entered by user.
      * Action is to pass this info on to the transaction object.
      */
     //----------------------------------------------------------
@@ -289,27 +289,16 @@ public class SellTreeTransactionView extends View
         Integer hours = now.getHour();
         Integer minutes = now.getMinute();
         String hoursAndMinutes = (hours.toString()+":" + minutes.toString());
-        System.out.println(hoursAndMinutes);
-
         String barcodeEntered = barcode.getText();
-        System.out.println(barcodeEntered);
         String costEntered = cost.getText();
-        System.out.println(costEntered);
         String paymentMethod = transType.getValue();
-        System.out.println(paymentMethod);
-
         String custNameEntered = custName.getText();
-        System.out.println(custNameEntered);
         String custPhoneEntered = custPhoneNumber.getText();
-        System.out.println(custPhoneEntered);
         String custEmailEntered = custEmail.getText();
-        System.out.println(custEmailEntered);
         String transactionDate = dtf.format(now);
-        System.out.println(transactionDate);
         String transactionTime = hoursAndMinutes;
-        System.out.println(transactionTime);
         String dateStatusUpdated = dtf.format(now);
-        System.out.println(dateStatusUpdated);
+
 
 
         if((costEntered == null) || !isNumeric(costEntered)) {
@@ -337,7 +326,7 @@ public class SellTreeTransactionView extends View
         else
             processTransactionInfo(barcodeEntered, costEntered, paymentMethod, custNameEntered,
                     custPhoneEntered, custEmailEntered, transactionDate, transactionTime, dateStatusUpdated);
-            //displayErrorMessage("tests are working !");
+
 
     }
     private void processAction2(Event evt)
@@ -359,13 +348,8 @@ public class SellTreeTransactionView extends View
         Properties props = new Properties();
         Properties props2 = new Properties();
         String prefix = firstTwo(barcode);
-        System.out.println(prefix);
         props.setProperty("barcode", barcode);
-
         props2.setProperty("barcodePrefix", prefix);
-
-
-
 
         myModel.stateChangeRequest("SubmitSellTree", props);
         myModel.stateChangeRequest("SubmitSellTreeType", props2);

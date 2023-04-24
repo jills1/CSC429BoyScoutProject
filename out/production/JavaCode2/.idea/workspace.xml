@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
   <component name="ChangeListManager">
-    <list default="true" id="32507b7d-0217-4824-b64d-9dab78a1dcb5" name="Changes" comment="Test">
-      <change beforePath="$PROJECT_DIR$/classes/model/Transaction.class" beforeDir="false" afterPath="$PROJECT_DIR$/classes/model/Transaction.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/classes/model/TransactionFactory.class" beforeDir="false" afterPath="$PROJECT_DIR$/classes/model/TransactionFactory.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/classes/model/UpdateScoutTransaction.class" beforeDir="false" afterPath="$PROJECT_DIR$/classes/model/UpdateScoutTransaction.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/classes/userinterface/ViewFactory.class" beforeDir="false" afterPath="$PROJECT_DIR$/classes/userinterface/ViewFactory.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/model/SellTreeTransaction.java" beforeDir="false" afterPath="$PROJECT_DIR$/model/SellTreeTransaction.java" afterDir="false" />
+    <list default="true" id="c36429a9-fc74-41c8-af7b-80a3a49214ef" name="Changes" comment="added sellTreeTransactioview">
+      <change beforePath="$PROJECT_DIR$/out/production/JavaCode2/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JavaCode2/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/JavaCode2/ErrorLog.txt" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JavaCode2/ErrorLog.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/JavaCode2/model/SellTreeTransaction.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JavaCode2/model/SellTreeTransaction.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -21,17 +22,25 @@
     </option>
   </component>
   <component name="Git.Settings">
-    <option name="RECENT_BRANCH_BY_REPOSITORY">
-      <map>
-        <entry key="$PROJECT_DIR$" value="main" />
-      </map>
-    </option>
+    <favorite-branches>
+      <branch-storage>
+        <map>
+          <entry type="REMOTE">
+            <value>
+              <list>
+                <branch-info repo="$PROJECT_DIR$" source="origin/Miranda" />
+              </list>
+            </value>
+          </entry>
+        </map>
+      </branch-storage>
+    </favorite-branches>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
-  <component name="ProjectId" id="2NJAC7l7g6aBucwa9rpIIiqze53" />
+  <component name="ProjectId" id="2NKdRBVLx1R475nIh6lGmat4jnS" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
@@ -42,36 +51,79 @@
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/Sweet Baby Jay/OneDrive/Documents/BoyScoutProject/CSC429BoyScoutProject/mariadb-java-client-3.0.3.jar&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Libraries&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/miran/Documents/Brocckport/software development/CSC429BoyScoutProject/mariadb-java-client-3.0.3.jar&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Problems&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
     &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;
+  },
+  &quot;keyToStringList&quot;: {
+    &quot;ChangesTree.GroupingKeys&quot;: [
+      &quot;directory&quot;
+    ]
   }
 }</component>
   <component name="RecentsManager">
-    <key name="CreateClassDialog.RecentsKey">
-      <recent name="userinterface" />
+    <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
       <recent name="model" />
     </key>
+  </component>
+  <component name="RunManager">
+    <configuration name="TLCTest" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="TLCTest" />
+      <module name="JavaCode2" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.TLCTest" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="32507b7d-0217-4824-b64d-9dab78a1dcb5" name="Changes" comment="" />
-      <created>1679371684253</created>
+      <changelist id="c36429a9-fc74-41c8-af7b-80a3a49214ef" name="Changes" comment="" />
+      <created>1679416696808</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1679371684253</updated>
+      <updated>1679416696808</updated>
     </task>
-    <task id="LOCAL-00001" summary="Test">
-      <created>1679523301908</created>
+    <task id="LOCAL-00001" summary="..">
+      <created>1680146273870</created>
       <option name="number" value="00001" />
       <option name="presentableId" value="LOCAL-00001" />
       <option name="project" value="LOCAL" />
-      <updated>1679523301908</updated>
+      <updated>1680146273870</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="..">
+      <created>1680195861626</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1680195861626</updated>
+    </task>
+    <task id="LOCAL-00003" summary="added sellTreeTransactioview">
+      <created>1681406716215</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1681406716215</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
+  </component>
+  <component name="Vcs.Log.History.Properties">
+    <option name="COLUMN_ID_ORDER">
+      <list>
+        <option value="Default.Root" />
+        <option value="Default.Author" />
+        <option value="Default.Date" />
+        <option value="Default.Subject" />
+        <option value="Space.CommitStatus" />
+      </list>
+    </option>
   </component>
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">
@@ -85,7 +137,8 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Test" />
-    <option name="LAST_COMMIT_MESSAGE" value="Test" />
+    <MESSAGE value=".." />
+    <MESSAGE value="added sellTreeTransactioview" />
+    <option name="LAST_COMMIT_MESSAGE" value="added sellTreeTransactioview" />
   </component>
 </project>

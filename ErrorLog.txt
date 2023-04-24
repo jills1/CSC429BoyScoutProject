@@ -89,3 +89,5 @@
 [4/21/23, 4:03 PM]|SellTransaction|insertAutoIncrementalPersistentState|Error|NOTAG|null<SQL Exception: 1364: (conn=59074) Field 'sessionID' doesn't have a default value>
 [4/21/23, 4:05 PM]|SellTransaction|insertAutoIncrementalPersistentState|Error|NOTAG|null<SQL Exception: 1364: (conn=59115) Field 'sessionID' doesn't have a default value>
 [4/21/23, 4:10 PM]|SellTransaction|insertAutoIncrementalPersistentState|Error|NOTAG|null<SQL Exception: 1364: (conn=59132) Field 'sessionID' doesn't have a default value>
+[4/24/23 12:13 PM]|Tree|getSelectQueryResult|Error|NOTAG|null<SQL Exception: 1064: (conn=63968) You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near ')' at line 1>
+[4/24/23 12:13 PM]|TreeType|getSelectQueryResult|Error|NOTAG|null<SQL Exception: 1064: (conn=63968) You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near ')' at line 1>
