@@ -195,26 +195,27 @@ public class SellTreeTransaction extends Transaction {
     }
 
     public void processTree(Properties props) {
-       try {
-            Properties props3 = new Properties();
-            String barcode= props.getProperty("barcode");
-            myTree= new Tree(barcode);
-            //-------------------------------------
-            props.setProperty("barcode", barcode);
+       //try {
+            //String barcode= props.getProperty("barcode");
+            myTree= new Tree(props);
+            /*//-------------------------------------
+            //props.setProperty("barcode", barcode);
             //--------------------------------------
             String treeStatus = (String) myTree.getState("status");
             props.setProperty("status", "Sold");
+            myTree.dependencies.setProperty("status", "Sold");
             //-------
             String treeNotes = (String) myTree.getState("notes");
             props.setProperty("notes", treeNotes);
+            myTree.dependencies.setProperty("notes");
             //-------
             String treeDateStatusUpdate = (String) myTree.getState("dateStatusUpdate");
-            props.setProperty("dateStatusUpdate", treeDateStatusUpdate);
-            //------
+            myTree.dependencies.setProperty("dateStatusUpdate", treeDateStatusUpdate);
+            //------*/
            myTree.update();
-        } catch(InvalidPrimaryKeyException e){
+        /*} catch(InvalidPrimaryKeyException e){
             transactionErrorMessage="Error cannot do this 3.";
-        }
+        }*/
     }
     public void processTransaction(Properties props) {
         try {
