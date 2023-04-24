@@ -7,6 +7,12 @@ import java.util.Enumeration;
 import java.util.Properties;
 import java.util.Vector;
 import javax.swing.*;
+import java.util.Properties;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
+import java.time.*;
+
+import javafx.scene.Scene;
 
 import database.*;
 public class Session extends EntityBase implements IView {
@@ -150,6 +156,15 @@ public class Session extends EntityBase implements IView {
         } catch (SQLException e) {
             updateStatusMessage = "Error in saving session data to the database.";
         }
+    }
+    public void update2(Properties props) {
+        Enumeration keys = props.propertyNames();
+        while(keys.hasMoreElements()) {
+            String nextKey = (String)keys.nextElement();
+            String nextVal = props.getProperty(nextKey);
+            persistentState.setProperty(nextKey, nextVal); // don't think we need a null check here
+        }
+        updateStateInDatabase();
     }
     public Vector<String> getEntryListView() {
         Vector<String> v = new Vector<String>();

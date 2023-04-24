@@ -1,5 +1,9 @@
 package model;
 import javafx.scene.Scene;
+
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
 import java.util.Properties;
 import exception.InvalidPrimaryKeyException;
 import userinterface.View;
@@ -120,6 +124,24 @@ public class EndShiftTransaction extends Transaction {
         }
         return null;
     }
+    private void endSession(String endCash, String totalCheckSales, String notes) {
+        if(notes.length() > 500) {
+            stateChangeRequest("NotesTooLong", "");
+            return;
+        }
+        String endTime = Instant.now().atZone(ZoneId.of("America/New_York")).truncatedTo(ChronoUnit.MINUTES).toString();
+        int colon = endTime.indexOf(":");
+        endTime = endTime.substring(colon - 2, colon + 2);
+        //--
+        Properties props = new Properties();
+        props.setProperty("endTime", endTime);
+        props.setProperty("endingCash", String.valueOf(endCash));
+        props.setProperty("totalCheckTransactionAmount", String.valueOf(totalCheckSales));
+        props.setProperty("notes", notes);
+        //--
+        //mySession.update(props);
+        stateChangeRequest("submitEndShift", "");
+    }
     public void stateChangeRequest(String key, Object value) {
         if (key.equals("DoYourJob")) {
             doYourJob();
@@ -148,10 +170,4 @@ public class EndShiftTransaction extends Transaction {
         }
         return currentScene;
     }
-    //protected void showEndShiftDataView() {
-        //View newsView = ViewFactory.createView("EndShiftDataView", this);
-        //assert newsView != null;
-        //Scene newsScene = new Scene(newsView);
-        //swapToView(newsScene);
-    //}
 }
