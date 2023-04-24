@@ -1,0 +1,64 @@
+<changelist name="Uncommitted_changes_before_Update_at_4_20_2023_1_12_PM_[Changes]" date="1682010747633" recycled="false" toDelete="true">
+  <option name="PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_4_20_2023_1_12_PM_[Changes]/shelved.patch" />
+  <option name="DESCRIPTION" value="Uncommitted changes before Update at 4/20/2023 1:12 PM [Changes]" />
+  <binary>
+    <option name="BEFORE_PATH" value="out/production/JavaCode2/model/EndShiftDataTransaction.class" />
+    <option name="AFTER_PATH" value="out/production/JavaCode2/model/EndShiftDataTransaction.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_4_20_2023_1_12_PM_[Changes]/EndShiftDataTransaction.class" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="out/production/JavaCode2/userinterface/SelectUpdateScoutView$2.class" />
+    <option name="AFTER_PATH" value="out/production/JavaCode2/userinterface/SelectUpdateScoutView$2.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_4_20_2023_1_12_PM_[Changes]/SelectUpdateScoutView$2.class" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="out/production/JavaCode2/userinterface/EndShiftDataView$2.class" />
+    <option name="AFTER_PATH" value="out/production/JavaCode2/userinterface/EndShiftDataView$2.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_4_20_2023_1_12_PM_[Changes]/EndShiftDataView$2.class" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="out/production/JavaCode2/userinterface/EndShiftDataView.class" />
+    <option name="AFTER_PATH" value="out/production/JavaCode2/userinterface/EndShiftDataView.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_4_20_2023_1_12_PM_[Changes]/EndShiftDataView.class" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="out/production/JavaCode2/userinterface/SelectUpdateScoutView$1.class" />
+    <option name="AFTER_PATH" value="out/production/JavaCode2/userinterface/SelectUpdateScoutView$1.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_4_20_2023_1_12_PM_[Changes]/SelectUpdateScoutView$1.class" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="out/production/JavaCode2/userinterface/EndShiftDataView$1.class" />
+    <option name="AFTER_PATH" value="out/production/JavaCode2/userinterface/EndShiftDataView$1.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_4_20_2023_1_12_PM_[Changes]/EndShiftDataView$1.class" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="out/production/JavaCode2/database/JDBCBroker.class" />
+    <option name="AFTER_PATH" value="out/production/JavaCode2/database/JDBCBroker.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_4_20_2023_1_12_PM_[Changes]/JDBCBroker.class" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="out/production/JavaCode2/userinterface/SelectUpdateScoutView$3.class" />
+    <option name="AFTER_PATH" value="out/production/JavaCode2/userinterface/SelectUpdateScoutView$3.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_4_20_2023_1_12_PM_[Changes]/SelectUpdateScoutView$3.class" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="out/production/JavaCode2/model/TransactionFactory.class" />
+    <option name="AFTER_PATH" value="out/production/JavaCode2/model/TransactionFactory.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_4_20_2023_1_12_PM_[Changes]/TransactionFactory.class" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="out/production/JavaCode2/userinterface/SelectUpdateScoutView.class" />
+    <option name="AFTER_PATH" value="out/production/JavaCode2/userinterface/SelectUpdateScoutView.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_4_20_2023_1_12_PM_[Changes]/SelectUpdateScoutView.class" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="out/production/JavaCode2/model/Session.class" />
+    <option name="AFTER_PATH" value="out/production/JavaCode2/model/Session.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_4_20_2023_1_12_PM_[Changes]/Session.class" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="out/production/JavaCode2/userinterface/ViewFactory.class" />
+    <option name="AFTER_PATH" value="out/production/JavaCode2/userinterface/ViewFactory.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_4_20_2023_1_12_PM_[Changes]/ViewFactory.class" />
+  </binary>
+</changelist>
