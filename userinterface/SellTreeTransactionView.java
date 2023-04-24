@@ -378,13 +378,10 @@ public class SellTreeTransactionView extends View
         props.setProperty("transactionDate", transactionDate);
         props.setProperty("transactionTime", transactionTime);
         props.setProperty("dateStatusUpdate", dateStatusUpdated);
-        System.out.println("collection of transaction info");
         props2.setProperty("barcode", barcodeEntered);
         props2.setProperty("status", "Sold");
         props2.setProperty("dateStatusUpdate", dateStatusUpdated);
-        System.out.println("collection of tree info");
         myModel.stateChangeRequest("UpdateTreeInfo", props2);
-        System.out.println("tree info sent");
         myModel.stateChangeRequest("UpdateTransactionInfo", props);
 
         displayMessage("Successfully sold Tree");
