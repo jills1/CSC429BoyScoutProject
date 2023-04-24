@@ -85,10 +85,10 @@ public class JDBCBroker
 		props = new PropertyFile("dbConfig.ini");
 		if (props != null)
 		{
-			dbName = "spr23_csc429_aspra3";
-			username = "aspra3";
-			password = "_spr23_0";
-			server = "127.0.0.1";
+			dbName = "spr23_csc429_mholm2";
+			username = "mholm2";
+			password = "Righthand23";
+			server = "csdb.brockport.edu";
 			if (server == null)
 				server = "127.0.0.1";
 			dbClassNameVal = props.getProperty("dbClassName");

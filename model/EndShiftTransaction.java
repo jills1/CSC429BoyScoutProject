@@ -38,9 +38,8 @@ public class EndShiftTransaction extends Transaction {
     }
     public void processTransaction(Properties props) {
         try {
-            String sessionID= props.getProperty("sessionID");
+            String sessionID= getSessionID();
             mySession= new Session(sessionID);
-            //TransactionCollection.retrieve(String.valueOf(mySession));
             String startDate = (String) mySession.getState("startDate");
             props.setProperty("startDate", startDate);
             //-------
@@ -62,7 +61,7 @@ public class EndShiftTransaction extends Transaction {
             String notes = (String) mySession.getState("notes");
             props.setProperty("notes", notes);
             //-------
-            //showEndShiftDataView();
+            endSession(endTime,endingCash,totalCheckTransactionAmount, notes);
         } catch(InvalidPrimaryKeyException e){
             transactionErrorMessage="Error cannot do this 2.";
         }
@@ -124,14 +123,14 @@ public class EndShiftTransaction extends Transaction {
         }
         return null;
     }
-    private void endSession(String endCash, String totalCheckSales, String notes) {
+    private void endSession(String endTime, String endCash, String totalCheckSales, String notes) {
         if(notes.length() > 500) {
             stateChangeRequest("NotesTooLong", "");
             return;
         }
-        String endTime = Instant.now().atZone(ZoneId.of("America/New_York")).truncatedTo(ChronoUnit.MINUTES).toString();
-        int colon = endTime.indexOf(":");
-        endTime = endTime.substring(colon - 2, colon + 2);
+        //String endTime = Instant.now().atZone(ZoneId.of("America/New_York")).truncatedTo(ChronoUnit.MINUTES).toString();
+        //int colon = endTime.indexOf(":");
+        //endTime = endTime.substring(colon - 2, colon + 2);
         //--
         Properties props = new Properties();
         props.setProperty("endTime", endTime);
@@ -140,7 +139,7 @@ public class EndShiftTransaction extends Transaction {
         props.setProperty("notes", notes);
         //--
         //mySession.update(props);
-        stateChangeRequest("submitEndShift", "");
+        stateChangeRequest("submitEndShift", props);
     }
     public void stateChangeRequest(String key, Object value) {
         if (key.equals("DoYourJob")) {
@@ -169,5 +168,15 @@ public class EndShiftTransaction extends Transaction {
             myViews.put("EndShiftDataView", currentScene);
         }
         return currentScene;
+    }
+    public static String getSessionID()
+    {
+        try {
+            Session session = new Session();
+            String id = (String) session.getState("sessionID");
+            return id;
+        } catch (InvalidPrimaryKeyException exp) {
+            return null;
+        }
     }
 }

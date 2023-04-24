@@ -21,6 +21,7 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import jdk.net.SocketFlow;
 import model.EndShiftDataTransaction;
+import model.EndShiftTransaction;
 import userinterface.MessageView;
 import userinterface.View;
 import java.util.Properties;
@@ -33,6 +34,7 @@ public class EndShiftDataView extends View {
     protected Button backButton;
     protected TextField endCash;
     protected TextField notes;
+    protected TextField endTime;
     protected TextField totalCheck;
     protected MessageView statusLog;
     protected TextField sessionID;
@@ -142,10 +144,8 @@ public class EndShiftDataView extends View {
         }
     }
     public void processAction(ActionEvent event) {
-        String date = String.valueOf(java.time.LocalDateTime.now());
-        String dUS = date.substring(11,18);
         Properties p = new Properties();
-        p.setProperty("endTime", dUS);
+        p.setProperty("endTime", endTime.getText());
         p.setProperty("endingCash", endCash.getText());
         p.setProperty("totalCheckTransactionAmount", totalCheck.getText());
         p.setProperty("notes", notes.getText());
@@ -160,8 +160,6 @@ public class EndShiftDataView extends View {
             int conf = JOptionPane.showConfirmDialog(null, "Are you sure you want to proceed?", "Confirmation", JOptionPane.YES_NO_OPTION);
             if (conf == JOptionPane.YES_OPTION) {
                 myModel.stateChangeRequest("EndShift", p);
-                Session session = new Session(p);
-                session.update();
             }
             return;
         }
@@ -180,8 +178,12 @@ public class EndShiftDataView extends View {
         return statusLog;
     }
     public void populateFields() {
-        sessionID.setText((String)myModel.getState("sessionID"));
+        String date = String.valueOf(java.time.LocalDateTime.now());
+        String dUS = date.substring(11,16);
+
+        sessionID.setText(EndShiftTransaction.getSessionID());
         endCash.setText((String)myModel.getState("endCash"));
         totalCheck.setText((String)myModel.getState("totalCheckTransactionAmount"));
+        endTime.setText(dUS);
     }
 }
