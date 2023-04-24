@@ -32,19 +32,16 @@ public class SellTreeTransaction extends Transaction {
         dependencies.setProperty("SellTree", "SellATreeTransaction");
         dependencies.setProperty("CancelSale", "CancelTransaction");
         dependencies.setProperty("OK", "SellATreeTransaction");
-        //dependencies.setProperty("SearchScoutInfo", "TransactionError");
         dependencies.setProperty("TreeChosen", "TransactionError");
 
         myRegistry.setDependencies(dependencies);
     }
 
     protected Scene createView() {
-    System.out.println( "getting to createView");
         Scene currentScene = myViews.get("SellTreeTransactionView");
 
         if (currentScene == null)
         {
-            // create our initial view
             View newView = ViewFactory.createView("SellTreeTransactionView", this);
             currentScene = new Scene(newView);
             myViews.put("SellTreeTransactionView", currentScene);
@@ -114,7 +111,6 @@ public class SellTreeTransaction extends Transaction {
     }
 
     public void stateChangeRequest(String key, Object value) {
-        // DEBUG System.out.println("DepositTransaction.sCR: key: " + key);
 
         if (key.equals("DoYourJob") == true)
         {
@@ -135,8 +131,6 @@ public class SellTreeTransaction extends Transaction {
 
             try
             {
-
-                //processTransaction(props);
             }
             catch (Exception ex)
             {
@@ -156,7 +150,6 @@ public class SellTreeTransaction extends Transaction {
 
             try {
 
-                //processTransaction(props);
             } catch (Exception ex) {
                 transactionErrorMessage = "Error getting Tree";
             }
@@ -165,7 +158,6 @@ public class SellTreeTransaction extends Transaction {
         if (key.equals("TreeChosen") == true)
         {
             String barcode = (String)value;
-            //myTree = ;
 
         }
         else if  (key.equals("UpdateTransactionInfo") == true)
@@ -195,31 +187,11 @@ public class SellTreeTransaction extends Transaction {
     }
 
     public void processTree(Properties props) {
-       //try {
-            //String barcode= props.getProperty("barcode");
             myTree= new Tree(props);
-            /*//-------------------------------------
-            //props.setProperty("barcode", barcode);
-            //--------------------------------------
-            String treeStatus = (String) myTree.getState("status");
-            props.setProperty("status", "Sold");
-            myTree.dependencies.setProperty("status", "Sold");
-            //-------
-            String treeNotes = (String) myTree.getState("notes");
-            props.setProperty("notes", treeNotes);
-            myTree.dependencies.setProperty("notes");
-            //-------
-            String treeDateStatusUpdate = (String) myTree.getState("dateStatusUpdate");
-            myTree.dependencies.setProperty("dateStatusUpdate", treeDateStatusUpdate);
-            //------*/
            myTree.update();
-        /*} catch(InvalidPrimaryKeyException e){
-            transactionErrorMessage="Error cannot do this 3.";
-        }*/
     }
     public void processTransaction(Properties props) {
         try {
-            //Properties props3 = new Properties();
             mySession= new Session("","");
             String sessionId = mySession.getSessionId();
             props.setProperty("sessionID", sessionId);
@@ -227,7 +199,6 @@ public class SellTreeTransaction extends Transaction {
             props.setProperty("transactionType", "Tree Sale");
             //-------------------------------------
             String treeBarcode = props.getProperty("barcode");
-            System.out.println("tree barcode is: "+treeBarcode);
             props.setProperty("barcode", treeBarcode);
             //---------------------------------------
             String paymentMethod = props.getProperty("paymentMethod");
@@ -246,24 +217,19 @@ public class SellTreeTransaction extends Transaction {
             props.setProperty("customerEmail", custEmailEntered);
             //-----------------------------------------
             String transactionDate = props.getProperty("transactionDate");
-            System.out.println("transaction date is: "+transactionDate);
             props.setProperty("transactionDate", transactionDate);
             //------------------------------------------
             String transactionTime = props.getProperty("transactionTime");
             props.setProperty("transactionTime", transactionTime);
-            System.out.println("transaction time is: "+transactionTime);
-
             //------------------------------------------
             String dateStatusUpdated = props.getProperty("dateStatusUpdate");
             props.setProperty("dateStatusUpdate", dateStatusUpdated);
-            System.out.println("date status update is: "+dateStatusUpdated);
            //-------------------------------------------------------
 
             myTransaction = new SellTransaction(props);
 
             props.setProperty("sessionID",sessionId);
 
-            System.out.println("sessionID is: "+sessionId);
             //------
             myTransaction.update();
         } catch(InvalidPrimaryKeyException e){
