@@ -68,6 +68,11 @@ public class TransactionFactory
 		{
 			retValue = new EndShiftTransaction();
 		}
+		else
+		if (transType.equals("StartShift") == true)
+		{
+			retValue = new StartShiftTransaction();
+		}
 		return retValue;
 	}
 }

@@ -25,7 +25,7 @@ public class ScoutCollection  extends EntityBase implements IView
 	private static final String myTableName = "Scout";
 
 
-	private Vector<Scout> scoutList;
+	protected Vector<Scout> scoutList;
 	// GUI Components
 
 	// constructor for this class
@@ -37,6 +37,12 @@ public class ScoutCollection  extends EntityBase implements IView
 		scoutList = new Vector<>();
 	}
 
+	//---------------------------------------------------------------------------------
+	public int getSize()
+	{
+		return scoutList.size();
+	}
+
 	//----------------------------------------------------------------------------------
 	private void addScout(Scout a)
 	{
@@ -44,6 +50,12 @@ public class ScoutCollection  extends EntityBase implements IView
 		int index = findIndexToAdd(a);
 		System.out.println("Jalen found the index to add: " + index);
 		scoutList.insertElementAt(a,index); // To build up a collection sorted on some key
+	}
+
+	//---------------------------------------------------------------------------------
+	public void addChosenScout(Scout a)
+	{
+		addScout(a);
 	}
 
 	//----------------------------------------------------------------------------------
@@ -99,7 +111,7 @@ public class ScoutCollection  extends EntityBase implements IView
 	//----------------------------------------------------------------
 	public void stateChangeRequest(String key, Object value)
 	{
-		
+
 		myRegistry.updateSubscribers(key, this);
 	}
 
@@ -153,14 +165,14 @@ public class ScoutCollection  extends EntityBase implements IView
 
 		if (localScene == null)
 		{
-				// create our new view
-				View newView = ViewFactory.createView("scoutCollectionView", this);
-				localScene = new Scene(newView);
-				myViews.put("scoutCollectionView", localScene);
+			// create our new view
+			View newView = ViewFactory.createView("scoutCollectionView", this);
+			localScene = new Scene(newView);
+			myViews.put("scoutCollectionView", localScene);
 		}
 		// make the view visible by installing it into the frame
 		swapToView(localScene);
-		
+
 	}
 
 	//-----------------------------------------------------------------------------------
@@ -188,7 +200,15 @@ public class ScoutCollection  extends EntityBase implements IView
 		}
 		else
 			query = "SELECT * FROM "+myTableName+" WHERE ((firstName LIKE '%"+fn+"%') AND (lastName LIKE '%"+ln+"%') AND status = 'Active')";
-System.out.println(query);
+		System.out.println(query);
+		helper(query);
+	}
+
+	//------------------------------------------------------------------------------------
+	public void findAllScouts()
+	{
+		String query = "";
+		query = "SELECT * FROM "+myTableName+" WHERE status = 'Active'";
 		helper(query);
 	}
 

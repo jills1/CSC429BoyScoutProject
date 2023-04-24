@@ -91,6 +91,10 @@ public class ViewFactory {
 		{
 			return new EndShiftDataView(model);
 		}
+		else if(viewName.equals("StartShiftTransactionView") == true)
+		{
+			return new StartShiftTransactionView(model);
+		}
 			return null;
 	}
 

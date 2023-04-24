@@ -9,15 +9,10 @@ import java.util.Vector;
 import javax.swing.*;
 
 import database.*;
-public class Session extends EntityBase implements IView
-{
+public class Session extends EntityBase implements IView {
     private static final String myTableName = "Session";
-
     protected Properties dependencies;
     private String updateStatusMessage ="";
-
-
-
     public Session(String sessionID) throws InvalidPrimaryKeyException
     {
         super(myTableName);
@@ -55,14 +50,10 @@ public class Session extends EntityBase implements IView
         setDependencies();
         String query = "Select * FROM Session WHERE ((endTime IS Null) OR (endTime = ''))";
         Vector<Properties> allDataRetrieved = getSelectQueryResult(query);
-        // You must get one account at least
         if (allDataRetrieved != null) {
             int size = allDataRetrieved.size();
-            // There should be EXACTLY one account. More than that is an error
             if (size != 1) {
-
             } else {
-                // copy all the retrieved data into persistent state
                 Properties retrievedSessionData = allDataRetrieved.elementAt(0);
                 persistentState = new Properties();
                 Enumeration allKeys = retrievedSessionData.propertyNames();
@@ -74,9 +65,7 @@ public class Session extends EntityBase implements IView
                     }
                 }
             }
-        } else {
-
-        }
+        } else {}
     }
     public Session(Properties props)
     {
@@ -94,10 +83,9 @@ public class Session extends EntityBase implements IView
         }
     }
     private void getSessionID() {
-        String query = "SELECT * FROM " + myTableName + " WHERE endTime IS NULL";
+        String query = "SELECT * FROM " + myTableName + " WHERE endCash IS NULL";
         Vector<Properties> allData = getSelectQueryResult(query);
-        if(allData == null || allData.size() != 1)
-            return;
+        if(allData == null || allData.size() != 1) return;
         Properties data = allData.elementAt(0);
         persistentState = new Properties();
         Enumeration keys = data.propertyNames();
@@ -120,8 +108,7 @@ public class Session extends EntityBase implements IView
         }
         return persistentState.getProperty(key);
     }
-    public void stateChangeRequest(String key, Object value)
-    {
+    public void stateChangeRequest(String key, Object value) {
         persistentState.setProperty(key, (String) value);
         myRegistry.updateSubscribers(key, this);
     }
