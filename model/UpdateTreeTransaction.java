@@ -116,7 +116,6 @@ public class UpdateTreeTransaction extends Transaction {
 
         transactionErrorMessage = "Tree Updated Successfully";
     }
-
     //------------------------------------------------------
     protected Scene createView() {
         Scene currentScene = myViews.get("UpdateTreeView");

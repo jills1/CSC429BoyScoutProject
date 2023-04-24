@@ -1,0 +1,738 @@
+Index: model/TransactionFactory.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>// specify the package\r\npackage model;\r\n\r\n// system imports\r\nimport java.util.Vector;\r\nimport javax.swing.JFrame;\r\n\r\n// project imports\r\n\r\n/** The class containing the TransactionFactory for the ATM application */\r\n//==============================================================\r\npublic class TransactionFactory\r\n{\r\n\r\n\t/**\r\n\t *\r\n\t */\r\n\t//----------------------------------------------------------\r\n\tpublic static Transaction createTransaction(String transType)\r\n\r\n\t{\r\n\t\tTransaction retValue = null;\r\n\r\n\t\tif (transType.equals(\"RegisterScout\") == true)\r\n\t\t{\r\n\t\t\tretValue = new RegisterScoutTransaction();\r\n\t\t}\r\n\t\telse\r\n\t\tif (transType.equals(\"AddTree\") == true)\r\n\t\t{\r\n\t\t\tretValue = new AddTreeTransaction();\r\n\t\t}\r\n\t\telse\r\n\t\tif (transType.equals(\"UpdateScout\") == true)\r\n\t\t{\r\n\t\t\tretValue = new UpdateScoutTransaction();\r\n\t\t}\r\n\r\n\t\telse\r\n\t\tif (transType.equals(\"RemoveScout\") == true)\r\n\t\t{\r\n\t\t\tretValue = new RemoveScoutTransaction();\r\n\t\t}\r\n\r\n\t\telse\r\n\t\tif (transType.equals(\"AddTreeType\") == true)\r\n\t\t{\r\n\t\t\tretValue = new AddTreeTypeTransaction();\r\n\t\t}\r\n\t\telse\r\n\t\tif (transType.equals(\"UpdateTreeType\") == true)\r\n\t\t{\r\n\t\t\tretValue = new UpdateTreeTypeTransaction();\r\n\t\t}\r\n\r\n\t\telse\r\n\t\tif (transType.equals(\"UpdateTree\") == true)\r\n\t\t{\r\n\t\t\tretValue = new UpdateTreeTransaction();\r\n\t\t}\r\n\t\telse\r\n\t\tif (transType.equals(\"RemoveTree\") == true)\r\n\t\t{\r\n\t\t\tretValue = new RemoveTreeTransaction();\r\n\t\t}\r\n\t\telse\r\n\t\tif (transType.equals(\"EndShift\") == true)\r\n\t\t{\r\n\t\t\tretValue = new EndShiftTransaction();\r\n\t\t}\r\n\t\treturn retValue;\r\n\t}\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/model/TransactionFactory.java b/model/TransactionFactory.java
+--- a/model/TransactionFactory.java	(revision 4724c1585713e0fd8fe218d35c204cffd2e5fc54)
++++ b/model/TransactionFactory.java	(date 1682010696541)
+@@ -52,7 +52,6 @@
+ 		{
+ 			retValue = new UpdateTreeTypeTransaction();
+ 		}
+-
+ 		else
+ 		if (transType.equals("UpdateTree") == true)
+ 		{
+Index: userinterface/EndShiftDataView.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package userinterface;\r\n\r\nimport exception.InvalidPrimaryKeyException;\r\nimport impresario.IModel;\r\nimport javafx.collections.ObservableList;\r\nimport javafx.event.ActionEvent;\r\nimport javafx.event.EventHandler;\r\nimport javafx.geometry.Insets;\r\nimport javafx.geometry.Pos;\r\nimport javafx.scene.Node;\r\nimport javafx.scene.control.Button;\r\nimport javafx.scene.control.ComboBox;\r\nimport javafx.scene.control.TextField;\r\nimport javafx.scene.layout.GridPane;\r\nimport javafx.scene.layout.HBox;\r\nimport javafx.scene.layout.VBox;\r\nimport javafx.scene.paint.Color;\r\nimport javafx.scene.text.Font;\r\nimport javafx.scene.text.FontWeight;\r\nimport javafx.scene.text.Text;\r\nimport javafx.scene.text.TextAlignment;\r\nimport jdk.net.SocketFlow;\r\nimport model.EndShiftDataTransaction;\r\nimport userinterface.MessageView;\r\nimport userinterface.View;\r\nimport java.util.Properties;\r\nimport model.Session;\r\n\r\nimport javax.swing.*;\r\n\r\npublic class EndShiftDataView extends View\r\n{\r\n    protected Button submitButton;\r\n    protected Button backButton;\r\n    protected TextField endCash;\r\n    protected TextField notes;\r\n    protected TextField totalCheck;\r\n    protected MessageView statusLog;\r\n    protected TextField sessionID;\r\n\r\n    public EndShiftDataView(IModel session)\r\n    {\r\n        super(session, \"EndShiftDataView\");\r\n        VBox cont = new VBox(10);\r\n        cont.setPadding(new Insets(15, 5, 5, 5));\r\n\r\n        cont.getChildren().add(createTitle());\r\n        cont.getChildren().add(createFormContent());\r\n        cont.getChildren().add(createStatusLog(\"\"));\r\n        getChildren().add(cont);\r\n\r\n        populateFields();\r\n\r\n        myModel.subscribe(\"UpdateStatusMessage\", this);\r\n        myModel.subscribe(\"TransactionError\", this);\r\n    }\r\n    private Node createTitle(){\r\n        HBox container = new HBox();\r\n        container.setAlignment(Pos.CENTER);\r\n\r\n        Text titleText = new Text(\"End a Shift\");\r\n        titleText.setFont(Font.font(\"Arial\", FontWeight.BOLD, 20));\r\n        titleText.setWrappingWidth(300);\r\n        titleText.setTextAlignment(TextAlignment.CENTER);\r\n        titleText.setFill(Color.DARKGREEN);\r\n        container.getChildren().add(titleText);\r\n\r\n        return container;\r\n    }\r\n    private VBox createFormContent()\r\n    {\r\n        VBox vbox = new VBox(10);\r\n\r\n        GridPane grid = new GridPane();\r\n        grid.setAlignment(Pos.CENTER);\r\n        grid.setHgap(10);\r\n        grid.setVgap(10);\r\n        grid.setPadding(new Insets(25, 25, 25, 25));\r\n\r\n        Text prompt = new Text(\"SHIFT INFORMATION\");\r\n        prompt.setWrappingWidth(400);\r\n        prompt.setTextAlignment(TextAlignment.CENTER);\r\n        prompt.setFill(Color.BLACK);\r\n        grid.add(prompt, 0, 0, 2, 1);\r\n\r\n        Text sessionIDLabel = new Text(\"Shift ID: \");\r\n        Font myFont = Font.font(\"Helvetica\", FontWeight.BOLD, 12);\r\n        sessionIDLabel.setFont(myFont);\r\n        sessionIDLabel.setWrappingWidth(150);\r\n        sessionIDLabel.setTextAlignment(TextAlignment.RIGHT);\r\n        grid.add(sessionIDLabel, 0 , 1);\r\n\r\n        sessionID = new TextField();\r\n        sessionID.setEditable(false);\r\n        sessionID.setText(EndShiftDataTransaction.getSessionID());\r\n        grid.add(sessionID, 1,1);\r\n\r\n        Text endCashLabel = new Text(\"Ending Cash: \");\r\n        endCashLabel.setFont(myFont);\r\n        endCashLabel.setWrappingWidth(150);\r\n        endCashLabel.setTextAlignment(TextAlignment.RIGHT);\r\n        grid.add(endCashLabel, 0 , 2);\r\n\r\n        endCash = new TextField();\r\n        endCash.setEditable(true);\r\n        grid.add(endCash, 1,2);\r\n\r\n        Text totalCheckLabel = new Text(\"Check Total: \");\r\n        totalCheckLabel.setFont(myFont);\r\n        totalCheckLabel.setWrappingWidth(150);\r\n        totalCheckLabel.setTextAlignment(TextAlignment.RIGHT);\r\n        grid.add(totalCheckLabel, 0 , 3);\r\n\r\n        totalCheck = new TextField();\r\n        totalCheck.setEditable(true);\r\n        grid.add(totalCheck, 1,3);\r\n\r\n\r\n        Text notesLabel = new Text(\"Notes: \");\r\n        notesLabel.setFont(myFont);\r\n        notesLabel.setWrappingWidth(150);\r\n        notesLabel.setTextAlignment(TextAlignment.RIGHT);\r\n        grid.add(notesLabel, 0, 4);\r\n\r\n        notes = new TextField();\r\n        notes.setEditable(true);\r\n        grid.add(notes, 1, 4);\r\n\r\n        HBox cont = new HBox(10);\r\n        cont.setAlignment(Pos.CENTER);\r\n\r\n        submitButton = new Button(\"Submit\");\r\n        submitButton.setFont(Font.font(\"Arial\", FontWeight.BOLD, 14));\r\n        submitButton.setOnAction(new EventHandler<ActionEvent>() {\r\n            @Override\r\n            public void handle(ActionEvent event) {\r\n                String date = String.valueOf(java.time.LocalDateTime.now());\r\n                String dUS = date.substring(11,18);\r\n                Properties p = new Properties();\r\n                p.setProperty(\"endTime\", dUS);\r\n                p.setProperty(\"endingCash\", endCash.getText());\r\n                p.setProperty(\"totalCheckTransactionAmount\", totalCheck.getText());\r\n                p.setProperty(\"notes\", notes.getText());\r\n\r\n                if((p.getProperty(\"endTime\")).equals(\"\"))\r\n                {\r\n                    displayErrorMessage(\"There was an error with getting the time\");\r\n                    return;\r\n                } else if ((p.getProperty(\"notes\")).length() > 200)\r\n                {\r\n                    displayErrorMessage(\"Notes are bigger than 200 letters.\");\r\n                    return;\r\n                } else\r\n                {\r\n                    int conf = JOptionPane.showConfirmDialog(null, \"Are you sure you want to proceed?\", \"Confirmation\", JOptionPane.YES_NO_OPTION);\r\n                    if (conf == JOptionPane.YES_OPTION)\r\n                    {\r\n                        myModel.stateChangeRequest(\"EndShift\", p);\r\n                        Session session = new Session(p);\r\n                        session.update();\r\n\r\n                    }\r\n                    return;\r\n                }\r\n\r\n            }\r\n        });\r\n\r\n        backButton = new Button(\"Back\");\r\n        backButton.setFont(Font.font(\"Arial\", FontWeight.BOLD, 14));\r\n        backButton.setOnAction(new EventHandler<ActionEvent>() {\r\n            @Override\r\n            public void handle(ActionEvent event) {\r\n                System.out.println(\"The back Button is being clicked\");\r\n                clearErrorMessage();\r\n                myModel.stateChangeRequest(\"CancelTransaction\", null);\r\n            }\r\n        });\r\n        cont.getChildren().add(submitButton);\r\n        cont.getChildren().add(backButton);\r\n        vbox.getChildren().add(grid);\r\n        vbox.getChildren().add(cont);\r\n\r\n        return vbox;\r\n    }\r\n\r\n    public void populateFields()\r\n    {\r\n\r\n    }\r\n\r\n    public void updateState(String key, Object value)\r\n    {\r\n        clearErrorMessage();\r\n        if (key.equals(\"TransactionError\"))\r\n        {\r\n            String messageToDisplay = (String)value;\r\n            if (messageToDisplay.startsWith(\"ERR\")) {\r\n                displayErrorMessage(messageToDisplay);\r\n            }\r\n            else {\r\n                displayMessage(messageToDisplay);\r\n            }\r\n        }\r\n    }\r\n\r\n\r\n    public void displayErrorMessage(String message){\r\n        statusLog.displayErrorMessage(message);\r\n    }\r\n\r\n    public void displayMessage(String message){\r\n        statusLog.displayMessage(message);\r\n    }\r\n\r\n    public void clearErrorMessage(){\r\n        statusLog.clearErrorMessage();\r\n    }\r\n\r\n    protected MessageView createStatusLog(String initialMessage)\r\n    {\r\n        statusLog = new MessageView(initialMessage);\r\n\r\n        return statusLog;\r\n    }\r\n\r\n\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/userinterface/EndShiftDataView.java b/userinterface/EndShiftDataView.java
+--- a/userinterface/EndShiftDataView.java	(revision 4724c1585713e0fd8fe218d35c204cffd2e5fc54)
++++ b/userinterface/EndShiftDataView.java	(date 1682010189388)
+@@ -35,6 +35,10 @@
+     protected TextField endCash;
+     protected TextField notes;
+     protected TextField totalCheck;
++    protected TextField SessionID;
++    protected TextField SCash;
++    protected TextField TCash;
++    protected TextField TCheck;
+     protected MessageView statusLog;
+     protected TextField sessionID;
+ 
+@@ -92,7 +96,7 @@
+ 
+         sessionID = new TextField();
+         sessionID.setEditable(false);
+-        sessionID.setText(EndShiftDataTransaction.getSessionID());
++        //sessionID.setText(EndShiftTransaction.getSessionID());
+         grid.add(sessionID, 1,1);
+ 
+         Text endCashLabel = new Text("Ending Cash: ");
+@@ -183,12 +187,6 @@
+ 
+         return vbox;
+     }
+-
+-    public void populateFields()
+-    {
+-
+-    }
+-
+     public void updateState(String key, Object value)
+     {
+         clearErrorMessage();
+@@ -223,6 +221,11 @@
+ 
+         return statusLog;
+     }
+-
++    public void populateFields() {
++        SessionID.setText((String)myModel.getState("sessionID"));
++        SCash.setText((String)myModel.getState("startCash"));
++        TCash.setText((String)myModel.getState("totalCash"));
++        TCheck.setText((String)myModel.getState("totalCheck"));
++    }
+ 
+ }
+Index: model/EndShiftTransaction.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package model;\r\nimport javafx.scene.Scene;\r\nimport java.util.Properties;\r\nimport exception.InvalidPrimaryKeyException;\r\nimport userinterface.View;\r\nimport userinterface.ViewFactory;\r\npublic class EndShiftTransaction extends Transaction {\r\n    private double totalCheckSales;\r\n    private double endCash;\r\n    private String transactionErrorMessage = \"\";\r\n    private String accountUpdateStatusMessage = \"\";\r\n    protected Session mySession;\r\n    public EndShiftTransaction() {\r\n        super();\r\n    }\r\n    protected void setDependencies() {\r\n        dependencies = new Properties();\r\n        dependencies.setProperty(\"CancelDeposit\", \"CancelTransaction\");\r\n        dependencies.setProperty(\"OK\", \"CancelTransaction\");\r\n        dependencies.setProperty(\"RegisterTreeInfo\", \"TransactionError\");\r\n        dependencies.setProperty(\"UpdateTreeFormView\", \"TransactionError\");\r\n        myRegistry.setDependencies(dependencies);\r\n    }\r\n    private void endCashTransaction() throws InvalidPrimaryKeyException {\r\n        Session currentSession = new Session();\r\n        String sessionID = (String)currentSession.getState(\"sessionID\");\r\n        TransactionCollection transactions = new TransactionCollection();\r\n        transactions.retrieveSession(sessionID);\r\n        double startCash = Double.parseDouble((String)currentSession.getState(\"startingCash\"));\r\n        double cashSales = (double)transactions.getState(\"cashSales\");\r\n        endCash = startCash + cashSales;\r\n        totalCheckSales = (double)transactions.getState(\"checkSales\");\r\n    }\r\n    public void processTransaction(Properties props) {\r\n        try {\r\n            String sessionID= props.getProperty(\"sessionID\");\r\n            mySession= new Session(sessionID);\r\n            //TransactionCollection.retrieve(String.valueOf(mySession));\r\n            String startDate = (String) mySession.getState(\"startDate\");\r\n            props.setProperty(\"startDate\", startDate);\r\n            //-------\r\n            String startTime = (String) mySession.getState(\"startTime\");\r\n            props.setProperty(\"startTime\", startTime);\r\n            //-------\r\n            String endTime = (String) mySession.getState(\"endTime\");\r\n            props.setProperty(\"endTime\", endTime);\r\n            //-------\r\n            String startingCash = (String) mySession.getState(\"startingCash\");\r\n            props.setProperty(\"startingCash\", startingCash);\r\n            //-------\r\n            String endingCash = (String) mySession.getState(\"endingCash\");\r\n            props.setProperty(\"endingCash\", endingCash);\r\n            //-------\r\n            String totalCheckTransactionAmount = (String) mySession.getState(\"totalCheckTransactionAmount\");\r\n            props.setProperty(\"totalCheckTransactionAmount\", totalCheckTransactionAmount);\r\n            //-------\r\n            String notes = (String) mySession.getState(\"notes\");\r\n            props.setProperty(\"notes\", notes);\r\n            //-------\r\n            showEndShiftDataView();\r\n        } catch(InvalidPrimaryKeyException e){\r\n            transactionErrorMessage=\"Error cannot do this 2.\";\r\n        }\r\n    }\r\n    public Object getState(String key) {\r\n        switch (key) {\r\n            case \"TransactionError\":\r\n                return transactionErrorMessage;\r\n            case \"UpdateStatusMessage\":\r\n                return accountUpdateStatusMessage;\r\n            case \"sessionID\":\r\n                if (mySession != null) {\r\n                    return mySession.getState(\"sessionID\");\r\n                } else {\r\n                    return \"Undefined\";\r\n                }\r\n            case \"startDate\":\r\n                if (mySession != null) {\r\n                    return mySession.getState(\"startDate\");\r\n                } else {\r\n                    return \"Undefined\";\r\n                }\r\n            case \"startTime\":\r\n                if (mySession != null) {\r\n                    return mySession.getState(\"startTime\");\r\n                } else {\r\n                    return \"Undefined\";\r\n                }\r\n            case \"endTime\":\r\n                if (mySession != null) {\r\n                    return mySession.getState(\"endTime\");\r\n                } else {\r\n                    return \"Undefined\";\r\n                }\r\n            case \"startingCash\":\r\n                if (mySession != null) {\r\n                    return mySession.getState(\"startingCash\");\r\n                } else {\r\n                    return \"Undefined\";\r\n                }\r\n            case \"endingCash\":\r\n                if (mySession != null) {\r\n                    return mySession.getState(\"endingCash\");\r\n                } else {\r\n                    return \"Undefined\";\r\n                }\r\n            case \"totalCheckTransactionAmount\":\r\n                if (mySession != null) {\r\n                    return mySession.getState(\"totalCheckTransactionAmount\");\r\n                } else {\r\n                    return \"Undefined\";\r\n                }\r\n            case \"notes\":\r\n                if (mySession != null) {\r\n                    return mySession.getState(\"notes\");\r\n                } else {\r\n                    return \"Undefined\";\r\n                }\r\n        }\r\n        return null;\r\n    }\r\n    public void stateChangeRequest(String key, Object value) {\r\n        if (key.equals(\"DoYourJob\")) {\r\n            doYourJob();\r\n        } else  if (key.equals(\"EndShiftDataViewTrans\")) {\r\n            processTransaction((Properties)value);\r\n        }\r\n        else  if (key.equals(\"submitEndShift\")) {\r\n            processUpdate((Properties)value);\r\n        }\r\n        myRegistry.updateSubscribers(key, this);\r\n    }\r\n    public void processUpdate(Properties props) {\r\n        mySession = new Session(props);\r\n        mySession.update();\r\n        transactionErrorMessage = \"Session Ended Successfully\";\r\n    }\r\n    //------------------------------------------------------\r\n    protected Scene createView() {\r\n        Scene currentScene = myViews.get(\"EndShiftView\");\r\n        if (currentScene == null) {\r\n            // create our initial view\r\n            View newView = ViewFactory.createView(\"EndShiftView\", this);\r\n            assert newView != null;\r\n            currentScene = new Scene(newView);\r\n            myViews.put(\"EndShiftView\", currentScene);\r\n        }\r\n        return currentScene;\r\n    }\r\n    protected void showEndShiftDataView() {\r\n        View newsView = ViewFactory.createView(\"EndShiftDataView\", this);\r\n        assert newsView != null;\r\n        Scene newsScene = new Scene(newsView);\r\n        swapToView(newsScene);\r\n    }\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/model/EndShiftTransaction.java b/model/EndShiftTransaction.java
+--- a/model/EndShiftTransaction.java	(revision 4724c1585713e0fd8fe218d35c204cffd2e5fc54)
++++ b/model/EndShiftTransaction.java	(date 1682010477471)
+@@ -18,7 +18,7 @@
+         dependencies.setProperty("CancelDeposit", "CancelTransaction");
+         dependencies.setProperty("OK", "CancelTransaction");
+         dependencies.setProperty("RegisterTreeInfo", "TransactionError");
+-        dependencies.setProperty("UpdateTreeFormView", "TransactionError");
++        dependencies.setProperty("EndShift", "TransactionError");
+         myRegistry.setDependencies(dependencies);
+     }
+     private void endCashTransaction() throws InvalidPrimaryKeyException {
+@@ -57,7 +57,7 @@
+             String notes = (String) mySession.getState("notes");
+             props.setProperty("notes", notes);
+             //-------
+-            showEndShiftDataView();
++            //processUpdate(sessionID);
+         } catch(InvalidPrimaryKeyException e){
+             transactionErrorMessage="Error cannot do this 2.";
+         }
+@@ -137,20 +137,14 @@
+     }
+     //------------------------------------------------------
+     protected Scene createView() {
+-        Scene currentScene = myViews.get("EndShiftView");
++        Scene currentScene = myViews.get("EndShiftDataView");
+         if (currentScene == null) {
+             // create our initial view
+-            View newView = ViewFactory.createView("EndShiftView", this);
++            View newView = ViewFactory.createView("EndShiftDataView", this);
+             assert newView != null;
+             currentScene = new Scene(newView);
+-            myViews.put("EndShiftView", currentScene);
++            myViews.put("EndShiftDataView", currentScene);
+         }
+         return currentScene;
+     }
+-    protected void showEndShiftDataView() {
+-        View newsView = ViewFactory.createView("EndShiftDataView", this);
+-        assert newsView != null;
+-        Scene newsScene = new Scene(newsView);
+-        swapToView(newsScene);
+-    }
+ }
+\ No newline at end of file
+Index: model/Session.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package model;\r\n\r\nimport exception.InvalidPrimaryKeyException;\r\nimport impresario.IView;\r\nimport java.sql.SQLException;\r\nimport java.util.Enumeration;\r\nimport java.util.Properties;\r\nimport java.util.Vector;\r\nimport javax.swing.*;\r\n\r\nimport database.*;\r\npublic class Session extends EntityBase implements IView\r\n{\r\n    private static final String myTableName = \"Session\";\r\n\r\n    protected Properties dependencies;\r\n    private String updateStatusMessage =\"\";\r\n\r\n\r\n\r\n    public Session(String sessionID) throws InvalidPrimaryKeyException\r\n    {\r\n        super(myTableName);\r\n        setDependencies();\r\n        String query = \"SELECT * FROM \" + myTableName + \" WHERE (sessionID = \" + sessionID + \")\";\r\n        Vector<Properties> allDataRetrieved = getSelectQueryResult(query);\r\n        // You must get one account at least\r\n        if (allDataRetrieved != null) {\r\n            int size = allDataRetrieved.size();\r\n            // There should be EXACTLY one account. More than that is an error\r\n            if (size != 1) {\r\n                throw new InvalidPrimaryKeyException(\"Multiple sessions matching inputted IDs : \" + sessionID + \" found.\");\r\n            } else {\r\n                // copy all the retrieved data into persistent state\r\n                Properties retrievedTreeData = allDataRetrieved.elementAt(0);\r\n                persistentState = new Properties();\r\n                Enumeration allKeys = retrievedTreeData.propertyNames();\r\n                while (allKeys.hasMoreElements() == true) {\r\n                    String nextKey = (String)allKeys.nextElement();\r\n                    String nextValue = retrievedTreeData.getProperty(nextKey);\r\n                    if (nextValue != null) {\r\n                        persistentState.setProperty(nextKey, nextValue);\r\n                    }\r\n                }\r\n            }\r\n        } else {\r\n            throw new InvalidPrimaryKeyException(\"No session matching inputted ID : \" + sessionID+ \" found.\");\r\n        }\r\n    }\r\n\r\n    public Session() throws InvalidPrimaryKeyException\r\n    {\r\n        super(myTableName);\r\n        persistentState = new Properties();\r\n        setDependencies();\r\n        String query = \"Select * FROM Session WHERE ((endTime IS Null) OR (endTime = ''))\";\r\n        Vector<Properties> allDataRetrieved = getSelectQueryResult(query);\r\n        // You must get one account at least\r\n        if (allDataRetrieved != null) {\r\n            int size = allDataRetrieved.size();\r\n            // There should be EXACTLY one account. More than that is an error\r\n            if (size != 1) {\r\n\r\n            } else {\r\n                // copy all the retrieved data into persistent state\r\n                Properties retrievedSessionData = allDataRetrieved.elementAt(0);\r\n                persistentState = new Properties();\r\n                Enumeration allKeys = retrievedSessionData.propertyNames();\r\n                while (allKeys.hasMoreElements() == true) {\r\n                    String nextKey = (String)allKeys.nextElement();\r\n                    String nextValue = retrievedSessionData.getProperty(nextKey);\r\n                    if (nextValue != null) {\r\n                        persistentState.setProperty(nextKey, nextValue);\r\n                    }\r\n                }\r\n            }\r\n        } else {\r\n\r\n        }\r\n    }\r\n    public Session(Properties props)\r\n    {\r\n        super(myTableName);\r\n        setDependencies();\r\n        persistentState = new Properties();\r\n        Enumeration allKeys = props.propertyNames();\r\n\r\n        while (allKeys.hasMoreElements() == true) {\r\n            String nextKey = (String)allKeys.nextElement();\r\n            String nextValue = props.getProperty(nextKey);\r\n            if (nextValue != null) {\r\n                persistentState.setProperty(nextKey, nextValue);\r\n            }\r\n        }\r\n    }\r\n    private void getSessionID() {\r\n        String query = \"SELECT * FROM \" + myTableName + \" WHERE endTime IS NULL\";\r\n        Vector<Properties> allData = getSelectQueryResult(query);\r\n        if(allData == null || allData.size() != 1)\r\n            return;\r\n        Properties data = allData.elementAt(0);\r\n        persistentState = new Properties();\r\n        Enumeration keys = data.propertyNames();\r\n        while(keys.hasMoreElements()) {\r\n            String nextKey = (String)keys.nextElement();\r\n            String value = data.getProperty(nextKey);\r\n            if(value != null) {\r\n                persistentState.setProperty(nextKey, value);\r\n            }\r\n        }\r\n    }\r\n    private void setDependencies() {\r\n        dependencies = new Properties();\r\n        myRegistry.setDependencies(dependencies);\r\n    }\r\n    public Object getState(String key)\r\n    {\r\n        if (key.equals(\"UpdateStatusMessage\") == true) {\r\n            return updateStatusMessage;\r\n        }\r\n        return persistentState.getProperty(key);\r\n    }\r\n    public void stateChangeRequest(String key, Object value)\r\n    {\r\n        persistentState.setProperty(key, (String) value);\r\n        myRegistry.updateSubscribers(key, this);\r\n    }\r\n    //----------------------------------------------------------\r\n    public void updateState(String key, Object value)\r\n    {\r\n        stateChangeRequest(key, value);\r\n    }\r\n    //-----------------------------------------------------------------------------------\r\n    public static int compare(Session a, Session b) {\r\n        String aNum = (String)a.getState(\"sessionID\");\r\n        String bNum = (String)b.getState(\"sessionID\");\r\n        return aNum.compareTo(bNum);\r\n    }\r\n    //-----------------------------------------------------------------------------------\r\n    public void update() {\r\n        updateStateInDatabase();\r\n    }\r\n    private void updateStateInDatabase() {\r\n        try {\r\n            String sessionID = persistentState.getProperty(\"sessionID\");\r\n            boolean sessionExists = sessionID != null;\r\n            if(sessionExists) {\r\n                // update\r\n                Properties whereClause = new Properties();\r\n                whereClause.setProperty(\"sessionID\", sessionID);\r\n                updatePersistentState(mySchema, persistentState, whereClause);\r\n                String startDate = (String)getState(\"startDate\");\r\n                String startTime = (String)getState(\"startTime\");\r\n                updateStatusMessage = \"Data for session starting on \" + startDate + \" at \" + startTime + \"saved successfully\";\r\n            } else {\r\n                // insert\r\n                Integer newSessionID = insertAutoIncrementalPersistentState(mySchema, persistentState);\r\n                persistentState.setProperty(\"sessionID\", \"\" + newSessionID.intValue());\r\n                String startDate = (String)getState(\"startDate\");\r\n                String startTime = (String)getState(\"startTime\");\r\n                updateStatusMessage = \"Data for new session starting on \" + startDate + \" at \" + startTime + \"saved successfully\";\r\n            }\r\n        } catch (SQLException e) {\r\n            updateStatusMessage = \"Error in saving session data to the database.\";\r\n        }\r\n    }\r\n    public Vector<String> getEntryListView() {\r\n        Vector<String> v = new Vector<String>();\r\n        v.addElement(persistentState.getProperty(\"sessionID\"));\r\n        v.addElement(persistentState.getProperty(\"startDate\"));\r\n        v.addElement(persistentState.getProperty(\"startTime\"));\r\n        v.addElement(persistentState.getProperty(\"endTime\"));\r\n        v.addElement(persistentState.getProperty(\"startingCash\"));\r\n        v.addElement(persistentState.getProperty(\"endingCash\"));\r\n        v.addElement(persistentState.getProperty(\"totalCheckTransactionAmount\"));\r\n        v.addElement(persistentState.getProperty(\"notes\"));\r\n        return v;\r\n    }\r\n    protected void initializeSchema(String tableName) {\r\n        if (mySchema == null) {\r\n            mySchema = getSchemaInfo(tableName);\r\n        }\r\n    }\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/model/Session.java b/model/Session.java
+--- a/model/Session.java	(revision 4724c1585713e0fd8fe218d35c204cffd2e5fc54)
++++ b/model/Session.java	(date 1682008884631)
+@@ -7,17 +7,11 @@
+ import java.util.Properties;
+ import java.util.Vector;
+ import javax.swing.*;
+-
+ import database.*;
+-public class Session extends EntityBase implements IView
+-{
++public class Session extends EntityBase implements IView {
+     private static final String myTableName = "Session";
+-
+     protected Properties dependencies;
+     private String updateStatusMessage ="";
+-
+-
+-
+     public Session(String sessionID) throws InvalidPrimaryKeyException
+     {
+         super(myTableName);
+@@ -47,9 +41,7 @@
+             throw new InvalidPrimaryKeyException("No session matching inputted ID : " + sessionID+ " found.");
+         }
+     }
+-
+-    public Session() throws InvalidPrimaryKeyException
+-    {
++    public Session() throws InvalidPrimaryKeyException {
+         super(myTableName);
+         persistentState = new Properties();
+         setDependencies();
+@@ -74,17 +66,13 @@
+                     }
+                 }
+             }
+-        } else {
+-
+-        }
++        } else {}
+     }
+-    public Session(Properties props)
+-    {
++    public Session(Properties props) {
+         super(myTableName);
+         setDependencies();
+         persistentState = new Properties();
+         Enumeration allKeys = props.propertyNames();
+-
+         while (allKeys.hasMoreElements() == true) {
+             String nextKey = (String)allKeys.nextElement();
+             String nextValue = props.getProperty(nextKey);
+@@ -94,7 +82,7 @@
+         }
+     }
+     private void getSessionID() {
+-        String query = "SELECT * FROM " + myTableName + " WHERE endTime IS NULL";
++        String query = "SELECT * FROM " + myTableName + " WHERE endCash IS NULL";
+         Vector<Properties> allData = getSelectQueryResult(query);
+         if(allData == null || allData.size() != 1)
+             return;
+Index: userinterface/EndShiftView.java
+===================================================================
+diff --git a/userinterface/EndShiftView.java b/userinterface/EndShiftView.java
+deleted file mode 100644
+--- a/userinterface/EndShiftView.java	(revision 4724c1585713e0fd8fe218d35c204cffd2e5fc54)
++++ /dev/null	(revision 4724c1585713e0fd8fe218d35c204cffd2e5fc54)
+@@ -1,150 +0,0 @@
+-package userinterface;
+-import javafx.collections.FXCollections;
+-import javafx.collections.ObservableList;
+-import javafx.event.Event;
+-import javafx.event.ActionEvent;
+-import javafx.event.EventHandler;
+-import javafx.geometry.Insets;
+-import javafx.geometry.Pos;
+-import javafx.scene.Node;
+-import javafx.scene.control.*;
+-import javafx.scene.layout.GridPane;
+-import javafx.scene.layout.HBox;
+-import javafx.scene.layout.VBox;
+-import javafx.scene.paint.Color;
+-import javafx.scene.text.Font;
+-import javafx.scene.text.FontWeight;
+-import javafx.scene.text.Text;
+-import javafx.scene.text.TextAlignment;
+-
+-import java.util.Enumeration;
+-import java.util.Properties;
+-import java.util.Vector;
+-// project imports
+-import impresario.IModel;
+-import model.Session;
+-import model.SessionCollection;
+-
+-public class EndShiftView extends View {
+-    protected TableView<SessionModel> sessionTable;
+-    private ComboBox<String> sessionID; // Changed to ComboBox
+-    private Button submitButton;
+-    private Button cancelButton;
+-    private MessageView statusLog;
+-    //-------------------------------------------------------------
+-    public EndShiftView(IModel trans) {
+-        super(trans, "EndShiftView");
+-        VBox container = new VBox(10);
+-        container.setPadding(new Insets(15, 5, 5, 5));
+-        container.getChildren().add(createTitle());
+-        container.getChildren().add(createFormContent());
+-        container.getChildren().add(createStatusLog("                          "));
+-        getChildren().add(container);
+-        populateFields();
+-        myModel.subscribe("TransactionError", this);
+-    }
+-    private Node createTitle() {
+-        Text titleText = new Text("Troop 209");
+-        titleText.setFont(Font.font("Arial", FontWeight.BOLD, 20));
+-        titleText.setTextAlignment(TextAlignment.CENTER);
+-        titleText.setFill(Color.DARKGREEN);
+-        return titleText;
+-    }
+-    private VBox createFormContent() {
+-        VBox vbox = new VBox(10);
+-        GridPane grid = new GridPane();
+-        grid.setAlignment(Pos.CENTER);
+-        grid.setHgap(10);
+-        grid.setVgap(10);
+-        grid.setPadding(new Insets(25, 25, 25, 25));
+-//-------------------------------------------------------------------
+-        //Barcode Label, Box and Handler
+-        Label sessionIDLabel = new Label("Select SessionID : ");
+-        grid.add(sessionIDLabel, 0, 0);
+-        sessionID = new ComboBox<String>(); // Changed to ComboBox
+-        //sessionID.getItems().addAll( "Damaged", "Available");//change to accept dynamically retrieved sessionID's
+-        grid.add(sessionID, 1, 0);
+-//------------------------------------------------------------------
+-        //Submit Button and Event Handler
+-        submitButton = new Button("Submit");
+-        submitButton.setOnAction(new EventHandler<ActionEvent>() {@Override public void handle(ActionEvent e) {clearErrorMessage();
+-                processAction(e);}});
+-//----------------------------------------------------------------
+-        //Cancel Button and Event Handler
+-        cancelButton = new Button("Back");
+-        cancelButton.setOnAction(new EventHandler<ActionEvent>() {
+-            @Override
+-            public void handle(ActionEvent e) {
+-                clearErrorMessage();
+-                myModel.stateChangeRequest("CancelDeposit", null);
+-            }
+-        });
+-        //--------------------------------------------------------
+-        //Place Entities within Container
+-        HBox btnContainer = new HBox(100);
+-        btnContainer.setAlignment(Pos.CENTER);
+-        btnContainer.getChildren().add(submitButton);
+-        btnContainer.getChildren().add(cancelButton);
+-        vbox.getChildren().add(grid);
+-        vbox.getChildren().add(btnContainer);
+-        return vbox;
+-    }
+-    //-------------------------------------------------------------
+-    private void processAction(Event evt) {
+-        String sessionIDEntered = sessionID.getValue();
+-        if ((sessionIDEntered == null)) {
+-            displayErrorMessage("Please enter a valid sessionID");
+-        } else {
+-            processSessionInfo(sessionIDEntered);
+-        }
+-    }
+-    private void processSessionInfo(String sessionID) {
+-        Properties props = new Properties();
+-        props.setProperty("sessionID", sessionID);
+-        myModel.stateChangeRequest("EndShiftDataViewTrans", props);
+-    }
+-    protected void populateFields()
+-    {
+-        getEntryTableModelValues();
+-    }
+-
+-    //--------------------------------------------------------------------------
+-    protected void getEntryTableModelValues() {
+-        ObservableList<SessionModel> tableData = FXCollections.observableArrayList();
+-        try {
+-            Session session = (Session)myModel.getState("Session");
+-            Vector entryList = (Vector)scoutCollection.getState("sessionList");
+-            Enumeration entries = entryList.elements();
+-            while (entries.hasMoreElements() == true) {
+-                Session nextSession = (Session)entries.nextElement();
+-                Vector<String> view = nextSession.getEntryListView();
+-                // add this list entry to the list
+-                ScoutTableModel nextTableRowData = new ScoutTableModel(view);
+-                //tableData.add(nextTableRowData);
+-            }
+-            sessionTable.setItems(tableData);
+-        }
+-        catch (Exception e) {//SQLException e) {
+-            // Need to handle this exception
+-        }
+-    }
+-    public void updateState(String key, Object value) {
+-        clearErrorMessage();
+-        if (key.equals("TransactionError")) {
+-            String messageToDisplay = (String)value;
+-            if (messageToDisplay.startsWith("ERR")) {
+-                displayErrorMessage(messageToDisplay);
+-            } else {
+-                displayMessage(messageToDisplay);
+-            }
+-        }
+-    }
+-    //------------------------------------------------------------
+-    private MessageView createStatusLog(String initialMessage) {
+-        statusLog = new MessageView(initialMessage);
+-        return statusLog;
+-    }
+-    public void displayMessage(String message) {statusLog.displayMessage(message);}
+-    public void displayErrorMessage(String message) {statusLog.displayErrorMessage(message);}
+-    public void clearErrorMessage() {statusLog.clearErrorMessage();}
+-}
+\ No newline at end of file
+Index: model/SessionCollection.java
+===================================================================
+diff --git a/model/SessionCollection.java b/model/SessionCollection.java
+deleted file mode 100644
+--- a/model/SessionCollection.java	(revision 4724c1585713e0fd8fe218d35c204cffd2e5fc54)
++++ /dev/null	(revision 4724c1585713e0fd8fe218d35c204cffd2e5fc54)
+@@ -1,118 +0,0 @@
+-package model;
+-import java.util.Properties;
+-import java.util.Vector;
+-import impresario.IView;
+-public class SessionCollection  extends EntityBase implements IView {
+-    private static final String myTableName = "Session";
+-    private Vector<Session> sessionList;
+-    public SessionCollection() {
+-        super(myTableName);
+-        sessionList = new Vector<>();
+-    }
+-    private void addSession(Session a) {
+-        int index = findIndexToAdd(a);
+-        //System.out.println("Jalen found the index to add: " + index);
+-        sessionList.insertElementAt(a,index); // To build up a collection sorted on some key
+-    }
+-    private int findIndexToAdd(Session a) {
+-        //users.add(u);
+-        int low=0;
+-        int high = sessionList.size()-1;
+-        System.out.println("find index to add: " + high);
+-        int middle;
+-        while (low <=high) {
+-            middle = (low+high)/2;
+-            Session midSession = sessionList.elementAt(middle);
+-            System.out.println("middle value at: " + middle);
+-            int result = Session.compare(a,midSession);
+-            System.out.println("Result is: " + result);
+-            if (result ==0) {
+-                return middle;
+-            } else if (result<0) {
+-                high=middle-1;
+-            } else {
+-                low=middle+1;
+-            }
+-        }
+-        return low;
+-    }
+-    public Object getState(String key) {
+-        if (key.equals("Scouts")){
+-            return sessionList;
+-        } else if (key.equals("ScoutList")) {
+-            return this;
+-        }
+-        return null;
+-    }
+-    public void stateChangeRequest(String key, Object value) {
+-        myRegistry.updateSubscribers(key, this);
+-    }
+-    public Session retrieve(String sessionId)
+-    {
+-        Scout retValue = null;
+-        for (int cnt = 0; cnt < sessionList.size(); cnt++)
+-        {
+-            Session nextSct = sessionList.elementAt(cnt);
+-            String nextSctId = (String)nextSct.getState("sessionID");
+-            if (nextSctId.equals(sessionId) == true)
+-            {
+-                retValue = nextSct;
+-                return retValue; // we should say 'break;' here
+-            }
+-        }
+-
+-        return retValue;
+-    }
+-    public void updateState(String key, Object value)
+-    {
+-        stateChangeRequest(key, value);
+-    }
+-    public Session retrieveByTroopID(String troopId) {
+-        Scout retValue = null;
+-        for (int cnt = 0; cnt < sessionList.size(); cnt++) {
+-            Scout nextSct = sessionList.elementAt(cnt);
+-            String nextSctId = (String)nextSct.getState("troopID");
+-            if (nextSctId.equals(troopId) == true) {
+-                retValue = nextSct;
+-                return retValue; // we should say 'break;' here
+-            }
+-        }
+-        return retValue;
+-    }
+-    protected void initializeSchema(String tableName) {
+-        if (mySchema == null) {
+-            mySchema = getSchemaInfo(tableName);
+-        }
+-    }
+-    public void findScoutsWithNameLike(String fn, String ln) {
+-        String query = "";
+-        if ((fn==null||fn.length()==0)&&(ln==null||ln.length()==0))
+-            query = "SELECT * FROM "+myTableName+" WHERE status = 'Active'";
+-        else if (fn==null || fn.length()==0)
+-        {
+-            query = "SELECT * FROM "+myTableName+" WHERE (lastName LIKE '%"+ln+"%' AND status = 'Active')";
+-        }
+-        else if (ln==null || ln.length()==0)
+-        {
+-            query = "SELECT * FROM "+myTableName+" WHERE (firstName LIKE '%"+fn+"%' AND status = 'Active')";
+-        }
+-        else
+-            query = "SELECT * FROM "+myTableName+" WHERE ((firstName LIKE '%"+fn+"%') AND (lastName LIKE '%"+ln+"%') AND status = 'Active')";
+-        System.out.println(query);
+-        helper(query);
+-    }
+-    private void helper(String query) {
+-        Vector allDataRetrieved = getSelectQueryResult(query);
+-        System.out.println("If you see this Jalen worked the query successfully");
+-        //scoutList = new Vector<Scout>();
+-        for(int cnt = 0; cnt < allDataRetrieved.size(); cnt++) {
+-            System.out.println("Jalen is at iteration: " + cnt + " of adding the scout");
+-            Properties nextScoutData = (Properties) allDataRetrieved.elementAt(cnt);
+-            Scout scout = new Scout(nextScoutData);
+-            System.out.println("Jalen finished creating the scout for iteration: " + cnt);
+-            addScout(scout);
+-            System.out.println("Jalen finished adding the scout for iteration: " + cnt);
+-        }
+-        System.out.println("If you see this Jalen did not mess up adding the scout to the list");
+-    }
+-}
+Index: out/production/JavaCode2/.idea/shelf/Uncommitted_changes_before_rebase__Changes_.xml
+===================================================================
+diff --git a/out/production/JavaCode2/.idea/shelf/Uncommitted_changes_before_rebase__Changes_.xml b/out/production/JavaCode2/.idea/shelf/Uncommitted_changes_before_rebase__Changes_.xml
+deleted file mode 100644
+--- a/out/production/JavaCode2/.idea/shelf/Uncommitted_changes_before_rebase__Changes_.xml	(revision 4724c1585713e0fd8fe218d35c204cffd2e5fc54)
++++ /dev/null	(revision 4724c1585713e0fd8fe218d35c204cffd2e5fc54)
+@@ -1,4 +0,0 @@
+-<changelist name="Uncommitted_changes_before_rebase_[Changes]" date="1679697589038" recycled="true" deleted="true">
+-  <option name="PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_rebase_[Changes]/shelved.patch" />
+-  <option name="DESCRIPTION" value="Uncommitted changes before rebase [Changes]" />
+-</changelist>
+\ No newline at end of file
+Index: out/production/JavaCode2/dbConfig.ini
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>username=mholm2\r\npassword=Righthand23\r\ndbName=spr23_csc429_mholm2\r\nserver=csdb.brockport.edu\r\ndbInstallation=mariadb\r\ndbClassName=org.mariadb.jdbc.Driver
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/out/production/JavaCode2/dbConfig.ini b/out/production/JavaCode2/dbConfig.ini
+--- a/out/production/JavaCode2/dbConfig.ini	(revision 4724c1585713e0fd8fe218d35c204cffd2e5fc54)
++++ b/out/production/JavaCode2/dbConfig.ini	(date 1679592076054)
+@@ -1,6 +1,4 @@
+-username=mholm2
+-password=Righthand23
+-dbName=spr23_csc429_mholm2
+-server=csdb.brockport.edu
+-dbInstallation=mariadb
+-dbClassName=org.mariadb.jdbc.Driver
+\ No newline at end of file
++username=jills1
++password=database1
++dbName=spr23_csc429_jills1
++server=127.0.0.1
+\ No newline at end of file
+Index: out/production/JavaCode2/.idea/workspace.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"AutoImportSettings\">\r\n    <option name=\"autoReloadType\" value=\"SELECTIVE\" />\r\n  </component>\r\n  <component name=\"ChangeListManager\">\r\n    <list default=\"true\" id=\"42a9de0e-dc93-405f-946e-a04e330aeca0\" name=\"Changes\" comment=\"\">\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/misc.xml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.idea/misc.xml\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/ErrorLog.txt\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/ErrorLog.txt\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/database/JDBCBroker.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/database/JDBCBroker.java\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/dbConfig.ini\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/dbConfig.ini\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/model/TransactionFactory.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/model/TransactionFactory.java\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/userinterface/AddTreeView.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/userinterface/AddTreeView.java\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/userinterface/ViewFactory.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/userinterface/ViewFactory.java\" afterDir=\"false\" />\r\n    </list>\r\n    <option name=\"SHOW_DIALOG\" value=\"false\" />\r\n    <option name=\"HIGHLIGHT_CONFLICTS\" value=\"true\" />\r\n    <option name=\"HIGHLIGHT_NON_ACTIVE_CHANGELIST\" value=\"false\" />\r\n    <option name=\"LAST_RESOLUTION\" value=\"IGNORE\" />\r\n  </component>\r\n  <component name=\"FileTemplateManagerImpl\">\r\n    <option name=\"RECENT_TEMPLATES\">\r\n      <list>\r\n        <option value=\"Class\" />\r\n      </list>\r\n    </option>\r\n  </component>\r\n  <component name=\"Git.Settings\">\r\n    <favorite-branches>\r\n      <branch-storage>\r\n        <map>\r\n          <entry type=\"LOCAL\">\r\n            <value>\r\n              <list>\r\n                <branch-info repo=\"$PROJECT_DIR$\" source=\"Alex\" />\r\n              </list>\r\n            </value>\r\n          </entry>\r\n        </map>\r\n      </branch-storage>\r\n    </favorite-branches>\r\n    <option name=\"RECENT_BRANCH_BY_REPOSITORY\">\r\n      <map>\r\n        <entry key=\"$PROJECT_DIR$\" value=\"main\" />\r\n      </map>\r\n    </option>\r\n    <option name=\"RECENT_GIT_ROOT_PATH\" value=\"$PROJECT_DIR$\" />\r\n  </component>\r\n  <component name=\"MarkdownSettingsMigration\">\r\n    <option name=\"stateVersion\" value=\"1\" />\r\n  </component>\r\n  <component name=\"ProblemsViewState\">\r\n    <option name=\"selectedTabId\" value=\"CurrentFile\" />\r\n  </component>\r\n  <component name=\"ProjectId\" id=\"2NQPgrumnguawAYHSDT8A50A6K5\" />\r\n  <component name=\"ProjectViewState\">\r\n    <option name=\"hideEmptyMiddlePackages\" value=\"true\" />\r\n    <option name=\"showLibraryContents\" value=\"true\" />\r\n  </component>\r\n  <component name=\"PropertiesComponent\">{\r\n  &quot;keyToString&quot;: {\r\n    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,\r\n    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,\r\n    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,\r\n    &quot;last_opened_file_path&quot;: &quot;C:/Users/worse/OneDrive/Documents/GitHub/CSC429BoyScoutProject/mariadb-java-client-3.0.3.jar&quot;,\r\n    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,\r\n    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,\r\n    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,\r\n    &quot;settings.editor.selected.configurable&quot;: &quot;vcs.Git&quot;\r\n  }\r\n}</component>\r\n  <component name=\"SpellCheckerSettings\" RuntimeDictionaries=\"0\" Folders=\"0\" CustomDictionaries=\"0\" DefaultDictionary=\"application-level\" UseSingleDictionary=\"true\" transferred=\"true\" />\r\n  <component name=\"TaskManager\">\r\n    <task active=\"true\" id=\"Default\" summary=\"Default task\">\r\n      <changelist id=\"42a9de0e-dc93-405f-946e-a04e330aeca0\" name=\"Changes\" comment=\"\" />\r\n      <created>1679593446952</created>\r\n      <option name=\"number\" value=\"Default\" />\r\n      <option name=\"presentableId\" value=\"Default\" />\r\n      <updated>1679593446952</updated>\r\n    </task>\r\n    <servers />\r\n  </component>\r\n  <component name=\"UnknownFeatures\">\r\n    <option featureType=\"com.intellij.fileTypeFactory\" implementationName=\"*.ini\" />\r\n  </component>\r\n  <component name=\"Vcs.Log.Tabs.Properties\">\r\n    <option name=\"TAB_STATES\">\r\n      <map>\r\n        <entry key=\"MAIN\">\r\n          <value>\r\n            <State>\r\n              <option name=\"FILTERS\">\r\n                <map>\r\n                  <entry key=\"branch\">\r\n                    <value>\r\n                      <list>\r\n                        <option value=\"Alex\" />\r\n                      </list>\r\n                    </value>\r\n                  </entry>\r\n                </map>\r\n              </option>\r\n            </State>\r\n          </value>\r\n        </entry>\r\n      </map>\r\n    </option>\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/out/production/JavaCode2/.idea/workspace.xml b/out/production/JavaCode2/.idea/workspace.xml
+--- a/out/production/JavaCode2/.idea/workspace.xml	(revision 4724c1585713e0fd8fe218d35c204cffd2e5fc54)
++++ b/out/production/JavaCode2/.idea/workspace.xml	(date 1682009747716)
+@@ -4,14 +4,12 @@
+     <option name="autoReloadType" value="SELECTIVE" />
+   </component>
+   <component name="ChangeListManager">
+-    <list default="true" id="42a9de0e-dc93-405f-946e-a04e330aeca0" name="Changes" comment="">
+-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/ErrorLog.txt" beforeDir="false" afterPath="$PROJECT_DIR$/ErrorLog.txt" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/database/JDBCBroker.java" beforeDir="false" afterPath="$PROJECT_DIR$/database/JDBCBroker.java" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/dbConfig.ini" beforeDir="false" afterPath="$PROJECT_DIR$/dbConfig.ini" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/model/TransactionFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/model/TransactionFactory.java" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/userinterface/AddTreeView.java" beforeDir="false" afterPath="$PROJECT_DIR$/userinterface/AddTreeView.java" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/userinterface/ViewFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/userinterface/ViewFactory.java" afterDir="false" />
++    <list default="true" id="d5ca420f-d41e-43d3-bd1d-91a1d86fa925" name="Changes" comment="transaction calculation adds, session retrieval add">
++      <change beforePath="$PROJECT_DIR$/model/EndShiftTransaction.java" beforeDir="false" afterPath="$PROJECT_DIR$/model/EndShiftTransaction.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/model/Session.java" beforeDir="false" afterPath="$PROJECT_DIR$/model/Session.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/model/SessionCollection.java" beforeDir="false" />
++      <change beforePath="$PROJECT_DIR$/userinterface/EndShiftDataView.java" beforeDir="false" afterPath="$PROJECT_DIR$/userinterface/EndShiftDataView.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/userinterface/EndShiftView.java" beforeDir="false" afterPath="$PROJECT_DIR$/userinterface/EndShiftView.java" afterDir="false" />
+     </list>
+     <option name="SHOW_DIALOG" value="false" />
+     <option name="HIGHLIGHT_CONFLICTS" value="true" />
+@@ -26,84 +24,76 @@
+     </option>
+   </component>
+   <component name="Git.Settings">
+-    <favorite-branches>
+-      <branch-storage>
+-        <map>
+-          <entry type="LOCAL">
+-            <value>
+-              <list>
+-                <branch-info repo="$PROJECT_DIR$" source="Alex" />
+-              </list>
+-            </value>
+-          </entry>
+-        </map>
+-      </branch-storage>
+-    </favorite-branches>
+-    <option name="RECENT_BRANCH_BY_REPOSITORY">
+-      <map>
+-        <entry key="$PROJECT_DIR$" value="main" />
+-      </map>
+-    </option>
+     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
++  </component>
++  <component name="HighlightingSettingsPerFile">
++    <setting file="file://$PROJECT_DIR$/model/TransactionClass.java" root0="FORCE_HIGHLIGHTING" />
+   </component>
+   <component name="MarkdownSettingsMigration">
+     <option name="stateVersion" value="1" />
+   </component>
+-  <component name="ProblemsViewState">
+-    <option name="selectedTabId" value="CurrentFile" />
+-  </component>
+-  <component name="ProjectId" id="2NQPgrumnguawAYHSDT8A50A6K5" />
++  <component name="ProjectId" id="2ONdpcG6E5tDWFkzNj0CgXP6pmx" />
+   <component name="ProjectViewState">
+     <option name="hideEmptyMiddlePackages" value="true" />
+     <option name="showLibraryContents" value="true" />
+   </component>
+   <component name="PropertiesComponent">{
+   &quot;keyToString&quot;: {
++    &quot;Git.Branch.Popup.ShowAllRemotes&quot;: &quot;true&quot;,
+     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+-    &quot;last_opened_file_path&quot;: &quot;C:/Users/worse/OneDrive/Documents/GitHub/CSC429BoyScoutProject/mariadb-java-client-3.0.3.jar&quot;,
+-    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
+-    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+-    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+-    &quot;settings.editor.selected.configurable&quot;: &quot;vcs.Git&quot;
++    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;
+   }
+ }</component>
++  <component name="Push.Settings">
++    <force-push-targets>
++      <force-push-target remote-path="origin" branch="EndShift" />
++    </force-push-targets>
++  </component>
+   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+   <component name="TaskManager">
+     <task active="true" id="Default" summary="Default task">
+-      <changelist id="42a9de0e-dc93-405f-946e-a04e330aeca0" name="Changes" comment="" />
+-      <created>1679593446952</created>
++      <changelist id="d5ca420f-d41e-43d3-bd1d-91a1d86fa925" name="Changes" comment="" />
++      <created>1681405156203</created>
+       <option name="number" value="Default" />
+       <option name="presentableId" value="Default" />
+-      <updated>1679593446952</updated>
++      <updated>1681405156203</updated>
++    </task>
++    <task id="LOCAL-00001" summary="EndShiftView base commit">
++      <created>1681406775849</created>
++      <option name="number" value="00001" />
++      <option name="presentableId" value="LOCAL-00001" />
++      <option name="project" value="LOCAL" />
++      <updated>1681406775849</updated>
+     </task>
++    <task id="LOCAL-00002" summary="EndShiftView edit, EndShiftTransaction base commit">
++      <created>1681410386914</created>
++      <option name="number" value="00002" />
++      <option name="presentableId" value="LOCAL-00002" />
++      <option name="project" value="LOCAL" />
++      <updated>1681410386914</updated>
++    </task>
++    <task id="LOCAL-00003" summary="transaction start">
++      <created>1681838845565</created>
++      <option name="number" value="00003" />
++      <option name="presentableId" value="LOCAL-00003" />
++      <option name="project" value="LOCAL" />
++      <updated>1681838845565</updated>
++    </task>
++    <task id="LOCAL-00004" summary="transaction calculation adds, session retrieval add">
++      <created>1682001889901</created>
++      <option name="number" value="00004" />
++      <option name="presentableId" value="LOCAL-00004" />
++      <option name="project" value="LOCAL" />
++      <updated>1682001889901</updated>
++    </task>
++    <option name="localTasksCounter" value="5" />
+     <servers />
+   </component>
+-  <component name="UnknownFeatures">
+-    <option featureType="com.intellij.fileTypeFactory" implementationName="*.ini" />
+-  </component>
+-  <component name="Vcs.Log.Tabs.Properties">
+-    <option name="TAB_STATES">
+-      <map>
+-        <entry key="MAIN">
+-          <value>
+-            <State>
+-              <option name="FILTERS">
+-                <map>
+-                  <entry key="branch">
+-                    <value>
+-                      <list>
+-                        <option value="Alex" />
+-                      </list>
+-                    </value>
+-                  </entry>
+-                </map>
+-              </option>
+-            </State>
+-          </value>
+-        </entry>
+-      </map>
+-    </option>
++  <component name="VcsManagerConfiguration">
++    <MESSAGE value="EndShiftView base commit" />
++    <MESSAGE value="EndShiftView edit, EndShiftTransaction base commit" />
++    <MESSAGE value="transaction start" />
++    <MESSAGE value="transaction calculation adds, session retrieval add" />
++    <option name="LAST_COMMIT_MESSAGE" value="transaction calculation adds, session retrieval add" />
+   </component>
+ </project>
+\ No newline at end of file
+Index: ErrorLog.txt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>[11/20/11 9:12 AM]|Teller|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException>\r\n[11/20/11 9:15 AM]|Teller|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException>\r\n[11/20/11 9:22 AM]|DepositTransaction|Transaction|Error|NOTAG|null<Could not find any accounts for 1>\r\n[2/10/14 3:42 PM]|AccountHolder|getSelectQueryResult|Error|NOTAG|null<SQL Exception: 1064: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ';wlkrpekw)' at line 1>\r\n[2/10/14 3:42 PM]|AccountHolder|getSelectQueryResult|Error|NOTAG|null<SQL Exception: 1054: Unknown column 'ret54' in 'where clause'>\r\n[2/10/14 3:47 PM]|AccountHolder|getSelectQueryResult|Error|NOTAG|null<SQL Exception: 1054: Unknown column 'smitra' in 'where clause'>\r\n[2/10/14 3:47 PM]|AccountHolder|getSelectQueryResult|Error|NOTAG|null<SQL Exception: 1054: Unknown column 'klakshma' in 'where clause'>\r\n[2/10/14 3:47 PM]|AccountHolder|getSelectQueryResult|Error|NOTAG|null<SQL Exception: 1054: Unknown column 'matthew' in 'where clause'>\r\n[2/10/14 3:48 PM]|AccountHolder|getSelectQueryResult|Error|NOTAG|null<SQL Exception: 1054: Unknown column 'etienne' in 'where clause'>\r\n[6/11/15 4:42 PM]|DepositTransaction|processTransaction|Error|NOTAG|null<Failed to verify ownership of account number : 2.>\r\n[6/11/15 4:59 PM]|DepositTransaction|processTransaction|Error|NOTAG|null<Failed to verify ownership of account number : 2.>\r\n[6/11/15 4:59 PM]|DepositTransaction|processTransaction|Error|NOTAG|null<Failed to verify ownership of account number : 2.>\r\n[6/11/15 4:59 PM]|DepositTransaction|processTransaction|Error|NOTAG|null<Failed to verify ownership of account number : 2.>\r\n[6/11/15 5:04 PM]|DepositTransaction|processTransaction|Error|NOTAG|null<Failed to verify ownership of account number : 2.>\r\n[3/14/23, 3:56 AM]|JDBCBroker|JDBCBroker|Error|NOTAG|null<Could not load driver class[org.mariadb.jdbc.Driver]>\r\n[3/14/23, 4:07 AM]|JDBCBroker|JDBCBroker|Error|NOTAG|null<Could not load driver class[org.mariadb.jdbc.Driver]>\r\n[3/14/23, 4:11 AM]|JDBCBroker|JDBCBroker|Error|NOTAG|null<Could not load driver class[org.mariadb.jdbc.Driver]>\r\n[3/20/23, 3:00 PM]|TLC|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException>\r\n[3/20/23, 10:18 PM]|TLC|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException>\r\n[3/30/23, 1:47 PM]|TLC|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException>\r\n[3/30/23, 1:49 PM]|TLC|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException>\r\n[3/30/23, 2:37 PM]|TLC|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException>\r\n[3/30/23, 2:38 PM]|TLC|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException>\r\n[3/30/23, 10:52 PM]|TLC|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException>\r\n[3/31/23, 12:03 AM]|Scout|insertAutoIncrementalPersistentState|Error|NOTAG|null<SQL Exception: 1364: (conn=7893) Field 'dateStatusUpdated' doesn't have a default value>\r\n[3/31/23, 12:42 AM]|TLC|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException>\r\n[3/31/23, 3:49 PM]|TLC|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException>\r\n[4/7/23, 2:33 AM]|Tree|insertPersistentState|Error|NOTAG|null<SQL Exception: 1364: (conn=28705) Field 'treeType' doesn't have a default value>\r\n[4/7/23, 2:48 AM]|Tree|insertPersistentState|Error|NOTAG|null<SQL Exception: 1364: (conn=28727) Field 'dateStatusUpdate' doesn't have a default value>\r\n[4/7/23, 2:53 AM]|Tree|insertPersistentState|Error|NOTAG|null<SQL Exception: 1062: (conn=28728) Duplicate entry '61001' for key 'barcode'>\r\n[4/7/23, 3:01 AM]|Tree|insertPersistentState|Error|NOTAG|null<SQL Exception: 1364: (conn=28741) Field 'treeType' doesn't have a default value>\r\n[4/7/23, 3:09 AM]|Tree|insertPersistentState|Error|NOTAG|null<SQL Exception: 1364: (conn=28742) Field 'dateStatusUpdate' doesn't have a default value>\r\n[4/7/23, 3:10 AM]|Tree|insertPersistentState|Error|NOTAG|null<SQL Exception: 1062: (conn=28743) Duplicate entry '61001' for key 'barcode'>\r\n[4/10/23, 2:05 AM]|TLC|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException>\r\n[4/10/23, 2:05 AM]|TLC|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException>\r\n[4/10/23, 2:11 AM]|TLC|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException>\r\n[4/10/23, 2:11 AM]|TLC|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException>\r\n[4/10/23, 2:11 AM]|TLC|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException>\r\n[4/10/23, 2:11 AM]|TLC|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException>\r\n[4/10/23, 2:11 AM]|TLC|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException>\r\n[4/10/23, 2:11 AM]|TLC|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException>\r\n[4/10/23, 2:12 AM]|TLC|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException>\r\n[4/10/23, 3:52 AM]|Tree|getSelectQueryResult|Error|NOTAG|null<SQL Exception: 1064: (conn=32654) You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near ')' at line 1>\r\n[4/17/23 1:32 PM]|TLC|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException>\r\n[4/17/23 1:32 PM]|TLC|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException>\r\n[4/17/23 1:32 PM]|TLC|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException>\r\n[4/17/23 1:32 PM]|TLC|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException>\r\n[4/17/23 1:32 PM]|TLC|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException>\r\n[4/17/23 1:38 PM]|TLC|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException>\r\n[4/17/23 1:40 PM]|TLC|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException>\r\n[4/18/23 1:00 PM]|JDBCBroker|JDBCBroker|Error|NOTAG|null<Could not load driver class[org.mariadb.jdbc.Driver]>\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/ErrorLog.txt b/ErrorLog.txt
+--- a/ErrorLog.txt	(revision 4724c1585713e0fd8fe218d35c204cffd2e5fc54)
++++ b/ErrorLog.txt	(date 1682010606365)
+@@ -49,3 +49,18 @@
+ [4/17/23 1:38 PM]|TLC|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException>
+ [4/17/23 1:40 PM]|TLC|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException>
+ [4/18/23 1:00 PM]|JDBCBroker|JDBCBroker|Error|NOTAG|null<Could not load driver class[org.mariadb.jdbc.Driver]>
++[4/20/23 1:04 PM]|TLC|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException>
++[4/20/23 1:04 PM]|TLC|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException>
++[4/20/23 1:04 PM]|TLC|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException>
++[4/20/23 1:05 PM]|TLC|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException>
++[4/20/23 1:06 PM]|TLC|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException>
++[4/20/23 1:06 PM]|TLC|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException>
++[4/20/23 1:06 PM]|TLC|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException>
++[4/20/23 1:06 PM]|TLC|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException>
++[4/20/23 1:08 PM]|TLC|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException>
++[4/20/23 1:10 PM]|TLC|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException>
++[4/20/23 1:10 PM]|TLC|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException>
++[4/20/23 1:10 PM]|TLC|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException>
++[4/20/23 1:10 PM]|TLC|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException>
++[4/20/23 1:10 PM]|TLC|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException>
++[4/20/23 1:10 PM]|TLC|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException>
+Index: out/production/JavaCode2/ErrorLog.txt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>[11/20/11 9:12 AM]|Teller|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException>\r\n[11/20/11 9:15 AM]|Teller|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException>\r\n[11/20/11 9:22 AM]|DepositTransaction|Transaction|Error|NOTAG|null<Could not find any accounts for 1>\r\n[2/10/14 3:42 PM]|AccountHolder|getSelectQueryResult|Error|NOTAG|null<SQL Exception: 1064: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ';wlkrpekw)' at line 1>\r\n[2/10/14 3:42 PM]|AccountHolder|getSelectQueryResult|Error|NOTAG|null<SQL Exception: 1054: Unknown column 'ret54' in 'where clause'>\r\n[2/10/14 3:47 PM]|AccountHolder|getSelectQueryResult|Error|NOTAG|null<SQL Exception: 1054: Unknown column 'smitra' in 'where clause'>\r\n[2/10/14 3:47 PM]|AccountHolder|getSelectQueryResult|Error|NOTAG|null<SQL Exception: 1054: Unknown column 'klakshma' in 'where clause'>\r\n[2/10/14 3:47 PM]|AccountHolder|getSelectQueryResult|Error|NOTAG|null<SQL Exception: 1054: Unknown column 'matthew' in 'where clause'>\r\n[2/10/14 3:48 PM]|AccountHolder|getSelectQueryResult|Error|NOTAG|null<SQL Exception: 1054: Unknown column 'etienne' in 'where clause'>\r\n[6/11/15 4:42 PM]|DepositTransaction|processTransaction|Error|NOTAG|null<Failed to verify ownership of account number : 2.>\r\n[6/11/15 4:59 PM]|DepositTransaction|processTransaction|Error|NOTAG|null<Failed to verify ownership of account number : 2.>\r\n[6/11/15 4:59 PM]|DepositTransaction|processTransaction|Error|NOTAG|null<Failed to verify ownership of account number : 2.>\r\n[6/11/15 4:59 PM]|DepositTransaction|processTransaction|Error|NOTAG|null<Failed to verify ownership of account number : 2.>\r\n[6/11/15 5:04 PM]|DepositTransaction|processTransaction|Error|NOTAG|null<Failed to verify ownership of account number : 2.>\r\n[3/14/23, 3:56 AM]|JDBCBroker|JDBCBroker|Error|NOTAG|null<Could not load driver class[org.mariadb.jdbc.Driver]>\r\n[3/14/23, 4:07 AM]|JDBCBroker|JDBCBroker|Error|NOTAG|null<Could not load driver class[org.mariadb.jdbc.Driver]>\r\n[3/14/23, 4:11 AM]|JDBCBroker|JDBCBroker|Error|NOTAG|null<Could not load driver class[org.mariadb.jdbc.Driver]>\r\n[3/20/23, 3:00 PM]|TLC|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException>\r\n[3/20/23, 10:18 PM]|TLC|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException>\r\n[3/30/23, 1:47 PM]|TLC|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException>\r\n[3/30/23, 1:49 PM]|TLC|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException>\r\n[3/30/23, 2:37 PM]|TLC|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException>\r\n[3/30/23, 2:38 PM]|TLC|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException>\r\n[3/30/23, 10:52 PM]|TLC|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException>\r\n[3/31/23, 12:03 AM]|Scout|insertAutoIncrementalPersistentState|Error|NOTAG|null<SQL Exception: 1364: (conn=7893) Field 'dateStatusUpdated' doesn't have a default value>\r\n[3/31/23, 12:42 AM]|TLC|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException>\r\n[3/31/23, 3:49 PM]|TLC|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException>\r\n[4/7/23, 2:33 AM]|Tree|insertPersistentState|Error|NOTAG|null<SQL Exception: 1364: (conn=28705) Field 'treeType' doesn't have a default value>\r\n[4/7/23, 2:48 AM]|Tree|insertPersistentState|Error|NOTAG|null<SQL Exception: 1364: (conn=28727) Field 'dateStatusUpdate' doesn't have a default value>\r\n[4/7/23, 2:53 AM]|Tree|insertPersistentState|Error|NOTAG|null<SQL Exception: 1062: (conn=28728) Duplicate entry '61001' for key 'barcode'>\r\n[4/7/23, 3:01 AM]|Tree|insertPersistentState|Error|NOTAG|null<SQL Exception: 1364: (conn=28741) Field 'treeType' doesn't have a default value>\r\n[4/7/23, 3:09 AM]|Tree|insertPersistentState|Error|NOTAG|null<SQL Exception: 1364: (conn=28742) Field 'dateStatusUpdate' doesn't have a default value>\r\n[4/7/23, 3:10 AM]|Tree|insertPersistentState|Error|NOTAG|null<SQL Exception: 1062: (conn=28743) Duplicate entry '61001' for key 'barcode'>\r\n[4/10/23, 2:05 AM]|TLC|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException>\r\n[4/10/23, 2:05 AM]|TLC|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException>\r\n[4/10/23, 2:11 AM]|TLC|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException>\r\n[4/10/23, 2:11 AM]|TLC|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException>\r\n[4/10/23, 2:11 AM]|TLC|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException>\r\n[4/10/23, 2:11 AM]|TLC|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException>\r\n[4/10/23, 2:11 AM]|TLC|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException>\r\n[4/10/23, 2:11 AM]|TLC|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException>\r\n[4/10/23, 2:12 AM]|TLC|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException>\r\n[4/10/23, 3:52 AM]|Tree|getSelectQueryResult|Error|NOTAG|null<SQL Exception: 1064: (conn=32654) You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near ')' at line 1>\r\n[4/17/23 1:32 PM]|TLC|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException>\r\n[4/17/23 1:32 PM]|TLC|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException>\r\n[4/17/23 1:32 PM]|TLC|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException>\r\n[4/17/23 1:32 PM]|TLC|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException>\r\n[4/17/23 1:32 PM]|TLC|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException>\r\n[4/17/23 1:38 PM]|TLC|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException>\r\n[4/17/23 1:40 PM]|TLC|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException>\r\n[4/18/23 1:00 PM]|JDBCBroker|JDBCBroker|Error|NOTAG|null<Could not load driver class[org.mariadb.jdbc.Driver]>\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/out/production/JavaCode2/ErrorLog.txt b/out/production/JavaCode2/ErrorLog.txt
+--- a/out/production/JavaCode2/ErrorLog.txt	(revision 4724c1585713e0fd8fe218d35c204cffd2e5fc54)
++++ b/out/production/JavaCode2/ErrorLog.txt	(date 1682010606365)
+@@ -49,3 +49,18 @@
+ [4/17/23 1:38 PM]|TLC|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException>
+ [4/17/23 1:40 PM]|TLC|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException>
+ [4/18/23 1:00 PM]|JDBCBroker|JDBCBroker|Error|NOTAG|null<Could not load driver class[org.mariadb.jdbc.Driver]>
++[4/20/23 1:04 PM]|TLC|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException>
++[4/20/23 1:04 PM]|TLC|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException>
++[4/20/23 1:04 PM]|TLC|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException>
++[4/20/23 1:05 PM]|TLC|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException>
++[4/20/23 1:06 PM]|TLC|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException>
++[4/20/23 1:06 PM]|TLC|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException>
++[4/20/23 1:06 PM]|TLC|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException>
++[4/20/23 1:06 PM]|TLC|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException>
++[4/20/23 1:08 PM]|TLC|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException>
++[4/20/23 1:10 PM]|TLC|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException>
++[4/20/23 1:10 PM]|TLC|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException>
++[4/20/23 1:10 PM]|TLC|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException>
++[4/20/23 1:10 PM]|TLC|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException>
++[4/20/23 1:10 PM]|TLC|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException>
++[4/20/23 1:10 PM]|TLC|createTransaction|Error|NOTAG|null<Transaction Creation Failure: Unrecognized transaction java.lang.NullPointerException>

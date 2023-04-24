@@ -1,4 +1,29 @@
-<changelist name="Uncommitted_changes_before_rebase_[Changes]" date="1679697589038" recycled="true" deleted="true">
+<changelist name="Uncommitted_changes_before_rebase_[Changes]" date="1682377633261" recycled="false" toDelete="true">
   <option name="PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_rebase_[Changes]/shelved.patch" />
   <option name="DESCRIPTION" value="Uncommitted changes before rebase [Changes]" />
+  <binary>
+    <option name="BEFORE_PATH" value="out/production/JavaCode2/userinterface/EndShiftDataView$2.class" />
+    <option name="AFTER_PATH" value="out/production/JavaCode2/userinterface/EndShiftDataView$2.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_rebase_[Changes]/EndShiftDataView$2.class" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="out/production/JavaCode2/userinterface/EndShiftDataView.class" />
+    <option name="AFTER_PATH" value="out/production/JavaCode2/userinterface/EndShiftDataView.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_rebase_[Changes]/EndShiftDataView.class" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="out/production/JavaCode2/userinterface/EndShiftDataView$1.class" />
+    <option name="AFTER_PATH" value="out/production/JavaCode2/userinterface/EndShiftDataView$1.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_rebase_[Changes]/EndShiftDataView$1.class" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="out/production/JavaCode2/database/JDBCBroker.class" />
+    <option name="AFTER_PATH" value="out/production/JavaCode2/database/JDBCBroker.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_rebase_[Changes]/JDBCBroker.class" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="out/production/JavaCode2/model/EndShiftTransaction.class" />
+    <option name="AFTER_PATH" value="out/production/JavaCode2/model/EndShiftTransaction.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_rebase_[Changes]/EndShiftTransaction.class" />
+  </binary>
 </changelist>
