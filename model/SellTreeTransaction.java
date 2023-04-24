@@ -16,6 +16,8 @@ public class SellTreeTransaction extends Transaction {
     protected TreeType myTreeType;
     protected Session mySession;
     protected SellTransaction myTransaction;
+
+    protected boolean sessionTest = true;
     // GUI Components
 
     protected String transactionErrorMessage = "";
@@ -106,6 +108,11 @@ public class SellTreeTransaction extends Transaction {
                 else
                     return "Undefined";
             }
+            /*if (key.equals("sessionTest") == true)
+            {
+                sessionTest();
+                return sessionTest;
+            }*/
 
             return null;
     }
@@ -190,48 +197,75 @@ public class SellTreeTransaction extends Transaction {
             myTree= new Tree(props);
            myTree.update();
     }
+
+    /*public void sessionTest() {
+        try {
+            mySession= new Session("","");
+            System.out.println("session created");
+            String sessionId = mySession.getSessionId();
+            System.out.println("the id is : " + sessionId);
+            if ((sessionId.length() == 0)) {
+                sessionTest = false;
+                System.out.println("session test failed");
+            }
+            else {
+                sessionTest= true;
+                System.out.println("session test worked");
+            }
+        }
+        catch(InvalidPrimaryKeyException e){
+            transactionErrorMessage="Error cannot do this 5.";
+        }
+    }*/
+
     public void processTransaction(Properties props) {
         try {
             mySession= new Session("","");
             String sessionId = mySession.getSessionId();
-            props.setProperty("sessionID", sessionId);
-            myTransaction = new SellTransaction(props);
-            props.setProperty("transactionType", "Tree Sale");
-            //-------------------------------------
-            String treeBarcode = props.getProperty("barcode");
-            props.setProperty("barcode", treeBarcode);
-            //---------------------------------------
-            String paymentMethod = props.getProperty("paymentMethod");
-            props.setProperty("paymentMethod", paymentMethod);
-            //---------------------------------------
-            String costEntered = props.getProperty("transactionAmount");
-            props.setProperty("transactionAmount", costEntered);
-            //---------------------------------------
-            String custNameEntered = props.getProperty("customerName");
-            props.setProperty("customerName", custNameEntered);
-            //----------------------------------------
-            String custPhoneEntered = props.getProperty("customerPhone");
-            props.setProperty("customerPhone", custPhoneEntered);
-            //----------------------------------------
-            String custEmailEntered = props.getProperty("customerEmail");
-            props.setProperty("customerEmail", custEmailEntered);
-            //-----------------------------------------
-            String transactionDate = props.getProperty("transactionDate");
-            props.setProperty("transactionDate", transactionDate);
-            //------------------------------------------
-            String transactionTime = props.getProperty("transactionTime");
-            props.setProperty("transactionTime", transactionTime);
-            //------------------------------------------
-            String dateStatusUpdated = props.getProperty("dateStatusUpdate");
-            props.setProperty("dateStatusUpdate", dateStatusUpdated);
-           //-------------------------------------------------------
+            /*if ((sessionId.length() == 0)) {
+                sessionTest();
+                transactionErrorMessage="Error : Session not found transaction aborted.";
+            }
+            else {*/
+                props.setProperty("sessionID", sessionId);
+                myTransaction = new SellTransaction(props);
+                props.setProperty("transactionType", "Tree Sale");
+                //-------------------------------------
+                String treeBarcode = props.getProperty("barcode");
+                props.setProperty("barcode", treeBarcode);
+                //---------------------------------------
+                String paymentMethod = props.getProperty("paymentMethod");
+                props.setProperty("paymentMethod", paymentMethod);
+                //---------------------------------------
+                String costEntered = props.getProperty("transactionAmount");
+                props.setProperty("transactionAmount", costEntered);
+                //---------------------------------------
+                String custNameEntered = props.getProperty("customerName");
+                props.setProperty("customerName", custNameEntered);
+                //----------------------------------------
+                String custPhoneEntered = props.getProperty("customerPhone");
+                props.setProperty("customerPhone", custPhoneEntered);
+                //----------------------------------------
+                String custEmailEntered = props.getProperty("customerEmail");
+                props.setProperty("customerEmail", custEmailEntered);
+                //-----------------------------------------
+                String transactionDate = props.getProperty("transactionDate");
+                props.setProperty("transactionDate", transactionDate);
+                //------------------------------------------
+                String transactionTime = props.getProperty("transactionTime");
+                props.setProperty("transactionTime", transactionTime);
+                //------------------------------------------
+                String dateStatusUpdated = props.getProperty("dateStatusUpdate");
+                props.setProperty("dateStatusUpdate", dateStatusUpdated);
+                //-------------------------------------------------------
 
-            myTransaction = new SellTransaction(props);
+                myTransaction = new SellTransaction(props);
 
-            props.setProperty("sessionID",sessionId);
+                props.setProperty("sessionID", sessionId);
 
-            //------
-            myTransaction.update();
+                //------
+                myTransaction.update();
+            //}
         } catch(InvalidPrimaryKeyException e){
             transactionErrorMessage="Error cannot do this 4.";
         }

@@ -58,6 +58,8 @@ public class SellTreeTransactionView extends View
     // For showing error message
     private MessageView statusLog;
 
+    private boolean sessionOpen = true;
+
     // constructor for this class -- takes a model object
     //----------------------------------------------------------
     public SellTreeTransactionView(IModel trans)
@@ -299,16 +301,19 @@ public class SellTreeTransactionView extends View
         String transactionTime = hoursAndMinutes;
         String dateStatusUpdated = dtf.format(now);
 
+        /*sessionOpen = (boolean)myModel.getState("sessionTest");
+        System.out.println("session tested");*/
 
 
-        if((costEntered == null) || !isNumeric(costEntered)) {
+
+        if((costEntered == null) || !isNumeric(costEntered) || (costEntered.length() == 0)) {
             displayErrorMessage("Enter a valid cost");
         }
 
         else if ((custNameEntered.length() > 25)) {
             displayErrorMessage("Name too long for the database");
         }
-        else if ((custNameEntered == null) || (isNumeric(custNameEntered)== true)) {
+        else if ((custNameEntered == null) || (isNumeric(custNameEntered)== true) || (custNameEntered.length() == 0)) {
             displayErrorMessage("Enter a valid customer name");
         }
         else if((custPhoneEntered.length()!=10) || (!isNumeric(custPhoneEntered) ))
@@ -321,8 +326,11 @@ public class SellTreeTransactionView extends View
         }
         else if (( !custEmailEntered.contains("@")))
         {
-            displayErrorMessage("Please enter a valid the email");
+            displayErrorMessage("Please enter a valid email");
         }
+        /*else if (sessionOpen == false){
+            displayErrorMessage("Transaction impossible no session open");
+        }*/
         else
             processTransactionInfo(barcodeEntered, costEntered, paymentMethod, custNameEntered,
                     custPhoneEntered, custEmailEntered, transactionDate, transactionTime, dateStatusUpdated);
