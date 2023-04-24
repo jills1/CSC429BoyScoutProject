@@ -13,6 +13,7 @@ import userinterface.ViewFactory;
 public class SellTreeTransaction extends Transaction {
 
     protected Tree myTree;
+
     protected TreeType myTreeType;
     protected Session mySession;
     protected SellTransaction myTransaction;
@@ -20,7 +21,7 @@ public class SellTreeTransaction extends Transaction {
     protected boolean sessionTest = true;
     // GUI Components
 
-    protected String transactionErrorMessage = "";
+    private String transactionMessage = "";
     protected String sellTreeStatusMessage = "";
 
     private static final String myTableName = "Transaction";
@@ -35,6 +36,10 @@ public class SellTreeTransaction extends Transaction {
         dependencies.setProperty("CancelSale", "CancelTransaction");
         dependencies.setProperty("OK", "SellATreeTransaction");
         dependencies.setProperty("TreeChosen", "TransactionError");
+        dependencies.setProperty("UpdateTreeInfo", "TransactionError");
+        dependencies.setProperty("UpdateTransactionInfo", "TransactionError");
+        //dependencies.setProperty("UpdateTransactionInfo", "TreeStatus");
+
 
         myRegistry.setDependencies(dependencies);
     }
@@ -60,7 +65,7 @@ public class SellTreeTransaction extends Transaction {
         {
             if (key.equals("TransactionError") == true)
             {
-                return transactionErrorMessage;
+                return transactionMessage;
             }
             else
             if (key.equals("UpdateStatusMessage") == true)
@@ -132,7 +137,7 @@ public class SellTreeTransaction extends Transaction {
             }
             catch (Exception ex)
             {
-                transactionErrorMessage = "Error getting Tree";
+                transactionMessage = "Error getting Tree";
             }
 
 
@@ -141,7 +146,7 @@ public class SellTreeTransaction extends Transaction {
             }
             catch (Exception ex)
             {
-                transactionErrorMessage = "Error getting Tree";
+                transactionMessage = "Error getting Tree";
             }
 
         }
@@ -151,14 +156,14 @@ public class SellTreeTransaction extends Transaction {
                 myTreeType = getTreeTypeFromBarcode(props);
             }
             catch (Exception ex) {
-                transactionErrorMessage = "Error getting TreeType";
+                transactionMessage = "Error getting TreeType";
             }
 
 
             try {
 
             } catch (Exception ex) {
-                transactionErrorMessage = "Error getting Tree";
+                transactionMessage = "Error getting Tree";
             }
         }
         else
@@ -265,9 +270,10 @@ public class SellTreeTransaction extends Transaction {
 
                 //------
                 myTransaction.update();
+            transactionMessage += myTransaction.getState("UpdateStatusMessage");
             //}
         } catch(InvalidPrimaryKeyException e){
-            transactionErrorMessage="Error cannot do this 4.";
+            transactionMessage="ERROR: No Open Session.";
         }
     }
 }

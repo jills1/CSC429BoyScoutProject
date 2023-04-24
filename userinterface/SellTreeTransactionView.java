@@ -81,6 +81,7 @@ public class SellTreeTransactionView extends View
 
 
         myModel.subscribe("TransactionError",this);
+        myModel.subscribe("TreeStatus",this);
     }
 
 
@@ -392,7 +393,7 @@ public class SellTreeTransactionView extends View
         myModel.stateChangeRequest("UpdateTreeInfo", props2);
         myModel.stateChangeRequest("UpdateTransactionInfo", props);
 
-        displayMessage("Successfully sold Tree");
+        //displayMessage("Successfully sold Tree");
     }
     public String firstTwo(String str) {
         return str.length() < 2 ? str : str.substring(0,2);
@@ -409,9 +410,19 @@ public class SellTreeTransactionView extends View
     //---------------------------------------------------------
     public void updateState(String key, Object value)
     {
-        if ((key.equals("TransactionError")))
-            displayErrorMessage((String)value);
+        clearErrorMessage();
 
+        if (key.equals("TransactionError"))
+        {
+            String messageToDisplay = (String)value;
+            if (messageToDisplay.startsWith("ERR")) {
+                displayErrorMessage(messageToDisplay);
+            }
+            else {
+                displayMessage(messageToDisplay);
+            }
+
+        }
     }
 
     /**

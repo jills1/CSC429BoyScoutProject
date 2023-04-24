@@ -236,7 +236,7 @@ public class SellTransaction extends EntityBase implements IView
                 Integer transId =
                         insertAutoIncrementalPersistentState(mySchema, persistentState);
                 persistentState.setProperty("transactionID", "" + transId.intValue());
-                updateStatusMessage = "Transaction data for new scout installed successfully in database!";
+                updateStatusMessage = "Transaction data for tree sale installed successfully in database!";
             }
         }
         catch (SQLException ex)
