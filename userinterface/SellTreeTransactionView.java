@@ -265,8 +265,15 @@ public class SellTreeTransactionView extends View
     //-------------------------------------------------------------
     public void populateFields()
     {
-        cost.setText((String)myModel.getState("cost"));
-        notes.setText((String)myModel.getState("notes"));
+        String treeStatus = (String)myModel.getState("status");
+        if ( treeStatus.equals("Sold"))
+        {
+            displayErrorMessage("This tree is already sold");
+        }
+        else {
+            cost.setText((String) myModel.getState("cost"));
+            notes.setText((String) myModel.getState("notes"));
+        }
     }
 
 
@@ -304,7 +311,8 @@ public class SellTreeTransactionView extends View
         String dateStatusUpdated = dtf.format(now);
         System.out.println(dateStatusUpdated);
 
-        /*if((costEntered == null) || !isNumeric(costEntered)) {
+
+        if((costEntered == null) || !isNumeric(costEntered)) {
             displayErrorMessage("Enter a valid cost");
         }
 
@@ -314,29 +322,23 @@ public class SellTreeTransactionView extends View
         else if ((custNameEntered == null) || (isNumeric(custNameEntered)== true)) {
             displayErrorMessage("Enter a valid customer name");
         }
-
-        else if ((custPhoneEntered == null) || (isNumeric(custNameEntered)== false)) {
-            displayErrorMessage("Enter a valid telephone number");
-        }
-        else if ((custPhoneEntered == null) || (custPhoneEntered.length() < 10) || (custPhoneEntered.length() > 10) )
+        else if((custPhoneEntered.length()!=10) || (!isNumeric(custPhoneEntered) ))
         {
-            displayErrorMessage("Please change for a valid phone number");
+            displayErrorMessage("Phone number must be in numeric format xxxxxxxxxx");
         }
         else if ((custEmailEntered == null) || (custEmailEntered.length() == 0))
         {
-            displayErrorMessage("Please change the email");
+            displayErrorMessage("Please enter a valid email");
         }
         else if (( !custEmailEntered.contains("@")))
         {
-            displayErrorMessage("Please change the email");
+            displayErrorMessage("Please enter a valid the email");
         }
-        else {*/
-            System.out.println("getting to else  before ProcesTransactionInfo call");
+        else
             processTransactionInfo(barcodeEntered, costEntered, paymentMethod, custNameEntered,
                     custPhoneEntered, custEmailEntered, transactionDate, transactionTime, dateStatusUpdated);
-        //}
+            //displayErrorMessage("tests are working !");
 
-        clearErrorMessage();
     }
     private void processAction2(Event evt)
     {
@@ -400,7 +402,7 @@ public class SellTreeTransactionView extends View
         myModel.stateChangeRequest("UpdateTransactionInfo", props);
         myModel.stateChangeRequest("UpdateTreeInfo", props2);
 
-        displayMessage("Successfully updated Scout");
+        displayMessage("Successfully sold Tree");
     }
     public String firstTwo(String str) {
         return str.length() < 2 ? str : str.substring(0,2);
@@ -440,7 +442,7 @@ public class SellTreeTransactionView extends View
         statusLog.clearErrorMessage();
     }
 
-    public static boolean isNumeric(String strNum) {
+    public boolean isNumeric(String strNum) {
         if (strNum == null) {
             return false;
         }
@@ -451,4 +453,5 @@ public class SellTreeTransactionView extends View
         }
         return true;
     }
+
 }

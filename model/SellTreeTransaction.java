@@ -85,6 +85,14 @@ public class SellTreeTransaction extends Transaction {
                     return val;
                 }
             }
+            if (key.equals("status") == true)
+            {
+                if (myTree != null) {
+                    return myTree.getState("status");
+                }
+                else
+                    return "Undefined";
+            }
             if (key.equals("notes") == true)
             {
                 if (myTree != null) {
