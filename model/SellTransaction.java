@@ -79,7 +79,7 @@ public class SellTransaction extends EntityBase implements IView
 
             }
         }
-        // If no scout found for this troop id, throw an exception
+
         else
         {
             throw new InvalidPrimaryKeyException("No transaction matching id : "
@@ -228,7 +228,7 @@ public class SellTransaction extends EntityBase implements IView
                 whereClause.setProperty("transactionID",
                         persistentState.getProperty("transactionID"));
                 updatePersistentState(mySchema, persistentState, whereClause);
-                updateStatusMessage = "Transaction data updated successfully in database!";
+                updateStatusMessage = "Transaction successfully created !";
             }
             else
             {
@@ -236,12 +236,12 @@ public class SellTransaction extends EntityBase implements IView
                 Integer transId =
                         insertAutoIncrementalPersistentState(mySchema, persistentState);
                 persistentState.setProperty("transactionID", "" + transId.intValue());
-                updateStatusMessage = "Transaction data for tree sale installed successfully in database!";
+                updateStatusMessage = "Transaction successfully created !";
             }
         }
         catch (SQLException ex)
         {
-            updateStatusMessage = "Error in installing transaction data in database!";
+            updateStatusMessage = "Transaction error in database!";
         }
     }
 

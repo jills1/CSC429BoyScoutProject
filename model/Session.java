@@ -152,7 +152,6 @@ public class Session extends EntityBase implements IView
         {
             updateStatusMessage = "Error in installing session data in database!";
         }
-        //DEBUG System.out.println("updateStateInDatabase " + updateStatusMessage);
     }
 
     public Vector<String> getEntryListView()
@@ -206,7 +205,6 @@ public class Session extends EntityBase implements IView
     public Session(String endingCash, String Ok) throws InvalidPrimaryKeyException {
         super(myTableName);
         setDependencies();
-        //String sessionId= "SELECT * FROM " +  ""
         String query2 = "SELECT * FROM " + myTableName + " WHERE ((endingCash IS NULL) OR (endingCash = ''))";
         Vector<Properties> allDataRetrieved2 = getSelectQueryResult(query2);
         if (allDataRetrieved2 != null) {
@@ -232,9 +230,6 @@ public class Session extends EntityBase implements IView
         }
     }
     public String getSessionId() {
-
-
-        System.out.println(getState("sessionID"));
         return(String)getState("sessionID");
 
     }

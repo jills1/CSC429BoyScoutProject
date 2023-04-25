@@ -302,9 +302,6 @@ public class SellTreeTransactionView extends View
         String transactionTime = hoursAndMinutes;
         String dateStatusUpdated = dtf.format(now);
 
-        /*sessionOpen = (boolean)myModel.getState("sessionTest");
-        System.out.println("session tested");*/
-
 
 
         if((costEntered == null) || !isNumeric(costEntered) || (costEntered.length() == 0)) {
@@ -329,9 +326,6 @@ public class SellTreeTransactionView extends View
         {
             displayErrorMessage("Please enter a valid email");
         }
-        /*else if (sessionOpen == false){
-            displayErrorMessage("Transaction impossible no session open");
-        }*/
         else
             processTransactionInfo(barcodeEntered, costEntered, paymentMethod, custNameEntered,
                     custPhoneEntered, custEmailEntered, transactionDate, transactionTime, dateStatusUpdated);
@@ -392,8 +386,6 @@ public class SellTreeTransactionView extends View
         props2.setProperty("dateStatusUpdate", dateStatusUpdated);
         myModel.stateChangeRequest("UpdateTreeInfo", props2);
         myModel.stateChangeRequest("UpdateTransactionInfo", props);
-
-        //displayMessage("Successfully sold Tree");
     }
     public String firstTwo(String str) {
         return str.length() < 2 ? str : str.substring(0,2);
