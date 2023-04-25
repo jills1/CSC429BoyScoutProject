@@ -205,5 +205,40 @@ public class Session extends EntityBase implements IView
             updateStatusMessage ="Error in deleting session data in database!";
         }
     }
+    public Session(String endingCash, String Ok) throws InvalidPrimaryKeyException {
+        super(myTableName);
+        setDependencies();
+        //String sessionId= "SELECT * FROM " +  ""
+        String query2 = "SELECT * FROM " + myTableName + " WHERE ((endingCash IS NULL) OR (endingCash = ''))";
+        Vector<Properties> allDataRetrieved2 = getSelectQueryResult(query2);
+        if (allDataRetrieved2 != null) {
+            int size = allDataRetrieved2.size();
+            // There should be EXACTLY one account. More than that is an error
+            if (size != 1) {
+                throw new InvalidPrimaryKeyException("Multiple sessions with endingCash = NULL ");
+            } else {
+                // copy all the retrieved data into persistent state
+                Properties retrievedTreeData = allDataRetrieved2.elementAt(0);
+                persistentState = new Properties();
+                Enumeration allKeys = retrievedTreeData.propertyNames();
+                while (allKeys.hasMoreElements() == true) {
+                    String nextKey = (String)allKeys.nextElement();
+                    String nextValue = retrievedTreeData.getProperty(nextKey);
+                    if (nextValue != null) {
+                        persistentState.setProperty(nextKey, nextValue);
+                    }
+                }
+            }
+        } else {
+            throw new InvalidPrimaryKeyException("No open session found.");
+        }
+    }
+    public String getSessionId() {
+
+
+        System.out.println(getState("sessionID"));
+        return(String)getState("sessionID");
+
+    }
 
 }

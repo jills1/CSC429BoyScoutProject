@@ -91,6 +91,10 @@ public class ViewFactory {
 		{
 			return new StartShiftTransactionView(model);
 		}
+		else if(viewName.equals("SellTreeTransactionView") == true)
+		{
+			return new SellTreeTransactionView(model);
+		}
 		else
 			return null;
 	}

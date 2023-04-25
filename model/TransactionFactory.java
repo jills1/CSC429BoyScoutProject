@@ -68,6 +68,11 @@ public class TransactionFactory
 		{
 			retValue = new StartShiftTransaction();
 		}
+		else
+		if (transType.equals("SellTree") == true)
+		{
+			retValue = new SellTreeTransaction();
+		}
 		return retValue;
 	}
 }
