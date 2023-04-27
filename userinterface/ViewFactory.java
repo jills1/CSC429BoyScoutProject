@@ -95,6 +95,10 @@ public class ViewFactory {
 		{
 			return new SellTreeTransactionView(model);
 		}
+		else if(viewName.equals("EndShiftDataView") == true)
+		{
+			return new EndShiftDataView(model);
+		}
 		else
 			return null;
 	}

@@ -49,7 +49,7 @@ public class StartShiftTransaction extends Transaction {
 
     public void processTransaction(Properties sessionProps) {
         sessionProps.setProperty("endingCash", "");
-        sessionProps.setProperty("totalCheckTransactionsAmount", "");
+        sessionProps.setProperty("totalCheckTransactionAmount", "");
         sessionProps.setProperty("notes", "");
         mySession = new Session(sessionProps);
         mySession.update();

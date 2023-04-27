@@ -7,17 +7,18 @@ import java.util.Enumeration;
 import java.util.Properties;
 import java.util.Vector;
 import javax.swing.*;
+import java.util.Properties;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
+import java.time.*;
+
+import javafx.scene.Scene;
 
 import database.*;
-public class Session extends EntityBase implements IView
-{
+public class Session extends EntityBase implements IView {
     private static final String myTableName = "Session";
-
     protected Properties dependencies;
     private String updateStatusMessage ="";
-
-
-
     public Session(String sessionID) throws InvalidPrimaryKeyException
     {
         super(myTableName);
@@ -55,14 +56,10 @@ public class Session extends EntityBase implements IView
         setDependencies();
         String query = "Select * FROM Session WHERE ((endTime IS Null) OR (endTime = ''))";
         Vector<Properties> allDataRetrieved = getSelectQueryResult(query);
-        // You must get one account at least
         if (allDataRetrieved != null) {
             int size = allDataRetrieved.size();
-            // There should be EXACTLY one account. More than that is an error
             if (size != 1) {
-
             } else {
-                // copy all the retrieved data into persistent state
                 Properties retrievedSessionData = allDataRetrieved.elementAt(0);
                 persistentState = new Properties();
                 Enumeration allKeys = retrievedSessionData.propertyNames();
@@ -74,9 +71,7 @@ public class Session extends EntityBase implements IView
                     }
                 }
             }
-        } else {
-
-        }
+        } else {}
     }
     public Session(Properties props)
     {
@@ -98,7 +93,6 @@ public class Session extends EntityBase implements IView
         dependencies = new Properties();
         myRegistry.setDependencies(dependencies);
     }
-
     public Object getState(String key)
     {
         if (key.equals("UpdateStatusMessage") == true) {
@@ -106,9 +100,7 @@ public class Session extends EntityBase implements IView
         }
         return persistentState.getProperty(key);
     }
-
-    public void stateChangeRequest(String key, Object value)
-    {
+    public void stateChangeRequest(String key, Object value) {
         persistentState.setProperty(key, (String) value);
         myRegistry.updateSubscribers(key, this);
     }
@@ -118,7 +110,7 @@ public class Session extends EntityBase implements IView
         stateChangeRequest(key, value);
     }
     //-----------------------------------------------------------------------------------
-    public static int compare(Tree a, Tree b) {
+    public static int compare(Session a, Session b) {
         String aNum = (String)a.getState("sessionID");
         String bNum = (String)b.getState("sessionID");
         return aNum.compareTo(bNum);
@@ -127,38 +119,40 @@ public class Session extends EntityBase implements IView
     public void update() {
         updateStateInDatabase();
     }
-
-    private void updateStateInDatabase()
-    {
-        try
-        {
-            // update
-            if (persistentState.getProperty("sessionID") != null)
-            {
+    private void updateStateInDatabase() {
+        try {
+            String sessionID = persistentState.getProperty("sessionID");
+            boolean sessionExists = sessionID != null;
+            if(sessionExists) {
+                // update
                 Properties whereClause = new Properties();
-                whereClause.setProperty("sessionID",
-                        persistentState.getProperty("sessionID"));
+                whereClause.setProperty("sessionID", sessionID);
                 updatePersistentState(mySchema, persistentState, whereClause);
-                updateStatusMessage = "Session Updated!";
+                String startDate = (String)getState("startDate");
+                String startTime = (String)getState("startTime");
+                updateStatusMessage = "Data for session starting on " + startDate + " at " + startTime + "saved successfully";
+            } else {
+                // insert
+                Integer newSessionID = insertAutoIncrementalPersistentState(mySchema, persistentState);
+                persistentState.setProperty("sessionID", "" + newSessionID.intValue());
+                String startDate = (String)getState("startDate");
+                String startTime = (String)getState("startTime");
+                updateStatusMessage = "Data for new session starting on " + startDate + " at " + startTime + "saved successfully";
             }
-            else
-            {
-                //insert
-                Integer sessionId =
-                        insertAutoIncrementalPersistentState(mySchema, persistentState);
-                persistentState.setProperty("sessionID", "" + sessionId.intValue());
-                updateStatusMessage = "Session Started!";
-            }
+        } catch (SQLException e) {
+            updateStatusMessage = "Error in saving session data to the database.";
         }
-        catch (SQLException ex)
-        {
-            updateStatusMessage = "Error in installing session data in database!";
-        }
-        //DEBUG System.out.println("updateStateInDatabase " + updateStatusMessage);
     }
-
-    public Vector<String> getEntryListView()
-    {
+    public void update2(Properties props) {
+        Enumeration keys = props.propertyNames();
+        while(keys.hasMoreElements()) {
+            String nextKey = (String)keys.nextElement();
+            String nextVal = props.getProperty(nextKey);
+            persistentState.setProperty(nextKey, nextVal); // don't think we need a null check here
+        }
+        updateStateInDatabase();
+    }
+    public Vector<String> getEntryListView() {
         Vector<String> v = new Vector<String>();
         v.addElement(persistentState.getProperty("sessionID"));
         v.addElement(persistentState.getProperty("startDate"));
@@ -168,43 +162,14 @@ public class Session extends EntityBase implements IView
         v.addElement(persistentState.getProperty("endingCash"));
         v.addElement(persistentState.getProperty("totalCheckTransactionAmount"));
         v.addElement(persistentState.getProperty("notes"));
-
         return v;
     }
-
     protected void initializeSchema(String tableName) {
         if (mySchema == null) {
             mySchema = getSchemaInfo(tableName);
         }
     }
 
-    public String toString()
-    {
-        return "session: " + persistentState.getProperty("sessionID") ;
-    }
-    public String toString1() {
-        String retVal = "";
-        Enumeration allKeys = persistentState.propertyNames();
-        while (allKeys.hasMoreElements() == true) {
-            String nextKey = (String) allKeys.nextElement();
-            String nextValue = persistentState.getProperty(nextKey);
-            retVal += nextKey + ": " + nextValue + "; ";
-        }
-        return retVal;
-    }
-
-    public void deleteStateInDatabase(){
-        try {
-            Properties whereClause = new Properties();
-            whereClause.setProperty("sessionID",persistentState.getProperty("sessionID"));
-            deletePersistentState( mySchema, whereClause );
-            updateStatusMessage = "Session with ID" + persistentState.getProperty("sessionID")+"DELETED successfully!";
-
-        }
-        catch(SQLException ex){
-            updateStatusMessage ="Error in deleting session data in database!";
-        }
-    }
     public Session(String endingCash, String Ok) throws InvalidPrimaryKeyException {
         super(myTableName);
         setDependencies();
@@ -222,7 +187,7 @@ public class Session extends EntityBase implements IView
                 persistentState = new Properties();
                 Enumeration allKeys = retrievedTreeData.propertyNames();
                 while (allKeys.hasMoreElements() == true) {
-                    String nextKey = (String)allKeys.nextElement();
+                    String nextKey = (String) allKeys.nextElement();
                     String nextValue = retrievedTreeData.getProperty(nextKey);
                     if (nextValue != null) {
                         persistentState.setProperty(nextKey, nextValue);
@@ -233,12 +198,8 @@ public class Session extends EntityBase implements IView
             throw new InvalidPrimaryKeyException("No open session found.");
         }
     }
+
     public String getSessionId() {
-
-
-        System.out.println(getState("sessionID"));
-        return(String)getState("sessionID");
-
+        return (String)getState("sessionID");
     }
-
 }

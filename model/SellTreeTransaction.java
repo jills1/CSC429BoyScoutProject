@@ -260,8 +260,8 @@ public class SellTreeTransaction extends Transaction {
             String transactionTime = props.getProperty("transactionTime");
             props.setProperty("transactionTime", transactionTime);
             //------------------------------------------
-            String dateStatusUpdated = props.getProperty("dateStatusUpdate");
-            props.setProperty("dateStatusUpdate", dateStatusUpdated);
+            String dateStatusUpdated = props.getProperty("dateStatusUpdated");
+            props.setProperty("dateStatusUpdated", dateStatusUpdated);
             //-------------------------------------------------------
 
             myTransaction = new SellTransaction(props);
