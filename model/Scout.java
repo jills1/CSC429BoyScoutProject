@@ -223,7 +223,7 @@ public class Scout extends EntityBase implements IView
         {
             updateStatusMessage = "Error in installing scout data in database!";
         }
-        //DEBUG System.out.println("updateStateInDatabase " + updateStatusMessage);
+
     }
 
 

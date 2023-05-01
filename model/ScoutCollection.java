@@ -18,7 +18,7 @@ import userinterface.View;
 import userinterface.ViewFactory;
 
 
-/** The class containing the scoutCollection for the ATM application */
+/** The class containing the scoutCollection for the Tree sales application */
 //==============================================================
 public class ScoutCollection  extends EntityBase implements IView
 {
@@ -48,7 +48,6 @@ public class ScoutCollection  extends EntityBase implements IView
 	{
 		//scouts.add(a);
 		int index = findIndexToAdd(a);
-		System.out.println("Jalen found the index to add: " + index);
 		scoutList.insertElementAt(a,index); // To build up a collection sorted on some key
 	}
 
@@ -64,7 +63,6 @@ public class ScoutCollection  extends EntityBase implements IView
 		//users.add(u);
 		int low=0;
 		int high = scoutList.size()-1;
-		System.out.println("find index to add: " + high);
 		int middle;
 
 		while (low <=high)
@@ -72,9 +70,7 @@ public class ScoutCollection  extends EntityBase implements IView
 			middle = (low+high)/2;
 
 			Scout midSession = scoutList.elementAt(middle);
-			System.out.println("middle value at: " + middle);
 			int result = Scout.compare(a,midSession);
-			System.out.println("Result is: " + result);
 			if (result ==0)
 			{
 				return middle;
@@ -200,7 +196,6 @@ public class ScoutCollection  extends EntityBase implements IView
 		}
 		else
 			query = "SELECT * FROM "+myTableName+" WHERE ((firstName LIKE '%"+fn+"%') AND (lastName LIKE '%"+ln+"%') AND status = 'Active')";
-System.out.println(query);
 		helper(query);
 	}
 
@@ -218,20 +213,15 @@ System.out.println(query);
 
 
 		Vector allDataRetrieved = getSelectQueryResult(query);
-		System.out.println("If you see this Jalen worked the query successfully");
 		//scoutList = new Vector<Scout>();
 
 
 		for(int cnt = 0; cnt < allDataRetrieved.size(); cnt++) {
-			System.out.println("Jalen is at iteration: " + cnt + " of adding the scout");
 			Properties nextScoutData = (Properties) allDataRetrieved.elementAt(cnt);
 
 			Scout scout = new Scout(nextScoutData);
-			System.out.println("Jalen finished creating the scout for iteration: " + cnt);
 			addScout(scout);
-			System.out.println("Jalen finished adding the scout for iteration: " + cnt);
 
 		}
-		System.out.println("If you see this Jalen did not mess up adding the scout to the list");
 	}
 }

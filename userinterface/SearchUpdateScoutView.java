@@ -30,7 +30,7 @@ import java.util.Properties;
 import impresario.IModel;
 import model.Scout;
 
-/** The class containing the Account Holder ID Entry View for the 'Impose Service Charge' functionality of the  ATM application */
+/** The class containing the Select Scout View to Update Scout for the Tree sales application */
 //==============================================================
 public class SearchUpdateScoutView extends View
 {
@@ -158,7 +158,7 @@ public class SearchUpdateScoutView extends View
             public void handle(ActionEvent e) {
                 /**
                  * Process the Cancel button.
-                 * The ultimate result of this action is that the transaction will tell the teller to
+                 * The ultimate result of this action is that the transaction will tell the teller
                  * to switch to the transaction choice view. BUT THAT IS NOT THIS VIEW'S CONCERN.
                  * It simply tells its model (controller) that the deposit transaction was canceled, and leaves it
                  * to the model to decide to tell the teller to do the switch back.
@@ -199,9 +199,7 @@ public class SearchUpdateScoutView extends View
         //Setting up the search parameter in the
         myProps.setProperty("lastName", lastName);
         myProps.setProperty("firstName", firstName);
-        System.out.println("Props collected");
 
-        System.out.println("Props sent");
         //Sending the search
         myModel.stateChangeRequest("SubmitSearchUpdateScout", myProps);
     }

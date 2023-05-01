@@ -15,7 +15,7 @@ import exception.InvalidPrimaryKeyException;
 import userinterface.View;
 import userinterface.ViewFactory;
 
-/** The class containing the RemoveScoutTransaction for the Tree Sales application */
+/** The class containing the UpdateScoutTransaction for the Tree Sales application */
 //==============================================================
 public class UpdateScoutTransaction extends Transaction
 {
@@ -40,7 +40,6 @@ public class UpdateScoutTransaction extends Transaction
 
     {
         super();
-        System.out.println("Correct transaction taken");
 
     }
 
@@ -95,9 +94,7 @@ public class UpdateScoutTransaction extends Transaction
         else
         if (key.equals("ScoutChosen") == true)
         {
-            System.out.println("Scout required");
             if (myScout == null) {
-                System.out.println("Scout null");
                 return null;
             } else
                 return myScout;
@@ -105,7 +102,6 @@ public class UpdateScoutTransaction extends Transaction
         else
         if (myScout != null)
         {
-            System.out.println("State required");
             Object val = myScout.getState(key);
             if (val != null)
             {
@@ -129,7 +125,6 @@ public class UpdateScoutTransaction extends Transaction
     //-----------------------------------------------------------
     public void stateChangeRequest(String key, Object value)
     {
-        // DEBUG System.out.println("DepositTransaction.sCR: key: " + key);
 
         if (key.equals("DoYourJob") == true)
         {
@@ -139,15 +134,12 @@ public class UpdateScoutTransaction extends Transaction
         if (key.equals("SubmitSearchUpdateScout")==true)
         {
             Properties props =(Properties)value;
-            System.out.println("Props given");
 
 
 
             try
             {
-                System.out.println("try tested");
                 myScoutCollection = new ScoutCollection();
-                System.out.println("collection created");
 
                 processTransaction(props);
             }
@@ -160,9 +152,7 @@ public class UpdateScoutTransaction extends Transaction
         else
         if (key.equals("ScoutChosen") == true)
         {
-            System.out.println("Scout chosen from table");
             String troopID = (String)value;
-            System.out.println("Troop ID: "+ troopID);
             myScout = myScoutCollection.retrieveByTroopID(troopID);
             creatAndShowUpdateScoutInfoView();
 

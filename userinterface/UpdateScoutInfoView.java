@@ -31,7 +31,7 @@ import java.util.Vector;
 import impresario.IModel;
 import model.Scout;
 
-/** The class containing the Deposit Transaction View  for the ATM application */
+/** The class containing the Update Info Scout View  for the Tree sales application */
 //==============================================================
 public class UpdateScoutInfoView extends View
 {
