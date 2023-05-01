@@ -38,7 +38,6 @@ public class SellTreeTransaction extends Transaction {
         dependencies.setProperty("TreeChosen", "TransactionError");
         dependencies.setProperty("UpdateTreeInfo", "TransactionError");
         dependencies.setProperty("UpdateTransactionInfo", "TransactionError");
-        //dependencies.setProperty("UpdateTransactionInfo", "TreeStatus");
 
 
         myRegistry.setDependencies(dependencies);
@@ -113,11 +112,14 @@ public class SellTreeTransaction extends Transaction {
             else
                 return "Undefined";
         }
-            /*if (key.equals("sessionTest") == true)
-            {
-                sessionTest();
-                return sessionTest;
-            }*/
+        /*if (key.equals("treeType") == true)
+        {
+            if (myTreeType != null) {
+                return myTreeType.getState("typeDescription");
+            }
+            else
+                return "Undefined";
+        }*/
 
         return null;
     }
@@ -203,35 +205,11 @@ public class SellTreeTransaction extends Transaction {
         myTree.update();
     }
 
-    /*public void sessionTest() {
-        try {
-            mySession= new Session("","");
-            System.out.println("session created");
-            String sessionId = mySession.getSessionId();
-            System.out.println("the id is : " + sessionId);
-            if ((sessionId.length() == 0)) {
-                sessionTest = false;
-                System.out.println("session test failed");
-            }
-            else {
-                sessionTest= true;
-                System.out.println("session test worked");
-            }
-        }
-        catch(InvalidPrimaryKeyException e){
-            transactionErrorMessage="Error cannot do this 5.";
-        }
-    }*/
-
     public void processTransaction(Properties props) {
         try {
             mySession= new Session("","");
             String sessionId = mySession.getSessionId();
-            /*if ((sessionId.length() == 0)) {
-                sessionTest();
-                transactionErrorMessage="Error : Session not found transaction aborted.";
-            }
-            else {*/
+
             props.setProperty("sessionID", sessionId);
             myTransaction = new SellTransaction(props);
             props.setProperty("transactionType", "Tree Sale");

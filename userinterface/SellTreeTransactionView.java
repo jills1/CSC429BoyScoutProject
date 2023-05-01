@@ -47,6 +47,8 @@ public class SellTreeTransactionView extends View
     private TextField custPhoneNumber;
     private TextField custEmail;
 
+    //private TextField treeType;
+
 
 
 
@@ -151,9 +153,20 @@ public class SellTreeTransactionView extends View
             }
         });
         grid.add(cost, 1, 1);
+        /*Label treeTypeLabel = new Label("Tree type : ");
+        grid.add(treeTypeLabel, 0, 2);
+
+        treeType = new TextField();
+        treeType.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent e) { processAction(e);}
+        });
+        grid.add(treeType, 1,2);
+*/
 
         Label notesLabel = new Label("Notes : ");
         grid.add(notesLabel, 0, 2);
+        //grid.add(notesLabel, 0, 3);
 
 
         notes = new TextField();
@@ -165,22 +178,26 @@ public class SellTreeTransactionView extends View
             }
         });
         grid.add(notes, 1, 2);
+        //grid.add(notes, 1, 3);
 
         Label transTypeLabel = new Label("Transaction Type : ");
         grid.add(transTypeLabel, 0, 3);
-
+        //grid.add(transTypeLabel, 0, 4);
 
         transType = new ComboBox<String>();
-        transType.getItems().addAll("Check", "Cash");
+        transType.getItems().addAll("Cash", "Check");
 
 
         grid.add(transType, 1, 3);
+        //grid.add(transType, 1, 4);
 
         Label custNameLabel = new Label("Customer  Name : ");
         grid.add(custNameLabel, 0, 4);
+        //grid.add(custNameLabel, 0, 5);
 
 
         custName = new TextField();
+        //custName.disabledProperty();
         custName.setOnAction(new EventHandler<ActionEvent>() {
 
             @Override
@@ -189,9 +206,11 @@ public class SellTreeTransactionView extends View
             }
         });
         grid.add(custName, 1, 4);
+        //grid.add(custName, 1, 5);
 
         Label custPhoneNumberLabel = new Label("Customer Phone Number : ");
         grid.add(custPhoneNumberLabel, 0, 5);
+        //grid.add(custPhoneNumberLabel, 0, 6);
 
 
         custPhoneNumber = new TextField();
@@ -203,9 +222,11 @@ public class SellTreeTransactionView extends View
             }
         });
         grid.add(custPhoneNumber, 1, 5);
+        //grid.add(custPhoneNumber, 1, 5);
 
         Label custEmailLabel = new Label("Customer Email : ");
         grid.add(custEmailLabel, 0, 6);
+        //grid.add(custEmailLabel, 0, 7);
 
 
         custEmail = new TextField();
@@ -217,7 +238,7 @@ public class SellTreeTransactionView extends View
             }
         });
         grid.add(custEmail, 1, 6);
-
+        //grid.add(custEmail, 1, 7);
 
         submitButton = new Button("Submit");
         submitButton.setOnAction(new EventHandler<ActionEvent>() {
@@ -276,6 +297,9 @@ public class SellTreeTransactionView extends View
         else {
             cost.setText((String) myModel.getState("cost"));
             notes.setText((String) myModel.getState("notes"));
+            //treeType.setText((String) myModel.getState("treeType"));
+
+
         }
     }
 
@@ -302,8 +326,6 @@ public class SellTreeTransactionView extends View
         String transactionTime = hoursAndMinutes;
         String dateStatusUpdated = dtf.format(now);
 
-        /*sessionOpen = (boolean)myModel.getState("sessionTest");
-        System.out.println("session tested");*/
 
 
 
@@ -329,12 +351,11 @@ public class SellTreeTransactionView extends View
         {
             displayErrorMessage("Please enter a valid email");
         }
-        /*else if (sessionOpen == false){
-            displayErrorMessage("Transaction impossible no session open");
-        }*/
-        else
+        else {
             processTransactionInfo(barcodeEntered, costEntered, paymentMethod, custNameEntered,
                     custPhoneEntered, custEmailEntered, transactionDate, transactionTime, dateStatusUpdated);
+        //submitButton.disabledProperty();
+        }
 
 
     }
@@ -364,8 +385,6 @@ public class SellTreeTransactionView extends View
         myModel.stateChangeRequest("SubmitSellTreeType", props2);
 
         populateFields();
-        Tree tree = new Tree(props);
-        TreeType treeType = new TreeType(props2);
 
 
     }
@@ -393,7 +412,6 @@ public class SellTreeTransactionView extends View
         myModel.stateChangeRequest("UpdateTreeInfo", props2);
         myModel.stateChangeRequest("UpdateTransactionInfo", props);
 
-        //displayMessage("Successfully sold Tree");
     }
     public String firstTwo(String str) {
         return str.length() < 2 ? str : str.substring(0,2);
