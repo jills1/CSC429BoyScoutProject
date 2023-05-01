@@ -250,7 +250,6 @@ public class SellTreeTransactionView extends View
                 clearErrorMessage();
 
                 processAction(e);
-                submitButton.setDisable(true);
             }
         });
 
@@ -300,7 +299,7 @@ public class SellTreeTransactionView extends View
         else {
             cost.setText((String) myModel.getState("cost"));
             notes.setText((String) myModel.getState("notes"));
-            treeType.setText((String) myModel.getState("treeType"));
+            treeType.setText((String) myModel.getState("typeDescription"));
 
 
         }
@@ -357,6 +356,7 @@ public class SellTreeTransactionView extends View
         else {
             processTransactionInfo(barcodeEntered, costEntered, paymentMethod, custNameEntered,
                     custPhoneEntered, custEmailEntered, transactionDate, transactionTime, dateStatusUpdated);
+            submitButton.setDisable(true);
         }
 
 

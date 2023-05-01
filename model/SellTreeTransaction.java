@@ -112,7 +112,7 @@ public class SellTreeTransaction extends Transaction {
             else
                 return "Undefined";
         }
-        if (key.equals("treeType") == true)
+        if (key.equals("typeDescription") == true)
         {
             if (myTreeType != null) {
                 return myTreeType.getState("typeDescription");
