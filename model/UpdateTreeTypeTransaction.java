@@ -2,21 +2,15 @@ package model;
 import javafx.scene.Scene;
 import java.util.Properties;
 import exception.InvalidPrimaryKeyException;
-
-// project imports
-
 import userinterface.View;
 import userinterface.ViewFactory;
-//==============================================================
 public class UpdateTreeTypeTransaction extends Transaction {
     private String transactionErrorMessage = "";
     private final String accountUpdateStatusMessage = "";
     protected  TreeType myTree;
-    //----------------------------------------------------------
     public UpdateTreeTypeTransaction() {
         super();
     }
-    //----------------------------------------------------------
     protected void setDependencies() {
         dependencies = new Properties();
         dependencies.setProperty("CancelDeposit", "CancelTransaction");
@@ -24,27 +18,21 @@ public class UpdateTreeTypeTransaction extends Transaction {
         dependencies.setProperty("AccountNumber", "TransactionError");
         myRegistry.setDependencies(dependencies);
     }
-    //----------------------------------------------------------
     public void processTransaction(Properties props) {
         try {
             String barcodePrefix= props.getProperty("barcodePrefix");
             myTree= new TreeType(barcodePrefix);
-            //-------
             String typeDescription = (String) myTree.getState("typeDescription");
             props.setProperty("typeDescription", typeDescription);
-            //-------
             String cost = (String) myTree.getState("cost");
             props.setProperty("cost", cost);
-            //-------
             String treeTypeID = (String) myTree.getState("treeTypeID");
             props.setProperty("treeTypeID", treeTypeID);
-            //-------
             createAndShowUpdateTreeTypeFormView();
         } catch(InvalidPrimaryKeyException e){
             transactionErrorMessage="Error cannot do this 2.";
         }
     }
-    //-----------------------------------------------------------
     public Object getState(String key) {
         switch (key) {
             case "TransactionError":
@@ -79,10 +67,7 @@ public class UpdateTreeTypeTransaction extends Transaction {
                 return null;
         }
     }
-    //-----------------------------------------------------------
-    //State Change
     public void stateChangeRequest(String key, Object value) {
-        // DEBUG System.out.println("DepositTransaction.sCR: key: " + key);
         if (key.equals("DoYourJob")) {
             doYourJob();
         } else  if (key.equals("UpdateTreeTypeFormView")) {
@@ -90,12 +75,9 @@ public class UpdateTreeTypeTransaction extends Transaction {
         }
         myRegistry.updateSubscribers(key, this);
     }
-    //------------------------------------------------------
-    //Create View.java within view factory
     protected Scene createView() {
         Scene currentScene = myViews.get("UpdateTreeTypeView");
         if (currentScene == null) {
-            // create our initial view
             View newView = ViewFactory.createView("UpdateTreeTypeView", this);
             currentScene = new Scene(newView);
             myViews.put("UpdateTreeTypeView", currentScene);
@@ -104,12 +86,10 @@ public class UpdateTreeTypeTransaction extends Transaction {
             return currentScene;
         }
     }
-    //------------------------------------------------------
     protected void createAndShowUpdateTreeTypeFormView() {
         View newView = ViewFactory.createView("UpdateTreeTypeFormView", this);
         Scene newsScene = new Scene(newView);
         myViews.put("UpdateTreeTypeFormView", newsScene);
         swapToView(newsScene);
-        //return newsScreen;
     }
 }

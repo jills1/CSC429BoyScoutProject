@@ -17,15 +17,12 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import java.util.Properties;
-// project imports
 import impresario.IModel;
-import model.*;
 public class UpdateTreeView extends View {
     private TextField barcode;
     private Button submitButton;
     private Button cancelButton;
     private MessageView statusLog;
-    //-------------------------------------------------------------
     public UpdateTreeView(IModel trans) {
         super(trans, "UpdateTree");
         VBox container = new VBox(10);
@@ -36,7 +33,6 @@ public class UpdateTreeView extends View {
         getChildren().add(container);
         myModel.subscribe("TransactionError", this);
     }
-    //-------------------------------------------------------------
     private Node createTitle() {
         Text titleText = new Text("       Troop 209          ");
         titleText.setFont(Font.font("Arial", FontWeight.BOLD, 20));
@@ -44,31 +40,21 @@ public class UpdateTreeView extends View {
         titleText.setFill(Color.DARKGREEN);
         return titleText;
     }
-    //-------------------------------------------------------------
     private VBox createFormContent() {
-        // Container Padding
         VBox vbox = new VBox(10);
         GridPane grid = new GridPane();
         grid.setAlignment(Pos.CENTER);
         grid.setHgap(10);
         grid.setVgap(10);
         grid.setPadding(new Insets(25, 25, 25, 25));
-//-------------------------------------------------------------------
-        //Barcode Label, Box and Handler
         Label barcodeLabel = new Label("Barcode : ");
         grid.add(barcodeLabel, 0, 0);
         barcode = new TextField();
         grid.add(barcode, 1, 0);
-//------------------------------------------------------------------
-        //Submit Button and Event Handler
         submitButton = new Button("Submit");
         submitButton.setOnAction(new EventHandler<ActionEvent>() {@Override public void handle(ActionEvent e) {clearErrorMessage();processAction(e);}});
-//----------------------------------------------------------------
-        //Cancel Button and Event Handler
         cancelButton = new Button("Back");
         cancelButton.setOnAction(new EventHandler<ActionEvent>() {@Override public void handle(ActionEvent e) { clearErrorMessage(); myModel.stateChangeRequest("CancelDeposit", null);}});
-        //--------------------------------------------------------
-        //Place Entities within Container
         HBox btnContainer = new HBox(100);
         btnContainer.setAlignment(Pos.CENTER);
         btnContainer.getChildren().add(submitButton);
@@ -77,15 +63,10 @@ public class UpdateTreeView extends View {
         vbox.getChildren().add(btnContainer);
         return vbox;
     }
-    //-------------------------------------------------------------
     private MessageView createStatusLog(String initialMessage) {
         statusLog = new MessageView(initialMessage);
         return statusLog;
     }
-    //-------------------------------------------------------------
-    public void populateFields() {
-    }
-    //----------------------------------------------------------
     private void processAction(Event evt) {
         String barcodeEntered = barcode.getText();
         if ((barcodeEntered == null) || (barcodeEntered.length() != 5)) {
@@ -98,27 +79,20 @@ public class UpdateTreeView extends View {
         Properties props = new Properties();
         props.setProperty("barcode", barcode);
         myModel.stateChangeRequest("UpdateTreeFormView", props);
-       // displayErrorMessage("Tree with Barcode not found");
     }
-    //------------------------------------------------------------
     public void displayMessage(String message)
     {
         statusLog.displayMessage(message);
     }
-    public void updateState(String key, Object value)
-    {
+    public void updateState(String key, Object value) {
         clearErrorMessage();
-
-        if (key.equals("TransactionError"))
-        {
+        if (key.equals("TransactionError")) {
             String messageToDisplay = (String)value;
             if (messageToDisplay.startsWith("ERR")) {
                 displayErrorMessage(messageToDisplay);
-            }
-            else {
+            } else {
                 displayMessage(messageToDisplay);
             }
-
         }
     }
     public void displayErrorMessage(String message)
