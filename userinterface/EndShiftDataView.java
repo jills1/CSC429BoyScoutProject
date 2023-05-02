@@ -1,6 +1,7 @@
 package userinterface;
-
-import exception.InvalidPrimaryKeyException;
+import java.math.BigDecimal;
+import java.text.NumberFormat;
+import java.util.Locale;
 import impresario.IModel;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -154,8 +155,9 @@ public class EndShiftDataView extends View {
     }
     public void processAction(ActionEvent event) {
         Properties p = new Properties();
-        String s = endTime.getText();
-        String x = notes.getText();
+        NumberFormat uSFormat = NumberFormat.getCurrencyInstance(Locale.US);
+        String s = uSFormat.format(endTime.getText());
+        String x = uSFormat.format(notes.getText());
         p.setProperty("endTime", s);
         p.setProperty("notes", x);
         System.out.println(x);
