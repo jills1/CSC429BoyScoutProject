@@ -248,7 +248,7 @@ public class SellTreeTransaction extends Transaction {
 
             //------
             myTransaction.update();
-            transactionMessage += myTransaction.getState("UpdateStatusMessage");
+            transactionMessage += "Tree sold correctly";
             //}
         } catch(InvalidPrimaryKeyException e){
             transactionMessage="ERROR: No Open Session.";

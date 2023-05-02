@@ -66,7 +66,7 @@ public class RegisterScoutTransaction extends Transaction
 			myScout = new Scout(props);
 			myScout.update();
 
-			transactionErrorMessage += myScout.getState("UpdateStatusMessage");
+			transactionErrorMessage += "Scout registered correctly";
 
 		}
 
