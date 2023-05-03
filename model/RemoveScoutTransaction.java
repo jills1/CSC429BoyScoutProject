@@ -68,12 +68,12 @@ public class RemoveScoutTransaction extends Transaction
         System.out.println(props.getProperty("lastName"));
 
         //myScoutCollection = new ScoutCollection();
-        System.out.println("Jalen has not messed this up 1");
+        // DEBUG System.out.println("Jalen has not messed this up 1");
         myScoutCollection.findScoutsWithNameLike(fn, ln);
-        System.out.println("If you see this Jalen has not messed this up");
-        System.out.println("Let us see if we get to see the view");
+        // DEBUG System.out.println("If you see this Jalen has not messed this up");
+        // DEBUG System.out.println("Let us see if we get to see the view");
         createAndShowScoutCollectionView();
-        System.out.println("The view is showing");
+       // DEBUG System.out.println("The view is showing");
 
 
     }

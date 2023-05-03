@@ -151,12 +151,12 @@ public class ScoutCollectionView extends View
         TableColumn fnColumn = new TableColumn("First Name") ;
         fnColumn.setMinWidth(100);
         fnColumn.setCellValueFactory(
-                new PropertyValueFactory<ScoutTableModel, String>("firstName"));
+                new PropertyValueFactory<ScoutTableModel, String>("lastName"));
 
         TableColumn lnColumn = new TableColumn("Last Name") ;
         lnColumn.setMinWidth(100);
         lnColumn.setCellValueFactory(
-                new PropertyValueFactory<ScoutTableModel, String>("lastName"));
+                new PropertyValueFactory<ScoutTableModel, String>("firstName"));
 
         TableColumn mnColumn = new TableColumn("Middle Name") ;
         mnColumn.setMinWidth(100);

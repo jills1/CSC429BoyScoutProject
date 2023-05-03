@@ -10,7 +10,7 @@ public class TransactionCollection  extends EntityBase implements IView {
     public TransactionCollection() {super(myTableName); transactionList = new Vector<>();}
     private void addTransaction(TransactionClass a) {
         int index = findIndexToAdd(a);
-        System.out.println("Jalen found the index to add: " + index);
+        // DEBUG System.out.println("Jalen found the index to add: " + index);
         transactionList.insertElementAt(a,index); // To build up a collection sorted on some key
     }
     private int findIndexToAdd(TransactionClass a) {
