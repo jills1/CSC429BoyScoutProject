@@ -32,6 +32,16 @@ public class ScoutTableModel
     }
 
     //----------------------------------------------------------------------------
+    public String getScoutID() {
+        return scoutID.get();
+    }
+
+    //----------------------------------------------------------------------------
+    public void setScoutID(String id) {
+        scoutID.set(id);
+    }
+
+    //----------------------------------------------------------------------------
     public String getFirstName() {
         return firstName.get();
     }

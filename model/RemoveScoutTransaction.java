@@ -81,6 +81,7 @@ public class RemoveScoutTransaction extends Transaction
     //-----------------------------------------------------------
     public Object getState(String key)
     {
+        // DEBUG System.out.println("IS JALEN STOOPID HERE? -- key sent: " + key);
         if (key.equals("TransactionError") == true)
         {
             return transactionErrorMessage;
@@ -102,6 +103,7 @@ public class RemoveScoutTransaction extends Transaction
         else
         if (myScout != null)
         {
+            // DEBUG System.out.println("JALEN IS STOOPID -- getting to my scout for key: " + key);
             Object val = myScout.getState(key);
             if (val != null)
             {
@@ -111,6 +113,7 @@ public class RemoveScoutTransaction extends Transaction
         else
         if (myScoutCollection != null)
         {
+
             Object val = myScoutCollection.getState(key);
             if (val != null)
             {
@@ -136,8 +139,6 @@ public class RemoveScoutTransaction extends Transaction
         {
             Properties props =(Properties)value;
 
-
-
                 try
                 {
                     myScoutCollection = new ScoutCollection();
@@ -153,10 +154,14 @@ public class RemoveScoutTransaction extends Transaction
         else
             if (key.equals("ScoutSelected") == true)
             {
-                String scoutID = (String)value;
-                //Properties props =(Properties)value;
-                //String scoutID = props.getProperty("scoutID");
-               myScout = myScoutCollection.retrieve(scoutID);
+                // DEBUG System.out.println("JALEN SHOULD BE SMART -- getting to key ScoutSelected in sCR");
+                String scoutTroopID = (String)value;
+                // DEBUG System.out.println("JALEN SHOULD BE SMART -- received scout troop ID: " + scoutTroopID);
+
+               myScout = myScoutCollection.retrieveByTroopID(scoutTroopID);
+               /* DEBUG if (myScout == null) System.out.println("JALEN IS NOT SMART -- got a null scout for scout troop ID: " + scoutTroopID);
+               else System.out.println("JALEN IS SMART -- got a defined scout for scout troop ID: " + scoutTroopID);
+                */
                createAndShowScoutSelectedView();
 
 

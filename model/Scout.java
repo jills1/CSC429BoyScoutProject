@@ -121,7 +121,7 @@ public class Scout extends EntityBase implements IView
     {
         if (key.equals("UpdateStatusMessage") == true)
             return updateStatusMessage;
-
+        // DEBUG System.out.println("JALEN IS STOOPID in Scout class -- get state method for key: " + key);
         return persistentState.getProperty(key);
     }
 

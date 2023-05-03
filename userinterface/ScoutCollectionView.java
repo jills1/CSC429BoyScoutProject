@@ -254,9 +254,9 @@ public class ScoutCollectionView extends View
 
         if(selectedItem != null)
         {
-            String selectedScout = selectedItem.getFirstName();
+            String selectedScoutTroopID = selectedItem.getTroopID();
 
-            myModel.stateChangeRequest("ScoutSelected", selectedScout);
+            myModel.stateChangeRequest("ScoutSelected", selectedScoutTroopID);
         }
     }
 
