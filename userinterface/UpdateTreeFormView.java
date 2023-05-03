@@ -97,7 +97,7 @@ public class UpdateTreeFormView extends View {
         treeType.setText((String)myModel.getState("treeType"));
         status.setValue((String)myModel.getState("status"));
         notes.setText((String)myModel.getState("notes"));
-        dateStatusUpdate.setText((String)myModel.getState("dateStatusUpdate"));
+        dateStatusUpdate.setText((String)myModel.getState("dateStatusUpdated"));
     }
     private void processAction(Event e) {
         clearErrorMessage();
@@ -124,7 +124,7 @@ public class UpdateTreeFormView extends View {
         props.setProperty("barcode", barcode);
         props.setProperty("status", status);
         props.setProperty("notes", notes);
-        props.setProperty("dateStatusUpdate",dateStatusUpdate);
+        props.setProperty("dateStatusUpdated",dateStatusUpdate);
         myModel.stateChangeRequest("RegisterTreeInfo", props);
     }
     public void displayMessage(String message)

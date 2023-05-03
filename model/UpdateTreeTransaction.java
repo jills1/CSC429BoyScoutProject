@@ -29,8 +29,8 @@ public class UpdateTreeTransaction extends Transaction {
             props.setProperty("status", treeStatus);
             String treeNotes = (String) myTree.getState("notes");
             props.setProperty("notes", treeNotes);
-            String treeDateStatusUpdate = (String) myTree.getState("dateStatusUpdate");
-            props.setProperty("dateStatusUpdate", treeDateStatusUpdate);
+            String treeDateStatusUpdate = (String) myTree.getState("dateStatusUpdated");
+            props.setProperty("dateStatusUpdated", treeDateStatusUpdate);
             createAndShowUpdateTreeFormView();
         } catch(InvalidPrimaryKeyException e){
             transactionErrorMessage="Error cannot do this 2.";
@@ -73,9 +73,9 @@ public class UpdateTreeTransaction extends Transaction {
                 } else {
                     return "Undefined";
                 }
-            case "dateStatusUpdate":
+            case "dateStatusUpdated":
                 if (myTree != null) {
-                    return myTree.getState("dateStatusUpdate");
+                    return myTree.getState("dateStatusUpdated");
                 } else {
                     return "Undefined";
                 }

@@ -137,7 +137,7 @@ public class Tree extends EntityBase implements IView {
         v.addElement(persistentState.getProperty("treeType"));
         v.addElement(persistentState.getProperty("notes"));
         v.addElement(persistentState.getProperty("status"));
-        v.addElement(persistentState.getProperty("dateStatusUpdate"));
+        v.addElement(persistentState.getProperty("dateStatusUpdated"));
 
         return v;
 

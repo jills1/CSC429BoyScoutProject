@@ -139,7 +139,7 @@ public class AddTreeView extends View
                 p.setProperty("treeType", treeType);
                 p.setProperty("notes", notes.getText());
                 p.setProperty("status", status);
-                p.setProperty("dateStatusUpdate", dUS);
+                p.setProperty("dateStatusUpdated", dUS);
                 System.out.println("The time is " + dUS);
                 System.out.println(treeType);
                 clearErrorMessage();
