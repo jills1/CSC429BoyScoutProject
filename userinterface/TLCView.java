@@ -50,6 +50,8 @@ public class TLCView extends View
 	private Button sellTreeButton;
 
 
+
+
 	private Button cancelButton;
 
 	private MessageView statusLog;
@@ -256,21 +258,6 @@ public class TLCView extends View
 
 		container.getChildren().add(bi1Cont);
 
-		HBox isc1Cont = new HBox(10);
-		isc1Cont.setAlignment(Pos.CENTER);
-		endShiftButton = new Button("End A Shift");
-		endShiftButton.setFont(Font.font("Arial", FontWeight.BOLD, 14));
-		endShiftButton.setOnAction(new EventHandler<ActionEvent>() {
-
-			@Override
-			public void handle(ActionEvent e) {
-				myModel.stateChangeRequest("EndShift", null);
-			}
-		});
-		isc1Cont.getChildren().add(endShiftButton);
-
-		container.getChildren().add(isc1Cont);
-
 		HBox isc11Cont = new HBox(10);
 		isc11Cont.setAlignment(Pos.CENTER);
 		sellTreeButton = new Button("Sell a Tree");
@@ -286,6 +273,23 @@ public class TLCView extends View
 
 		container.getChildren().add(isc11Cont);
 
+		HBox isc1Cont = new HBox(10);
+		isc1Cont.setAlignment(Pos.CENTER);
+		endShiftButton = new Button("End A Shift");
+		endShiftButton.setFont(Font.font("Arial", FontWeight.BOLD, 14));
+		endShiftButton.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent e) {
+				myModel.stateChangeRequest("EndShift", null);
+			}
+		});
+		isc1Cont.getChildren().add(endShiftButton);
+
+		container.getChildren().add(isc1Cont);
+
+
+
 		HBox doneCont = new HBox(10);
 		doneCont.setAlignment(Pos.CENTER);
 		cancelButton = new Button("Logout");
@@ -297,7 +301,7 @@ public class TLCView extends View
        		     	myModel.stateChangeRequest("Logout", null);    
             	     }
         	});
-		doneCont.getChildren().add(cancelButton);
+		//doneCont.getChildren().add(cancelButton);
 
 		container.getChildren().add(doneCont);
 

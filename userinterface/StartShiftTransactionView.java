@@ -25,7 +25,9 @@ import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.*;
 
 // project imports
@@ -376,30 +378,31 @@ public class StartShiftTransactionView extends View
         String scStartEntered = scoutStartTime.getText();
         String scEndEntered = scoutEndTime.getText();
 
-
-
-          if ((compNameEntered == null) || (compNameEntered.length() == 0))
-        {
+        if ((compNameEntered == null) || (compNameEntered.length() == 0)) {
             displayErrorMessage("Please enter a Companion name");
-        }
-
-        else if ((compHoursEntered == null) || (compHoursEntered.length() == 0))
-        {
+        } else if ((compHoursEntered == null) || (compHoursEntered.length() == 0)) {
             displayErrorMessage("Please enter Companion Hours");
+        } else if ((scStartEntered == null) || (scStartEntered.length() == 0)) {
+            displayErrorMessage("Please enter a Scout start time");
+        } else if ((scEndEntered == null) || (scEndEntered.length() == 0)) {
+            displayErrorMessage("Please enter a Scout end time");
+        } else {
+            try {
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
+                LocalTime scoutStartTimeObj = LocalTime.parse(scStartEntered, formatter);
+                LocalTime scoutEndTimeObj = LocalTime.parse(scEndEntered, formatter);
+                if (scoutStartTimeObj.isBefore(scoutEndTimeObj)) {
+                    processShiftInfo(selectedScoutID,compNameEntered,compHoursEntered,scStartEntered,scEndEntered);
+                    listOfScouts.getItems().remove(selectedScoutName); // Remove the scout from the combobox only if validation passes
+                } else {
+                    displayErrorMessage("ERROR: Scout start time must be before scout end time!");
+                }
+            } catch (DateTimeParseException excep) {
+                displayErrorMessage("ERROR: Invalid time format!");
+            }
         }
-        else if ((scStartEntered == null) || (scStartEntered.length() == 0))
-        {
-            displayErrorMessage("Please enter a Companion name");
-        }
-
-        else if ((scEndEntered == null) || (scEndEntered.length() == 0))
-        {
-            displayErrorMessage("Please enter Companion Hours");
-        }
-        else
-            processShiftInfo(selectedScoutID,compNameEntered,compHoursEntered,scStartEntered,scEndEntered);
-
     }
+
 
 
     // Create the status log field
@@ -470,35 +473,56 @@ public class StartShiftTransactionView extends View
     private void processSessionInfo(String date,String startTime, String endTime, String cash)
     {
         if (validate(date, startTime, endTime, cash) == true) {
-            Properties sessionProps = new Properties();
-            sessionProps.setProperty("startDate", date);
-            sessionProps.setProperty("startTime", startTime);
-            sessionProps.setProperty("endTime", endTime);
-            sessionProps.setProperty("startingCash", cash);
+            try {
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
+                LocalTime startTimeObj = LocalTime.parse(startTime, formatter);
+                LocalTime endTimeObj = LocalTime.parse(endTime, formatter);
 
-            myModel.stateChangeRequest("OpenSession", sessionProps);
-        }
-        else
-        {
+                if (startTimeObj.isBefore(endTimeObj)) {
+                    Properties sessionProps = new Properties();
+                    sessionProps.setProperty("startDate", date);
+                    sessionProps.setProperty("startTime", startTime);
+                    sessionProps.setProperty("endTime", endTime);
+                    sessionProps.setProperty("startingCash", cash);
+
+                    myModel.stateChangeRequest("OpenSession", sessionProps);
+                } else {
+                    displayErrorMessage("ERROR: Start time must be before end time!");
+                }
+            } catch (DateTimeParseException e) {
+                displayErrorMessage("ERROR: Invalid time format!");
+            }
+        } else {
             displayErrorMessage("ERROR: Invalid shift start data!");
         }
     }
     private void processShiftInfo(String scoutId, String compName, String compHours, String scStart, String scEnd) {
-        Properties shiftProps = new Properties();
+        try {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
+            LocalTime scoutStartTimeObj = LocalTime.parse(scStart, formatter);
+            LocalTime scoutEndTimeObj = LocalTime.parse(scEnd, formatter);
 
-        shiftProps.setProperty("scoutID", scoutId);
-        shiftProps.setProperty("scoutStartTime", scStart);
-        shiftProps.setProperty("scoutEndTime", scEnd);
-        shiftProps.setProperty("companionName", compName);
-        shiftProps.setProperty("companionHours", compHours);
+            if (scoutStartTimeObj.isBefore(scoutEndTimeObj)) {
+                Properties shiftProps = new Properties();
 
-        myModel.stateChangeRequest("StartShiftForScouts", shiftProps);
+                shiftProps.setProperty("scoutID", scoutId);
+                shiftProps.setProperty("scoutStartTime", scStart);
+                shiftProps.setProperty("scoutEndTime", scEnd);
+                shiftProps.setProperty("companionName", compName);
+                shiftProps.setProperty("companionHours", compHours);
 
-
+                myModel.stateChangeRequest("StartShiftForScouts", shiftProps);
+            } else {
+                displayErrorMessage("ERROR: Scout start time must be before scout end time!");
+            }
+        } catch (DateTimeParseException e) {
+            displayErrorMessage("ERROR: Invalid scout time format!");
+        }
     }
     private void populateListOfScoutsComboBox() {
         scoutNameToID = (HashMap)myModel.getState("ListOfAllScoutsMappedToID");
         ArrayList<String> allScoutNames = (ArrayList)myModel.getState("ListOfAllScouts");
+        listOfScouts.getItems().clear();
         for (int cnt = 0; cnt < allScoutNames.size(); cnt++)
         {
             String nextScoutName = allScoutNames.get(cnt);

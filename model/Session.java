@@ -202,4 +202,10 @@ public class Session extends EntityBase implements IView {
     public String getSessionId() {
         return (String)getState("sessionID");
     }
+
+    public boolean isOpen() {
+        String endingCash = (String)getState("endingCash");
+        return endingCash == null || endingCash.isEmpty();
+    }
+
 }

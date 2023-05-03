@@ -32,8 +32,11 @@ public class StartShiftTransaction extends Transaction {
             Scout scout = scoutList.elementAt(cnt);
             String scoutID = scout.getState("scoutID").toString();
             String scoutName = scout.getState("firstName").toString() + " " + scout.getState("lastName").toString() + " " + scout.getState("troopID").toString();
-            scoutNameToID.put(scoutName, scoutID); // Store the mapping between scout name and ID
-            listOfScoutNames.add(scoutName);
+            // Check if the scoutName is not already in the hashMap
+            if(!scoutNameToID.containsKey(scoutName)){
+                scoutNameToID.put(scoutName, scoutID); // Store the mapping between scout name and ID
+                listOfScoutNames.add(scoutName);
+            }
         }
         myChosenScoutCollection = new ScoutCollection();
     }
@@ -59,13 +62,19 @@ public class StartShiftTransaction extends Transaction {
 
     private void startShiftForScouts(Properties shiftProps) {
        // if (sessionIsOpen() == true) {
-            String scoutID = (String) shiftProps.getProperty("scoutID");
-            myChosenScout = myFullScoutCollection.retrieve(scoutID);
-            myChosenScoutCollection.addChosenScout(myChosenScout);
-            String sessionID = (String) mySession.getState("sessionID");
-            shiftProps.setProperty("sessionID", sessionID);
-            Shift newShift = new Shift(shiftProps);
-            newShift.update();
+        String scoutID = (String) shiftProps.getProperty("scoutID");
+        myChosenScout = myFullScoutCollection.retrieve(scoutID);
+        myChosenScoutCollection.addChosenScout(myChosenScout);
+
+        // Remove the chosen scout from the list of all scout names and the scoutID map
+        String scoutName = myChosenScout.getState("firstName").toString() + " " + myChosenScout.getState("lastName").toString() + " " + myChosenScout.getState("troopID").toString();
+        listOfScoutNames.remove(scoutName);
+        scoutNameToID.remove(scoutName);
+
+        String sessionID = (String) mySession.getState("sessionID");
+        shiftProps.setProperty("sessionID", sessionID);
+        Shift newShift = new Shift(shiftProps);
+        newShift.update();
         }
        // else
            // transactionErrorMessage = "There is not an open session";
