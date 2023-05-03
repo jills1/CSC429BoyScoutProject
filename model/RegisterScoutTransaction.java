@@ -60,13 +60,13 @@ public class RegisterScoutTransaction extends Transaction
 		String troopID = props.getProperty("troopID");
 		try {
 			Scout scout = new Scout(troopID);
-			transactionErrorMessage = "ERROR: Scout with troopID: " + troopID + " already exists!";
+			transactionErrorMessage = "ERROR: troopID: " + troopID + " already exists!";
 		}
 		catch (InvalidPrimaryKeyException ex) {
 			myScout = new Scout(props);
 			myScout.update();
 
-			transactionErrorMessage += "Scout registered correctly";
+			transactionErrorMessage = "Scout registered correctly";
 
 		}
 

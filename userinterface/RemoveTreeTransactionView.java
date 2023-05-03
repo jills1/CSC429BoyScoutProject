@@ -107,7 +107,7 @@ public class RemoveTreeTransactionView extends View
 
         Label barcodeLabel = new Label("barcode : ");
         grid.add(barcodeLabel, 0, 0);
-        System.out.println("view found in Remove tree transaction view");
+        //System.out.println("view found in Remove tree transaction view");
 
         barcode = new TextField();
         barcode.setOnAction(new EventHandler<ActionEvent>() {

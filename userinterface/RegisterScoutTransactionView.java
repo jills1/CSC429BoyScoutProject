@@ -313,6 +313,7 @@ public class RegisterScoutTransactionView extends View
 		props.setProperty("troopID", troopID);
 		props.setProperty("status", "Active");
 		props.setProperty("dateStatusUpdated",dtf.format(now));
+
 		myModel.stateChangeRequest("RegisterWithScoutInfo", props);
 
 	}

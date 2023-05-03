@@ -66,16 +66,16 @@ public class RemoveTreeTransaction extends Transaction
      */
     //----------------------------------------------------------
     public void processTransaction(Properties props){
-        System.out.println("I'm getting to processTransaction");
-        System.out.println("I'm getting into try");
+        //System.out.println("I'm getting to processTransaction");
+        //System.out.println("I'm getting into try");
         String barcode= props.getProperty("barcode");
         if(myTree.getState("status").equals("Sold")){
             transactionErrorMessage="Error: its has been sold";
             return;
         }
-        System.out.println("i'm getting to myTree.deleteStateInDatabase");
+        //System.out.println("i'm getting to myTree.deleteStateInDatabase");
         myTree.deleteStateInDatabase();
-        transactionErrorMessage=(String)myTree.getState("UpdateStatusMessage");
+        transactionErrorMessage="Tree Removed";
     }
     //-----------------------------------------------------------
     public void searchTree(Properties props){
@@ -85,11 +85,11 @@ public class RemoveTreeTransaction extends Transaction
             String barcode= props.getProperty("barcode");
             myTree= new Tree(barcode);
             String treeBarcode=(String)myTree.getState("barcode");
-            System.out.println("tree barcode"+ treeBarcode);
+            //System.out.println("tree barcode"+ treeBarcode);
             props.setProperty("barcode", treeBarcode);
             String treeStatus=(String)myTree.getState("status");
             props.setProperty("status", treeStatus);
-            System.out.println("status: "+treeStatus);
+            //System.out.println("status: "+treeStatus);
             String treeNotes=(String)myTree.getState("notes");
             props.setProperty("notes", treeNotes);
             transactionErrorMessage="Click Submit to delete tree";
@@ -97,8 +97,8 @@ public class RemoveTreeTransaction extends Transaction
             createView2();
 
         } catch(InvalidPrimaryKeyException e){
-            System.out.println("getting to catch");
-            transactionErrorMessage="Error this barcode does not exist.";
+            //System.out.println("getting to catch");
+            transactionErrorMessage="Error: barcode does not exist.";
         }
     }
     //-----------------------------------------------------------

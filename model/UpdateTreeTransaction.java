@@ -33,7 +33,7 @@ public class UpdateTreeTransaction extends Transaction {
             props.setProperty("dateStatusUpdated", treeDateStatusUpdate);
             createAndShowUpdateTreeFormView();
         } catch(InvalidPrimaryKeyException e){
-            transactionErrorMessage="Error cannot do this 2.";
+            transactionErrorMessage="ERROR: tree barcode doesn't exist.";
         }
     }
     public Object getState(String key) {
