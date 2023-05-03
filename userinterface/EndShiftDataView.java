@@ -155,9 +155,8 @@ public class EndShiftDataView extends View {
     }
     public void processAction(ActionEvent event) {
         Properties p = new Properties();
-        NumberFormat uSFormat = NumberFormat.getCurrencyInstance(Locale.US);
-        String s = uSFormat.format(endTime.getText());
-        String x = uSFormat.format(notes.getText());
+        String s = endTime.getText();
+        String x = notes.getText();
         p.setProperty("endTime", s);
         p.setProperty("notes", x);
         System.out.println(x);
@@ -199,10 +198,11 @@ public class EndShiftDataView extends View {
             displayErrorMessage(shiftOpenMessage);
         }
         else {
+            NumberFormat uSFormat = NumberFormat.getCurrencyInstance(Locale.US);
             String date = String.valueOf(java.time.LocalDateTime.now());
             String dUS = date.substring(11, 16);
-            endCash.setText((String) myModel.getState("endingCash"));
-            totalCheck.setText((String) myModel.getState("totalCheckTransactionAmount"));
+            endCash.setText(uSFormat.format(Double.parseDouble((String) myModel.getState("endingCash"))));
+            totalCheck.setText(uSFormat.format(Double.parseDouble((String) myModel.getState("totalCheckTransactionAmount"))));
             sessionID.setText(EndShiftTransaction.getSessionID('i'));
             endTime.setText(dUS);
         }

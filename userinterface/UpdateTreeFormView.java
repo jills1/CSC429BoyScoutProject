@@ -119,7 +119,6 @@ public class UpdateTreeFormView extends View {
         }
     }
     private void processTreeInfo(String barcode,  String status, String notes, String dateStatusUpdate) {
-        System.out.println(barcode+treeType+status+notes+dateStatusUpdate);
         Properties props = new Properties();
         props.setProperty("barcode", barcode);
         props.setProperty("status", status);
