@@ -97,7 +97,7 @@ public class AddTreeView extends View
 
         Text treeNotesLabel = new Text("Notes: ");
         treeNotesLabel.setFont(myFont);
-        treeBarcodeLabel.setWrappingWidth(150);
+        treeNotesLabel.setWrappingWidth(150);
         treeNotesLabel.setTextAlignment(TextAlignment.RIGHT);
         grid.add(treeNotesLabel, 0, 2);
 
